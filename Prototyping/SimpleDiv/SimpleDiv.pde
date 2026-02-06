@@ -9,6 +9,7 @@
 //Global variables
 int appWidth, appHeight;
 //
+/*
 void settings() {
   println(displayWidth, displayHeight);
   int shorterSide = (displayWidth > displayHeight) ? displayHeight : displayWidth;
@@ -17,16 +18,17 @@ void settings() {
     println("Display Question", displayWidth, displayHeight, shorterSide);
     println("CANVAS Size Key variables for setup()", width, height);
 }//End Settings
-//
+*/
+
 void setup() {
-  //int shorterSide = 1080;
-  /*
   println(displayWidth, displayHeight);
   //size(600, 400); //width, height
   fullScreen();
   appWidth = displayWidth; //Best Practice
   appHeight = displayHeight;
-  */
+  //
+  divs();
+  //
 }//End Setup
 //
 void draw() {
