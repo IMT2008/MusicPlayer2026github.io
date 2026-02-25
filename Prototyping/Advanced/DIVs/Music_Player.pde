@@ -31,9 +31,13 @@ class MusicPlayer {
   }//End Draw
   //
   //Functions or Behaivours
+  
   void rect(float x, float y, float w, float h) {
     rect(x, y, w, h);
   }//End RECT
+  
+   
+  
   void divsArray() {
     //CONTINUE HERE
     //Note: develop formulaic lines through copy & paste
@@ -98,7 +102,7 @@ class MusicPlayer {
       } else if (i%4==1 && int(i/4)==3) {
         divs[i] = row1;
       } else if (i%4==1 && int(i/4)>=4) {
-        divs[i] = row1;
+        divs[i] = row2;
       } else {
       }
 
@@ -111,17 +115,22 @@ class MusicPlayer {
       } else {
       }
       
-      if (i%4==3 && int(i/4) == 0) {
-        divs[i] = appHeight*1/2;
-      } else if (i%4==2 && int(i/4) == 1) {
-        divs[i] = referent;
-      } else if (i%4==2 && int(i/4) == 2) {
-        divs[i] = textHeight;
-      } else {
-      }
-      
+      if ( i%4==3 && int(i/4)==0 ) {
+      divs[i] = appHeight*1/2;
+    } else if ( i%4==3  && int(i/4)==3 ) {
+      divs[i] = textHeight;
+    } else {
     }
-    } // End DIVs Array
+      println(i, divs[i]);
+      
+      for( int  j=0; j<divs.length; j++) {
+        rect(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+      }
+    }
+    
+  }//End RECT
+    
+// End DIVs Array
     //
     //Getters
     //
@@ -136,4 +145,5 @@ class MusicPlayer {
       println(description, variable);
     }//End Hello World
     //
-  }//End Music Player Class
+  
+}//End Music Player Class

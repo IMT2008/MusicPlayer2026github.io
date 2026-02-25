@@ -14,12 +14,12 @@ int appWidth, appHeight;
 //
 void setup() {
   fullScreen();
-  musicPlayer = new MusicPlayer(14); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+  musicPlayer = new MusicPlayer(16); //ERROR, Constructor: if undeclared, NullPointerException, like variable
   //musicPlayer.draw();
   //musicPlayer.errorStatement("Hello World, second time");
-  musicPlayer.divsArray();
   appWidth = displayWidth; //Best Practice
   appHeight = displayHeight;
+  musicPlayer.divsArray();
 }//End Setup
 //
 void draw() {}//End Draw
