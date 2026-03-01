@@ -14,15 +14,22 @@ int appWidth, appHeight;
 //
 void setup() {
   fullScreen();
-  musicPlayer = new MusicPlayer(16); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+  pixelDensity(displayDensity());
+  
   //musicPlayer.draw();
   //musicPlayer.errorStatement("Hello World, second time");
   appWidth = displayWidth; //Best Practice
   appHeight = displayHeight;
-  musicPlayer.divsArray();
-}//End Setup
+  
+   musicPlayer = new MusicPlayer(16); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+   musicPlayer.divsArray();
+   
+   }//End Setup
 //
-void draw() {}//End Draw
+void draw() {
+  background(30);
+  musicPlayer.draw();
+}//End Draw
 //
 void keyPressed() {}//End KeyPressed
 //
