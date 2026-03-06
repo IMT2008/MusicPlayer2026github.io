@@ -2,147 +2,110 @@ class MusicPlayer {
   //
   //Global Variables
   float[] divs;
-  float referent;
-  float column1, column2, column3, column4, column5, column6;
-  float row1, row2, row3;
-  float textWidth, textHeight;
-  float errorIncrease;
-  float testHeight;
+  Boolean musicGUI=false;
   //
   //Constructor & Multiple Constructors (different parameters)
-  //MusicPlayer() {}
-  //End Constructor
+  MusicPlayer() {
+  }//End Constructor
   //
   MusicPlayer(int numberOfRectangles) {
-    this.divs = new float[numberOfRectangles * 4];
+    this.divs = new float[numberOfRectangles*4];
+    divs();
   }//End Constructor
   //
   void draw() {
-
-    errorStatement("Hello World");
-
-    for (int i = 0; i < divs.length; i += 4) {
-      rect(divs[i], divs[i+1], divs[i+2], divs[i+3]);
-    }
+    //ERRORCheck("Hello World");
+    seeMusicGUI();
   }//End Draw
+  void mousePressed() {
+    //ERROR Check NUM below
+    //int num=8; //ERROR Check i%4=0, int(i/4)=3, num=8
+    //println(divs[num], divs[num+1], divs[num+2], divs[num+3]);
+    //
+    //mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3]
+    //CAUTION: IF Statements will execute each time
+    //Note: easily used with COPY & PASTE
+    int num=4;
+    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
+    num=8;
+    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
+  }// End Mouse Pressed
+  void keyPressed() {
+    //key=='CAP' || key=='LOWER' //Note" Caps Lock
+    //key==CODED || keyCode==ESC //Special Keys
+    if (key==CODED || keyCode==ESC) exit();
+    if (key=='Q' || key=='q') exit();
+    if (key=='M' || key=='m') musicGUI = varSwitch(musicGUI);
+  }//End Key Pressed
+  Boolean varSwitch(Boolean variable) {
+    if ( variable==true ) {
+      return variable=false;
+    } else {
+      return variable=true;
+    }
+  }//End Boolean Variable Switch
   //
   //Functions or Behaivours
+  void divs() {
 
-  /*
-  void rect(float x, float y, float w, float h) {
-   rect(x, y, w, h);
-   }//End RECT
-   */
+    divs[0] = appWidth*1/4 ;
+    divs[1] = appHeight*1/4 ;
+    divs[2] = appWidth*1/2 ;
+    divs[3] = appHeight*1/2 ;
 
+    float referent = divs[2]/13;
+    float column1 = divs[0] + referent;
+    float row1 = divs[1] + referent;
+    float textWidth = referent*5;
+    float textHeight = referent*3;
+    float column2 = column1 + referent;
+    float column3 = column2 + referent;
+    float column4 = column3 + referent;
+    float column5 = column4 + referent;
+    float column6 = column5 + referent*2;
 
-  void divsArray() {
-    //CONTINUE HERE
-    //Note: develop formulaic lines through copy & paste
-    //End with FOR( int  i=0; i<divs.length; i++) {}
+    float row2 = row1 + textHeight + referent*1/2;
+    float row3 = row2 + referent + referent*1/2;
+    float row4 = row3 + referent + referent*1/2;
+    float row5 = row4 + referent + referent*1/2;
 
-      divs[0] = appWidth*1/4 ;
-      divs[1] = appHeight*1/4 ;
-      divs[2] = appWidth*1/2 ;
-      divs[3] = appHeight*1/2 ;
+    
+  }//End DIVs
+  //
 
-      referent = divs[2]/13;
-      column1 = divs[0] + referent;
-      row1 = divs[1] + referent;
-      textWidth = referent*5;
-      textHeight = referent*3;
-      column2 = column1 + referent;
-      column3 = column2 + referent;
-      column4 = column3 + referent;
-      column5 = column4 + referent;
-      column6 = column5 + referent*2;
-      
-      row2 = row1 + textHeight + referent*1/2;
-      row3 = row2 + referent + referent*1/2;
-      //
-
-      testHeight = referent*2.5 + textHeight*2;
-      errorIncrease = referent*1/2;
-
-      while (divs[3] < testHeight) {
-        divs[1] -=errorIncrease;
-        row1 = divs[1] + referent;
-        row2 = row1 + textHeight + referent*1/2;
-        row3 = row2 + referent + referent*1/2;
-        divs[3] += errorIncrease;
-      }
-      
-  for (int i = 0; i < divs.length; i++) {
-      if (i % 4 == 2) divs[i] = textWidth;    // default width
-      if (i % 4 == 3) divs[i] = textHeight;   // default height
+  void seeQuitMusicButton() {
+    for ( int j=4; j<9; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-
-
-      for ( int  i=0; i<divs.length; i++) {
-        if (i%4==0 && int(i/4)==0) {
-          divs[i] = appWidth*1/4;
-        } else if (i%4==0&&int(i/4)==1) {
-          divs[i] = appWidth-referent;
-        } else if (i%4 == 0 && int(i/4)==2) {
-          divs[i] = appWidth*0;
-        } else if (i%4==0 && int(i/4)==3 || i%4==0 && int(i/4)==4) {
-          divs[i] = column1;
-        } else if (i%4==0 && int(i/4)==5) {
-          divs[i] = column2;
-        } else if (i%4==0 && int(i/4)==6) {
-          divs[i] = column3;
-        } else if  (i%4==0 && int(i/4)==7) {
-          divs[i] = column4;
-        } else if (i%4==0 && int(i/4)==8) {
-          divs[i] = column5;
-        } else if (i%4==0 && int(i/4)==9) {
-          divs[i] = column6;
-        } else {
-        }
-
-        if (i%4==1 && int(i/4)==0) {
-          divs[i] = appHeight*1/4;
-        } else if (i%4==1 && int(i/4)==1) {
-          divs[i] = appHeight*0;
-        } else if (i%4 ==1 && int(i/4)==2) {
-          divs[i] = appHeight - referent;
-        } else if (i%4==1 && int(i/4)==3) {
-          divs[i] = row1;
-        } else if (i%4==1 && int(i/4)>=4) {
-          divs[i] = row2;
-        } else {
-        }
-
-        if (i%4==2 && int(i/4) == 0) {
-          divs[i] = appWidth*1/2;
-        } else if (i%4==2 && int(i/4) == 1) {
-          divs[i] = referent;
-        } else if (i%4==2 && int(i/4) == 2) {
-          divs[i] = textWidth;
-        } else {
-        }
-
-        if ( i%4==3 && int(i/4)==0 ) {
-          divs[i] = appHeight*1/2;
-        } else if ( i%4==3  && int(i/4)==3 ) {
-          divs[i] = textHeight;
-        } else {
-        }
-      }
-    }//End RECT
-
-    // End DIVs Array
-    //
-    //Getters
-    //
-    //Setters
-    //
-    //Output - println
-    //Multiple ERROR statements based on parameters, like Constuctors
-    void errorStatement(String description) {
-      println(description);
-    }//End Hello World
-    void errorStatement(String description, float variable) {
-      println(description, variable);
-    }//End Hello World
-    //
-  }//End Music Player Class
+  }//End See Quit & Music Button
+  //
+  void seeMusicGUI() {
+    int j=0;
+    rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    for ( j=12; j<divs.length; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+  }//End See Music GUI
+  //
+  void rectDIV( float x, float y, float w, float h) {
+    rect(x, y, w, h);
+  } //End RECT
+  //
+  //Getters
+  Boolean musicPlayerGUI() {
+    return musicGUI;
+  }//End Music Player GUI
+  //
+  //
+  //Setters
+  //
+  //Output - Println
+  //Mutliple ERROR statements based on parameters, like Contructors
+  void ERRORCheck(String description) {
+    println(description);
+  }//End
+  void ERRORCheck(String description, float variable) {
+    println(description, variable);
+  }//End
+  //
+}//End Music Player Class
