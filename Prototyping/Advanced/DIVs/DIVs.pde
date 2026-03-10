@@ -17,7 +17,7 @@ void setup() {
   appWidth = displayWidth;
   appHeight = displayHeight;
   //
-  musicPlayer = new MusicPlayer(16); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+  musicPlayer = new MusicPlayer(17); //ERROR, Constructor: if undeclared, NullPointerException, like variable
   musicPlayer.seeQuitMusicButton();
 
   //musicPlayer.errorStatment("Hello World, second time");

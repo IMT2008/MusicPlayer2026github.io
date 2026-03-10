@@ -68,7 +68,7 @@ float row4 = row3 + referent + referent*1/2;
 
 
   float testHeight = referent*2.5 + textHeight*2;
-  float errorIncrease = referent*1/2;
+  float errorIncrease = referent*2;
   while (divs[3] < testHeight) { //Height Calculation ERROR
     //Extend Height by moving divs[1] up one referent, and extending rect() one-referent
     divs[1] -= errorIncrease; //Move Y-start up
@@ -167,7 +167,13 @@ divs[59] = referent;
 divs[60] = column6;          
 divs[61] = row1;             
 divs[62] = textWidth;         
-divs[63] = textHeight * 5 * 1/2;     
+divs[63] = textHeight;     
+
+// Rectangle 15: Top right corner box
+divs[64] = column6;          
+divs[65] = row3 - referent *1/2;             
+divs[66] = textWidth;         
+divs[67] = textHeight ;   
   }//End DIVs
   //
 
