@@ -1,6 +1,6 @@
-/* DIVs for music Interface
-*/
-// 
+/* DIVs for Music Interface
+ */
+//
 //Libraries
 //
 //Classes - Objects
@@ -14,18 +14,34 @@ int appWidth, appHeight;
 //
 void setup() {
   fullScreen();
-  musicPlayer = new MusicPlayer(14); //ERROR, Constructor: if undeclared, NullPointerException, like variable
-  //musicPlayer.draw();
-  //musicPlayer.errorStatement("Hello World, second time");
-  musicPlayer.divsArray();
-  appWidth = displayWidth; //Best Practice
+  appWidth = displayWidth;
   appHeight = displayHeight;
+  //
+  musicPlayer = new MusicPlayer(17); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+  musicPlayer.seeQuitMusicButton();
+
+  //musicPlayer.errorStatment("Hello World, second time");
 }//End Setup
 //
-void draw() {}//End Draw
+void draw() {
+  //
+  //Activate Music GUI
+  //ErrorCheck("draw() Music GUI set:", musicGUI);
+  if ( musicPlayer.musicPlayerGUI()==true ) {
+    musicPlayer.draw();
+  } else {
+    background(0);
+  }
+  musicPlayer.seeQuitMusicButton();
+  //
+}//End Draw
 //
-void keyPressed() {}//End KeyPressed
+void keyPressed() {
+  musicPlayer.keyPressed();
+}//End KeyPressed
 //
-void mousePressed() {}//End MousePressed
+void mousePressed() {
+  musicPlayer.mousePressed();
+}//End MousePressed
 //
 //End DRIVER
