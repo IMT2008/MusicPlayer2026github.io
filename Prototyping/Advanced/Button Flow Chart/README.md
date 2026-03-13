@@ -6,7 +6,7 @@ Class Lessons
 - Play (single click)
 - Pause (At time) (after 80% only Stop)
 - Stop (double click, 2s)(restart/don't play)
-- [ ]Next
+- [ ] Next
 - (next song autoplay)
 
 ---
@@ -29,12 +29,13 @@ Class Lessons
 - (mute song)
 - [ ] Loop
 - Loop once (single click)
-- Loop inf. (double click)
+- Loop inf. (single click) (if loop once already on)
+- Loop off (single click ) (if loop inf. already on) 
 - [ ] Shuffle
 - (all songs rand. order)
 - [ ] Add Queue
 - add to miniplay (single click) (loop)
-- turn off miniplay (double click)
+- turn off miniplay (double click, 2s) 
 - [ ] Random Song
 - (autoplay random song)
 ---
