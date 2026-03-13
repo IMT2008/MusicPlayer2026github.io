@@ -71,6 +71,7 @@ void divs() {
 
   float testHeight = referent*2.5 + textHeight*2;
   float errorIncrease = referent*2;
+  
   while (divs[3] < testHeight) {
     divs[1] -= errorIncrease;
     row1 = divs[1] + referent;
@@ -86,7 +87,7 @@ void divs() {
       divs[i] = appWidth - referent;
     } else if (i % 4 == 0 && int(i/4) == 2) {
       divs[i] = appWidth*0;
-    } else if (i % 4 == 0 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 5 ||int(i/4) == 10 )) {
+    } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
       divs[i] = column1;
     } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
       divs[i] = column2;
@@ -110,9 +111,9 @@ void divs() {
       divs[i] = row1;
     } else if (i % 4 == 1 && int(i/4) == 4) {
       divs[i] = row2;
-    } else if (i % 4 == 1 && (int(i/4) == 5 || int(i/4) == 6 || int(i/4) == 7 || int(i/4) == 8 || int(i/4) == 9)) {
+    } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
       divs[i] = row3;
-    } else if (i % 4 == 1 && (int(i/4) == 10 || int(i/4) == 11 || int(i/4) == 12 || int(i/4) == 13 || int(i/4) == 14)) {
+    } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
       divs[i] = row4;
     } else if (i % 4 == 1 && (int(i/4) == 16)) {
       divs[i] = row3 - referent *1/2;
