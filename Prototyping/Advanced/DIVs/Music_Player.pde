@@ -49,97 +49,97 @@ class MusicPlayer {
 
 
 
-void divs() {
-  divs[0] = appWidth*1/4 ; 
-  divs[1] = appHeight*1/4 ; 
-  divs[2] = appWidth*1/2 ; 
-  divs[3] = appHeight*1/2 ; 
+  void divs() {
+    divs[0] = appWidth*1/4 ;
+    divs[1] = appHeight*1/4 ;
+    divs[2] = appWidth*1/2 ;
+    divs[3] = appHeight*1/2 ;
 
-  float referent = divs[2]/13; 
-  float column1 = divs[0] + referent; 
-  float row1 = divs[1] + referent; 
-  float textWidth = referent*5; 
-  float textHeight = referent*3; 
-  float column2 = column1 + referent; 
-  float column3 = column2 + referent; 
-  float column4 = column3 + referent; 
-  float column5 = column4 + referent; 
-  float column6 = column5 + referent*2; 
-  float row2 = row1 + referent + referent*1/2; 
-  float row3 = row2 + textHeight+ referent*1/2; 
-  float row4 = row3 + referent + referent*1/2; 
+    float referent = divs[2]/13;
+    float column1 = divs[0] + referent;
+    float row1 = divs[1] + referent;
+    float column2 = column1 + referent;
+    float column3 = column2 + referent;
+    float column4 = column3 + referent;
+    float column5 = column4 + referent;
+    float column6 = column5 + referent*2;
+    float textWidth = referent*5;
+    float textHeight = referent*3;
+    float row2 = row1 + referent + referent*1/2;
+    float row3 = row2 + textHeight+ referent*1/2;
+    float row4 = row3 + referent + referent*1/2;
 
-  float testHeight = referent*2.5 + textHeight*2;
-  float errorIncrease = referent*2;
-  
-  while (divs[3] < testHeight) {
-    divs[1] -= errorIncrease;
-    row1 = divs[1] + referent;
-    row2 = row1  + referent + referent* 1/2;
-    row3 = row2 + textHeight + referent*1/2;
-    row4 = row3 + referent + referent*1/2; 
-    divs[3] += errorIncrease;
-  }
+    float testHeight = referent*2.5 + textHeight*2;
+    float errorIncrease = referent*2;
 
-  for (int i = 4; i < divs.length; i++) {
-    // X Position
-    if (i % 4 == 0 && int(i/4) == 1) {
-      divs[i] = appWidth - referent;
-    } else if (i % 4 == 0 && int(i/4) == 2) {
-      divs[i] = appWidth*0;
-    } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
-      divs[i] = column1;
-    } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
-      divs[i] = column2;
-    } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
-      divs[i] = column3;
-    } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
-      divs[i] = column4;
-    } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
-      divs[i] = column5;
-    } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
-      divs[i] = column6;
-    } else {
-      //Empty Else
+    while (divs[3] < testHeight) {
+      divs[1] -= errorIncrease;
+      row1 = divs[1] + referent;
+      row2 = row1  + referent + referent* 1/2;
+      row3 = row2 + textHeight + referent*1/2;
+      row4 = row3 + referent + referent*1/2;
+      divs[3] += errorIncrease;
     }
-    // Y Position
-    if (i % 4 == 1 && int(i/4) == 1) {
-      divs[i] = appHeight*0;
-    } else if (i % 4 == 1 && int(i/4) == 2) {
-      divs[i] = appHeight - referent;
-    } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)){
-      divs[i] = row1;
-    } else if (i % 4 == 1 && int(i/4) == 4) {
-      divs[i] = row2;
-    } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
-      divs[i] = row3;
-    } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
-      divs[i] = row4;
-    } else if (i % 4 == 1 && (int(i/4) == 16)) {
-      divs[i] = row3 - referent *1/2;
-    } else {
-      //Empty Else
-    }
-    // Width
-    if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
-      divs[i] = textWidth;
-    } else if (i % 4 == 2) {
-      divs[i] = referent;
-    } else {
-      //Empty Else
-    }
-    // Height
-    if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
-      divs[i] = textHeight;
+
+    for (int i = 4; i < divs.length; i++) {
+      // X Position
+      if (i % 4 == 0 && int(i/4) == 1) {
+        divs[i] = appWidth - referent;
+      } else if (i % 4 == 0 && int(i/4) == 2) {
+        divs[i] = appWidth*0;
+      } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
+        divs[i] = column1;
+      } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
+        divs[i] = column2;
+      } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
+        divs[i] = column3;
+      } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
+        divs[i] = column4;
+      } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
+        divs[i] = column5;
+      } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
+        divs[i] = column6;
+      } else {
+        //Empty Else
+      }
+      // Y Position
+      if (i % 4 == 1 && int(i/4) == 1) {
+        divs[i] = appHeight*0;
+      } else if (i % 4 == 1 && int(i/4) == 2) {
+        divs[i] = appHeight - referent;
+      } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
+        divs[i] = row1;
+      } else if (i % 4 == 1 && int(i/4) == 4) {
+        divs[i] = row2;
+      } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
+        divs[i] = row3;
+      } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
+        divs[i] = row4;
+      } else if (i % 4 == 1 && (int(i/4) == 16)) {
+        divs[i] = row3 - referent *1/2;
+      } else {
+        //Empty Else
+      }
+      // Width
+      if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
+        divs[i] = textWidth;
+      } else if (i % 4 == 2) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+      // Height
+      if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
+        divs[i] = textHeight;
       } else if (i % 4 == 3 && (int(i/4)==15)) {
-      divs[i] = textHeight + referent;
+        divs[i] = textHeight + referent;
       } else if (i % 4 == 3) {
-      divs[i] = referent;
-    } else {
-      //Empty Else
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
     }
-  }
-}//End DIVs
+  }//End DIVs
 
 
 
