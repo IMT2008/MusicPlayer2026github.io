@@ -28,3 +28,9 @@ void drawMusicDivs(float[] x, float y, float d) {
     square(x[i], y, d);
   }
 }//End Music Divs
+//
+void musicSymbol(){
+
+}//End MusicSymbols
+//
+//End Subprogram
