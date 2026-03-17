@@ -2,11 +2,11 @@
  -
  */
 //global variables'
-int randomButtonY, randomButtonDimension, buttonY, buttonWidth,numberOfButtons = 12 ;
+int randomButtonY, randomButtonDimension, buttonY, buttonWidth, numberOfButtons = 12 ;
 float[] musicButtonDivX = new float[numberOfButtons];
 //
 void populationBuild() {
-  //population
+  //population building
   buttonWidth = appWidth/13; // Number of buttons in a row + 2xPadding
   buttonY = appHeight*3/5; //Most Buttons
   int randomButtonX = 0;
@@ -29,8 +29,59 @@ void drawMusicDivs(float[] x, float y, float d) {
   }
 }//End Music Divs
 //
-void musicSymbol(){
+void musicSymbol(int index, float divX, float divY, float divDimension ) { //index from X-Var, musicButtonDivX
+  divX = smallerNum(divX, divDimension);
+  divY = smallerNum(divY, divDimension);
+  divDimension = smallerNum( divDimension);
+  //
+  if (index == 1 || index == 2 || index== 7 || index== 8)drawMusicDivs(divX, divY, divDimension);
+  if (index == 2 || index == 3)drawLines(divX, divY, divDimension);
+  
+  if (index == 7 ||index== 8 ) {
+    divX = smallerNum(divX, divDimension);
+    divY = smallerNum(divY, divDimension);
+    divDimension = smallerNum(divDimension);
+    drawMusicDivs(divX, divY, divDimension);
+  }
+
+  if (index == 6)drawWideTrangle(5,divX, divY, divDimension);
 
 }//End MusicSymbols
+float smallerNum( float divXY, float divDimension) {
+  return divXY = divXY + divDimension*1/4;
+}
+float smallerNum(float divDimension) {
+  return divDimension = divDimension*1/2;
+}
+void drawLines(float divX, float divY, float divDimension) {
+  line(divX, divY, divX+divDimension, divY+divDimension);
+  line(divX+divDimension, divY, divX, divY+divDimension);
+}
+void drawWideTrangle(int index, float divX, float divY, float divDimension) {
+  triangle(divX, divY, divX+smallerNum(divX) ,smallerNum(divY,  divDimension),divX, divY+smallerNum(divY));
+}
 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //End Subprogram
