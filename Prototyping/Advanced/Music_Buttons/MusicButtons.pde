@@ -32,20 +32,26 @@ void drawMusicDivs(float[] x, float y, float d) {
 void musicSymbol(int index, float divX, float divY, float divDimension ) { //index from X-Var, musicButtonDivX
   divX = smallerNum(divX, divDimension);
   divY = smallerNum(divY, divDimension);
-  divDimension = smallerNum( divDimension);
+  divDimension = smallerNum(divDimension);
   //
-  if (index == 1 || index == 2 || index== 7 || index== 8)drawMusicDivs(divX, divY, divDimension);
-  if (index == 2 || index == 3)drawLines(divX, divY, divDimension);
-  
+  if (index == 1 || index == 2 || index== 7 || index== 8) {
+    if ((index == 1 || index == 2 || index== 7 || index== 8))drawMusicDivs(divX, divY, divDimension);
+    if (index== 7 || index== 8) {
+      float node2X = divX = divDimension;
+      divX = node2X - divDimesion*1/8;
+      divY = divY - divDimension*1/8;
+      divDimension = smallerNum(divDimension);
+      drawWideTrangle(7, divX, divY, divDimension);
+    }
+  }
+  if (index == 2)drawLines(divX, divY, divDimension);
+  if (index == 6)drawWideTrangle(6, divX, divY, divDimension);
   if (index == 7 ||index== 8 ) {
     divX = smallerNum(divX, divDimension);
     divY = smallerNum(divY, divDimension);
     divDimension = smallerNum(divDimension);
     drawMusicDivs(divX, divY, divDimension);
   }
-
-  if (index == 6)drawWideTrangle(5,divX, divY, divDimension);
-
 }//End MusicSymbols
 float smallerNum( float divXY, float divDimension) {
   return divXY = divXY + divDimension*1/4;
@@ -57,8 +63,8 @@ void drawLines(float divX, float divY, float divDimension) {
   line(divX, divY, divX+divDimension, divY+divDimension);
   line(divX+divDimension, divY, divX, divY+divDimension);
 }
-void drawWideTrangle(int index, float divX, float divY, float divDimension) {
-  triangle(divX, divY, divX+smallerNum(divX) ,smallerNum(divY,  divDimension),divX, divY+smallerNum(divY));
+void drawWideTrangle( int index, float divX, float divY, float divDimension) {
+  triangle(divX, divY, divX+divDimension, divY+smallerNum(divDimension), divX, divY+divDimension);
 }
 //
 
