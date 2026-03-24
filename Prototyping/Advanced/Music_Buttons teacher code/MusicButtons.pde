@@ -34,24 +34,24 @@ void musicSymbol(int index, float divX, float divY, float divDimension ) { //ind
   divY = smallerNum(divY, divDimension);
   divDimension = smallerNum(divDimension);
   //
+
   if (index == 1 || index == 2 || index== 7 || index== 8) {
     if ((index == 1 || index == 2 || index== 7 || index== 8))drawMusicDivs(divX, divY, divDimension);
-    if (index== 7 || index== 8) {
-      float node2X = divX = divDimension;
-      divX = node2X - divDimesion*1/8;
-      divY = divY - divDimension*1/8;
-      divDimension = smallerNum(divDimension);
-      drawWideTrangle(7, divX, divY, divDimension);
+    if (index == 7 || index ==8) {
+      float newDivX = divX - divDimension*1/8;
+      float newDivY  = divY - divDimension*1/8;
+      float newDivDimension = divDimension * 1/4;
+      drawWideTrangle(6, newDivX, newDivY, newDivDimension);
     }
+  }
+    if (index == 7 || index ==8) {
+      divX = smallerNum(divX, divDimension);
+      divY = smallerNum(divY, divDimension);
+      divDimension = smallerNum(divDimension);
+      drawMusicDivs(divX, divY, divDimension);
   }
   if (index == 2)drawLines(divX, divY, divDimension);
   if (index == 6)drawWideTrangle(6, divX, divY, divDimension);
-  if (index == 7 ||index== 8 ) {
-    divX = smallerNum(divX, divDimension);
-    divY = smallerNum(divY, divDimension);
-    divDimension = smallerNum(divDimension);
-    drawMusicDivs(divX, divY, divDimension);
-  }
 }//End MusicSymbols
 float smallerNum( float divXY, float divDimension) {
   return divXY = divXY + divDimension*1/4;

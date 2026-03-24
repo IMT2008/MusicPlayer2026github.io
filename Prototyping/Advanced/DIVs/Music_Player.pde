@@ -46,9 +46,6 @@ class MusicPlayer {
   }//End Boolean Variable Switch
   //
   //Functions or Behaivours
-
-
-
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
@@ -68,7 +65,6 @@ class MusicPlayer {
     float row2 = row1 + referent + referent*1/2;
     float row3 = row2 + textHeight+ referent*1/2;
     float row4 = row3 + referent + referent*1/2;
-
     float testHeight = referent*2.5 + textHeight*2;
     float errorIncrease = referent*2;
 
@@ -80,7 +76,6 @@ class MusicPlayer {
       row4 = row3 + referent + referent*1/2;
       divs[3] += errorIncrease;
     }
-
     for (int i = 4; i < divs.length; i++) {
       // X Position
       if (i % 4 == 0 && int(i/4) == 1) {
@@ -140,11 +135,7 @@ class MusicPlayer {
       }
     }
   }//End DIVs
-
-
-
   //
-
   void seeQuitMusicButton() {
     for ( int j=4; j<9; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
