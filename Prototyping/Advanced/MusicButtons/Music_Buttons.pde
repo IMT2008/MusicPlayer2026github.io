@@ -20,22 +20,28 @@ void drawButtons(float[] x, float y, float d) {
   }
 }//End drawButtons
 
-void musicSymbols(int whichButton, float divX, float divY, float divDimension ){
-divX = smallerDivDimensionXY(divX, divDimension);
-divY = smallerDivDimensionXY(divY, divDimension);
-divDimension = smallerDivDimensionD(divDimension);
+void musicSymbols(int index, float divX, float divY, float divDimension ){
+divX = smallerDivDimension(divX, divDimension);
+divY = smallerDivDimension(divY, divDimension);
+divDimension = smallerDivDimension(divDimension);
 //
+if(index == 6) drawWideTriangle(6, divX, divY, divDimension);
 
 
 }
 
 
-float smallerDivDimensionXY(float divXY, float divDimension){
+float smallerDivDimension(float divXY, float divDimension){
 return divXY = divXY + divDimension*1/4;
 }
-float smallerDivDimensionD(float divDimension){
+float smallerDivDimension(float divDimension){
 return divDimension = divDimension*1/2;
 }
 
-void drawBigTriangle() {}//End drawBigTriangle
-void drawLines(){}//End drawLines
+void drawWideTriangle( int index, float divX, float divY, float divDimension) {
+  triangle(divX, divY, divX+divDimension, divY+smallerDivDimension(divDimension), divX, divY+divDimension);
+}//End drawBigTriangle
+void drawLines(float divX, float divY, float divDimension) {
+  line(divX, divY, divX+divDimension, divY+divDimension);
+  line(divX+divDimension, divY, divX, divY+divDimension);
+}//End drawLines

@@ -10,7 +10,8 @@ void setup() {
   appHeight = displayHeight;
   //
   musicButtons();
-  drawButtons(musicButtonX, buttonY, buttonWidth);
+  drawButtons(musicButtonX[0], buttonY, buttonWidth);
+  musicSymbol(6, musicButtonX[6], buttonY, buttonWidth);
 
   //
 }//End Setup
