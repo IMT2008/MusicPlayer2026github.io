@@ -34,6 +34,7 @@ void musicSymbol(int index, float divX, float divY, float divDimension ) { //ind
   divY = smallerNum(divY, divDimension);
   divDimension = smallerNum(divDimension);
   //
+  if (index == 11)drawStaightLines(divX, divY);
 
   if (index == 1 || index == 2 || index== 7 || index== 8) {
     if ((index == 1 || index == 2 || index== 7 || index== 8))drawMusicDivs(divX, divY, divDimension);
@@ -52,6 +53,8 @@ void musicSymbol(int index, float divX, float divY, float divDimension ) { //ind
   }
   if (index == 2)drawLines(divX, divY, divDimension);
   if (index == 6)drawWideTrangle(6, divX, divY, divDimension);
+  
+  
 }//End MusicSymbols
 float smallerNum( float divXY, float divDimension) {
   return divXY = divXY + divDimension*1/4;
@@ -65,6 +68,9 @@ void drawLines(float divX, float divY, float divDimension) {
 }
 void drawWideTrangle( int index, float divX, float divY, float divDimension) {
   triangle(divX, divY, divX+divDimension, divY+smallerNum(divDimension), divX, divY+divDimension);
+}
+void drawStaightLines(float divX, float divY, float divDimension){
+    line(divX, divX, divY, divY);
 }
 //
 
