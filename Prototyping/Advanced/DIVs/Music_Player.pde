@@ -3,6 +3,10 @@ class MusicPlayer {
   //Global Variables
   float[] divs;
   Boolean musicGUI=false;
+
+  PImage[] images;  // ADD THIS
+  int currentIndex = 0;  // ADD THIS
+
   //
   //Constructor & Multiple Constructors (different parameters)
   MusicPlayer() {
@@ -11,6 +15,8 @@ class MusicPlayer {
   MusicPlayer(int numberOfRectangles) {
     this.divs = new float[numberOfRectangles*4];
     divs();
+
+    loadImages();  // ADD THIS
   }//End Constructor
   //
   void draw() {
@@ -36,7 +42,12 @@ class MusicPlayer {
     if (key==CODED || keyCode==ESC) exit();
     if (key=='Q' || key=='q') exit();
     if (key=='M' || key=='m') musicGUI = varSwitch(musicGUI);
+    if (key == 'I' || key == 'i') {
+      currentIndex = (currentIndex + 1) % images.length;
+    }
   }//End Key Pressed
+
+
   Boolean varSwitch(Boolean variable) {
     if ( variable==true ) {
       return variable=false;
@@ -46,6 +57,18 @@ class MusicPlayer {
   }//End Boolean Variable Switch
   //
   //Functions or Behaivours
+
+  // ADD THIS FUNCTION
+  void loadImages() {
+    images = new PImage[7];
+    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
+
+    for (int i = 0; i < imageNames.length; i++) {
+      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
+    }
+  }
+
+
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
@@ -147,6 +170,21 @@ class MusicPlayer {
     rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+    // DISPLAY IMAGE IN THE SQUARE AT INDICES 16,17,18,19
+    int imageNum = 16;
+    if (images != null && images.length > 0) {
+      // Make image fit the box width and height while maintaining aspect ratio
+      float imgWidth = divs[imageNum+2];
+      float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
+
+      // If image is too tall, scale it down by height instead
+      if (imgHeight > divs[imageNum+3]) {
+        imgHeight = divs[imageNum+3];
+        imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
+      }
+
+      image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
   }//End See Music GUI
   //
