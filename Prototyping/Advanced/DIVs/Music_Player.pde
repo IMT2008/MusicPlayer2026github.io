@@ -4,8 +4,8 @@ class MusicPlayer {
   float[] divs;
   Boolean musicGUI=false;
 
-  PImage[] images;  // ADD THIS
-  int currentIndex = 0;  // ADD THIS
+  PImage[] images; 
+  int currentIndex = 0; 
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -16,7 +16,7 @@ class MusicPlayer {
     this.divs = new float[numberOfRectangles*4];
     divs();
 
-    loadImages();  // ADD THIS
+    loadImages(); 
   }//End Constructor
   //
   void draw() {
@@ -58,13 +58,18 @@ class MusicPlayer {
   //
   //Functions or Behaivours
 
-  // ADD THIS FUNCTION
   void loadImages() {
+    
+    String imagePathway = "../../../../Dependencies/Images/";
+    File imageDirectory = new File(sketchPath(imagePath));
+    File[] files = imageDirectory.listFiles();
+    
+    
     images = new PImage[7];
     String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
 
     for (int i = 0; i < imageNames.length; i++) {
-      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
+      images[i] = loadImage(directory + imageFolder + imageNames[i]);
     }
   }
 
@@ -171,14 +176,12 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-    // DISPLAY IMAGE IN THE SQUARE AT INDICES 16,17,18,19
+    // images display
     int imageNum = 16;
     if (images != null && images.length > 0) {
       // Make image fit the box width and height while maintaining aspect ratio
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
-
-      // If image is too tall, scale it down by height instead
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
