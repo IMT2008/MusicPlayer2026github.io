@@ -4,8 +4,8 @@ class MusicPlayer {
   float[] divs;
   Boolean musicGUI=false;
 
-  PImage[] images; 
-  int currentIndex = 0; 
+  PImage[] images;
+  int currentIndex = 0;
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -16,7 +16,7 @@ class MusicPlayer {
     this.divs = new float[numberOfRectangles*4];
     divs();
 
-    loadImages(); 
+    loadImages();
   }//End Constructor
   //
   void draw() {
@@ -59,17 +59,24 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
-    
-    String imagePathway = "../../../../Dependencies/Images/";
-    File imageDirectory = new File(sketchPath(imagePath));
-    File[] files = imageDirectory.listFiles();
-    
-    
-    images = new PImage[7];
-    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
 
-    for (int i = 0; i < imageNames.length; i++) {
-      images[i] = loadImage(directory + imageFolder + imageNames[i]);
+    String foldersPath = "../../../../Dependencies";
+    String imagePath = foldersPath + "/Images/";
+
+    File imageFolder = new File(foldersPath + "/Images/");
+    File[] fileNames = imageFolder.listFiles();
+
+    if (fileNames == null) {
+      println("Error: Could not find image directory at " + imagePath);
+      println("Sketch path: " + sketchPath());
+      images = new PImage[0];
+      return;
+    }
+
+    images = new PImage[fileNames.length];
+
+    for (int i = 0; i < fileNames.length; i++) {
+      images[i] = loadImage(fileNames[i].getName());
     }
   }
 
@@ -179,9 +186,9 @@ class MusicPlayer {
     // images display
     int imageNum = 16;
     if (images != null && images.length > 0) {
-      // Make image fit the box width and height while maintaining aspect ratio
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
+
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
