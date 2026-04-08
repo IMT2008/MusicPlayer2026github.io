@@ -5,7 +5,11 @@ class MusicPlayer {
   Boolean musicGUI=false;
 
   PImage[] images;
+<<<<<<< HEAD
   int currentIndex = 0;
+=======
+  int currentIndex = 0; 
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -16,7 +20,11 @@ class MusicPlayer {
     this.divs = new float[numberOfRectangles*4];
     divs();
 
+<<<<<<< HEAD
     loadImages();
+=======
+    loadImages();  // ADD THIS
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
   }//End Constructor
   //
   void draw() {
@@ -59,6 +67,7 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
+<<<<<<< HEAD
 
     String foldersPath = "../../../../Dependencies";
     String imagePath = foldersPath + "/Images/";
@@ -77,6 +86,13 @@ class MusicPlayer {
 
     for (int i = 0; i < fileNames.length; i++) {
       images[i] = loadImage(fileNames[i].getName());
+=======
+    images = new PImage[7];
+    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
+
+    for (int i = 0; i < imageNames.length; i++) {
+      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
     }
   }
 
@@ -183,7 +199,7 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-    // images display
+    
     int imageNum = 16;
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
