@@ -10,10 +10,12 @@ void setup() {
   appHeight = displayHeight;
   //
   musicButtons();
-  drawButtons(musicButtonX[0], buttonY, buttonWidth);
-  musicSymbol(6, musicButtonX[6], buttonY, buttonWidth);
-
-  //
+  drawButtons(musicButtonX, buttonY, buttonWidth);
+  
+  // Draw all 12 button symbols
+  for (int i = 0; i < numberOfButtons; i++) {
+    musicSymbol(i, musicButtonX[i], buttonY, buttonWidth);
+  }
 }//End Setup
 //
 void draw() {
