@@ -59,12 +59,36 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
-    images = new PImage[7];
-    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
+    File imageFolder = new File(sketchPath("../../../../Dependencies/Images"));
+    File[] imageFiles = imageFolder.listFiles();
 
-    for (int i = 0; i < imageNames.length; i++) {
-      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
+    if (imageFiles == null || imageFiles.length == 0) {
+      images = new PImage[0];
+      return;
     }
+
+    java.util.Arrays.sort(imageFiles);
+
+    int validImageCount = 0;
+    for (int i = 0; i < imageFiles.length; i++) {
+      if (imageFiles[i].isFile() && isSupportedImage(imageFiles[i].getName())) {
+        validImageCount++;
+      }
+    }
+
+    images = new PImage[validImageCount];
+    int imageIndex = 0;
+    for (int i = 0; i < imageFiles.length; i++) {
+      if (imageFiles[i].isFile() && isSupportedImage(imageFiles[i].getName())) {
+        images[imageIndex] = loadImage(imageFiles[i].getAbsolutePath());
+        imageIndex++;
+      }
+    }
+  }
+
+  boolean isSupportedImage(String fileName) {
+    String lowerCaseName = fileName.toLowerCase();
+    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png") || lowerCaseName.endsWith(".gif");
   }
 
 
