@@ -5,7 +5,11 @@ class MusicPlayer {
   Boolean musicGUI=false;
 
   PImage[] images;
+<<<<<<< HEAD
+  int currentIndex = 0;
+=======
   int currentIndex = 0; 
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -16,7 +20,11 @@ class MusicPlayer {
     this.divs = new float[numberOfRectangles*4];
     divs();
 
+<<<<<<< HEAD
+    loadImages();
+=======
     loadImages();  // ADD THIS
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
   }//End Constructor
   //
   void draw() {
@@ -59,12 +67,41 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
+<<<<<<< HEAD
     File imageFolder = new File(sketchPath("../../../../Dependencies/Images"));
     File[] imageFiles = imageFolder.listFiles();
 
     if (imageFiles == null || imageFiles.length == 0) {
       images = new PImage[0];
       return;
+=======
+<<<<<<< HEAD
+
+    String foldersPath = "../../../../Dependencies";
+    String imagePath = foldersPath + "/Images/";
+
+    File imageFolder = new File(foldersPath + "/Images/");
+    File[] fileNames = imageFolder.listFiles();
+
+    if (fileNames == null) {
+      println("Error: Could not find image directory at " + imagePath);
+      println("Sketch path: " + sketchPath());
+      images = new PImage[0];
+      return;
+    }
+
+    images = new PImage[fileNames.length];
+
+    for (int i = 0; i < fileNames.length; i++) {
+      images[i] = loadImage(fileNames[i].getName());
+=======
+    images = new PImage[7];
+    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
+
+    for (int i = 0; i < imageNames.length; i++) {
+      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
+>>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
+>>>>>>> 77ac5029aad068f513e4e813b96a64a6cd76e180
     }
 
     java.util.Arrays.sort(imageFiles);
@@ -199,6 +236,7 @@ class MusicPlayer {
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
+
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
