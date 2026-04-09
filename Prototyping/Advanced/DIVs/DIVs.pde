@@ -3,6 +3,7 @@
 //
 //Libraries
 import java.io.File; //Partial & Wild card, *
+import processing.sound.*;
 //
 //Classes - Objects
 MusicPlayer musicPlayer;

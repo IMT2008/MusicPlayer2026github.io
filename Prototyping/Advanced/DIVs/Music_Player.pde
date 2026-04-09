@@ -5,11 +5,8 @@ class MusicPlayer {
   Boolean musicGUI=false;
 
   PImage[] images;
-<<<<<<< HEAD
+  SoundFile[] songs;
   int currentIndex = 0;
-=======
-  int currentIndex = 0; 
->>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -20,30 +17,21 @@ class MusicPlayer {
     this.divs = new float[numberOfRectangles*4];
     divs();
 
-<<<<<<< HEAD
     loadImages();
-=======
-    loadImages();  // ADD THIS
->>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
   }//End Constructor
   //
   void draw() {
     //ERRORCheck("Hello World");
     seeMusicGUI();
   }//End Draw
+  //
   void mousePressed() {
-    //ERROR Check NUM below
-    //int num=8; //ERROR Check i%4=0, int(i/4)=3, num=8
-    //println(divs[num], divs[num+1], divs[num+2], divs[num+3]);
-    //
-    //mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3]
-    //CAUTION: IF Statements will execute each time
-    //Note: easily used with COPY & PASTE
     int num=4;
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
     num=8;
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
   }// End Mouse Pressed
+  //
   void keyPressed() {
     //key=='CAP' || key=='LOWER' //Note" Caps Lock
     //key==CODED || keyCode==ESC //Special Keys
@@ -54,8 +42,7 @@ class MusicPlayer {
       currentIndex = (currentIndex + 1) % images.length;
     }
   }//End Key Pressed
-
-
+  //
   Boolean varSwitch(Boolean variable) {
     if ( variable==true ) {
       return variable=false;
@@ -67,66 +54,24 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
-<<<<<<< HEAD
-    File imageFolder = new File(sketchPath("../../../../Dependencies/Images"));
-    File[] imageFiles = imageFolder.listFiles();
+    String mainPath = "../../../../Dependencies/";
+    String imagePath = mainPath + "Images/";
+    String musicPath = mainPath + "Music/";
 
-    if (imageFiles == null || imageFiles.length == 0) {
-      images = new PImage[0];
-      return;
-=======
-<<<<<<< HEAD
+    File imagefolder = new File(dataPath(imagePath));
+    File musicFolder = new File(dataPath(musicPath));
+    File[] imageFiles = imagefolder.listFiles();
+    File[] musicFiles = musicFolder.listFiles();
 
-    String foldersPath = "../../../../Dependencies";
-    String imagePath = foldersPath + "/Images/";
+    images = new PImage[imageFiles.length];
+    //SoundFile[] songs = new SoundFile[musicFiles.length];
 
-    File imageFolder = new File(foldersPath + "/Images/");
-    File[] fileNames = imageFolder.listFiles();
-
-    if (fileNames == null) {
-      println("Error: Could not find image directory at " + imagePath);
-      println("Sketch path: " + sketchPath());
-      images = new PImage[0];
-      return;
-    }
-
-    images = new PImage[fileNames.length];
-
-    for (int i = 0; i < fileNames.length; i++) {
-      images[i] = loadImage(fileNames[i].getName());
-=======
-    images = new PImage[7];
-    String[] imageNames = {"Dino.jpg", "DuckBlue.jpg", "DuckGreen.jpg", "DuckLedge.jpg", "DuckSpace.jpg", "DuckSunset.jpg", "Hedgehog.jpg"};
-
-    for (int i = 0; i < imageNames.length; i++) {
-      images[i] = loadImage("../../../../Dependencies/Images/" + imageNames[i]);
->>>>>>> 32f2b8296dbd4fefa698279eef302a3ca364b78c
->>>>>>> 77ac5029aad068f513e4e813b96a64a6cd76e180
-    }
-
-    java.util.Arrays.sort(imageFiles);
-
-    int validImageCount = 0;
     for (int i = 0; i < imageFiles.length; i++) {
-      if (imageFiles[i].isFile() && isSupportedImage(imageFiles[i].getName())) {
-        validImageCount++;
-      }
+      images[i] = loadImage(imagePath + imageFiles[i].getName());
     }
-
-    images = new PImage[validImageCount];
-    int imageIndex = 0;
-    for (int i = 0; i < imageFiles.length; i++) {
-      if (imageFiles[i].isFile() && isSupportedImage(imageFiles[i].getName())) {
-        images[imageIndex] = loadImage(imageFiles[i].getAbsolutePath());
-        imageIndex++;
-      }
-    }
+    println("Loaded " + images.length + " images");
   }
 
-  boolean isSupportedImage(String fileName) {
-    String lowerCaseName = fileName.toLowerCase();
-    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png") || lowerCaseName.endsWith(".gif");
-  }
 
 
   void divs() {
@@ -231,12 +176,11 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-    
+
     int imageNum = 16;
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
-
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
