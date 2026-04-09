@@ -16,7 +16,6 @@ class MusicPlayer {
   MusicPlayer(int numberOfRectangles) {
     this.divs = new float[numberOfRectangles*4];
     divs();
-
     loadImages();
   }//End Constructor
   //
@@ -64,13 +63,16 @@ class MusicPlayer {
     File[] musicFiles = musicFolder.listFiles();
 
     images = new PImage[imageFiles.length];
-    //SoundFile[] songs = new SoundFile[musicFiles.length];
+    songs = new SoundFile[musicFiles.length];
 
     for (int i = 0; i < imageFiles.length; i++) {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
+      songs[i]= new SoundFile(musicPath + musicFiles[i].getName());
+      
     }
     println("Loaded " + images.length + " images");
   }
+
 
 
 
@@ -177,6 +179,7 @@ class MusicPlayer {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
 
+    //Aspect ratio Images
     int imageNum = 16;
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
@@ -185,7 +188,6 @@ class MusicPlayer {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
       }
-
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
   }//End See Music GUI

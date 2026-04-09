@@ -4,12 +4,14 @@
 //Libraries
 import java.io.File; //Partial & Wild card, *
 import processing.sound.*;
+//SoundFile file;//delete after test
 //
 //Classes - Objects
 MusicPlayer musicPlayer;
 //
 // Global Variables
 int appWidth, appHeight;
+
 //
 //void settings() {}//End Settings
 //Note: CANVAS based on DISPLAY, see Intermedate
@@ -21,7 +23,10 @@ void setup() {
   //
   musicPlayer = new MusicPlayer(17); //ERROR, Constructor: if undeclared, NullPointerException, like variable
   musicPlayer.seeQuitMusicButton();
-
+  //
+  // file = new SoundFile(this, "../../../../Dependencies/Music/Song1.mp3");//delete after test
+  //file.play();//delete after test
+  //
   //musicPlayer.errorStatment("Hello World, second time");
 }//End Setup
 //
@@ -35,6 +40,7 @@ void draw() {
     background(0);
   }
   musicPlayer.seeQuitMusicButton();
+
   //
 }//End Draw
 //
