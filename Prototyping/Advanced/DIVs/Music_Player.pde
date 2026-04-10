@@ -87,8 +87,8 @@ class MusicPlayer {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
       songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
     }
-    println("Loaded " + images.length + " images");
-    println("Loaded " + songs.length + " images");
+    println("Loaded: " + images.length + " images");
+    println("Loaded: " + songs.length + " images");
   }//End Load Images
 
   void playCurrentSong() {
