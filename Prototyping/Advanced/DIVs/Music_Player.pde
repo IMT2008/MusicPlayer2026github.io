@@ -22,8 +22,8 @@ class MusicPlayer {
   }//End Constructor
 
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
+    this.divs = new float[numberOfRectangles*4];
     app = sketch;
-    this.divs = new float[numberOfRectangles * 4];
     divs();
     loadImages();
     playCurrentSong();
@@ -88,6 +88,7 @@ class MusicPlayer {
       songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
     }
     println("Loaded " + images.length + " images");
+    println("Loaded " + songs.length + " images");
   }//End Load Images
 
   void playCurrentSong() {
