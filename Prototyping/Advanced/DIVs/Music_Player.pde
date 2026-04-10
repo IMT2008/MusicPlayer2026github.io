@@ -64,12 +64,12 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
-    String mainPath = "../../../../Dependencies/";
+    String mainPath = sketchPath("../../../Dependencies/");
     String imagePath = mainPath + "Images/";
     String musicPath = mainPath + "Music/";
 
-    File imagefolder = new File(dataPath(imagePath));
-    File musicFolder = new File(dataPath(musicPath));
+    File imagefolder = new File(imagePath);
+    File musicFolder = new File(musicPath);
     File[] imageFiles = imagefolder.listFiles();
     File[] musicFiles = musicFolder.listFiles();
 
