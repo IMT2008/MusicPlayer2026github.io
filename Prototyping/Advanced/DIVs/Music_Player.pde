@@ -49,7 +49,7 @@ class MusicPlayer {
     if (key=='M' || key=='m') musicGUI = varSwitch(musicGUI);
     if (key == 'I' || key == 'i') {
       currentIndex = (currentIndex + 1) % images.length;
-      playCurrentSong(); // ✅ THIS LINE
+      playCurrentSong();
     }
   }//End Key Pressed
   //
@@ -72,12 +72,12 @@ class MusicPlayer {
     File musicFolder = new File(dataPath(musicPath));
     File[] imageFiles = imagefolder.listFiles();
     File[] musicFiles = musicFolder.listFiles();
-
+    
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
 
     if (imageFiles.length != musicFiles.length) {
-      ERRORCheck("ERROR: Image and Music count mismatch!");
+      ERRORCheck("ERROR: Image and Music count don't match!");
       ERRORCheck("Images:", imageFiles.length);
       ERRORCheck("Songs:", musicFiles.length);
       exit();
@@ -96,8 +96,7 @@ class MusicPlayer {
       songs[i].stop();
     }
     songs[currentIndex].play();
-  }//end playCurrentSong
-
+  }//End playCurrentSong
 
   void divs() {
     divs[0] = appWidth*1/4 ;
