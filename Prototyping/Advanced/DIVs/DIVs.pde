@@ -21,12 +21,9 @@ void setup() {
   appWidth = displayWidth;
   appHeight = displayHeight;
   //
-  musicPlayer = new MusicPlayer(17); //ERROR, Constructor: if undeclared, NullPointerException, like variable
+  musicPlayer = new MusicPlayer(17, this); //ERROR, Constructor: if undeclared, NullPointerException, like variable
   musicPlayer.seeQuitMusicButton();
-  //
-  // file = new SoundFile(this, "../../../../Dependencies/Music/Song1.mp3");//delete after test
-  //file.play();//delete after test
-  //
+  
   //musicPlayer.errorStatment("Hello World, second time");
 }//End Setup
 //

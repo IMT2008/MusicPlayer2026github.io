@@ -1,6 +1,7 @@
 class MusicPlayer {
   //
   //Global Variables
+  PApplet app;
   float[] divs;
   Boolean musicGUI=false;
 
@@ -11,12 +12,21 @@ class MusicPlayer {
   //
   //Constructor & Multiple Constructors (different parameters)
   MusicPlayer() {
-  }//End Constructor
+  }
+  //End Constructor
   //
   MusicPlayer(int numberOfRectangles) {
     this.divs = new float[numberOfRectangles*4];
     divs();
     loadImages();
+  }//End Constructor
+
+  MusicPlayer(int numberOfRectangles, PApplet sketch) {
+    app = sketch;
+    this.divs = new float[numberOfRectangles * 4];
+    divs();
+    loadImages();
+    playCurrentSong();
   }//End Constructor
   //
   void draw() {
@@ -39,6 +49,7 @@ class MusicPlayer {
     if (key=='M' || key=='m') musicGUI = varSwitch(musicGUI);
     if (key == 'I' || key == 'i') {
       currentIndex = (currentIndex + 1) % images.length;
+      playCurrentSong(); // ✅ THIS LINE
     }
   }//End Key Pressed
   //
@@ -65,15 +76,26 @@ class MusicPlayer {
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
 
+    if (imageFiles.length != musicFiles.length) {
+      ERRORCheck("ERROR: Image and Music count mismatch!");
+      ERRORCheck("Images:", imageFiles.length);
+      ERRORCheck("Songs:", musicFiles.length);
+      exit();
+    }
+
     for (int i = 0; i < imageFiles.length; i++) {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
-      songs[i]= new SoundFile(musicPath + musicFiles[i].getName());
-      
+      songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
     }
     println("Loaded " + images.length + " images");
-  }
+  }//End Load Images
 
-
+  void playCurrentSong() {
+    for (int i = 0; i < songs.length; i++) {
+      songs[i].stop();
+    }
+    songs[currentIndex].play();
+  }//end playCurrentSong
 
 
   void divs() {
