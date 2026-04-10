@@ -20,7 +20,7 @@ class MusicPlayer {
     divs();
     loadImages();
   }//End Constructor
-
+  //
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
     this.divs = new float[numberOfRectangles*4];
     app = sketch;
@@ -72,7 +72,7 @@ class MusicPlayer {
     File musicFolder = new File(dataPath(musicPath));
     File[] imageFiles = imagefolder.listFiles();
     File[] musicFiles = musicFolder.listFiles();
-    
+
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
 
@@ -206,6 +206,7 @@ class MusicPlayer {
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
+      
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
