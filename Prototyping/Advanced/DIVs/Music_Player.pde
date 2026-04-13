@@ -8,6 +8,7 @@ class MusicPlayer {
   PImage[] images;
   SoundFile[] songs;
   int currentIndex = 0;
+  String[] textBox;
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -86,6 +87,8 @@ class MusicPlayer {
     for (int i = 0; i < imageFiles.length; i++) {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
       songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
+      textBox[i] = musicPath + musicFiles[i].getName();
+      println(textBox[3]);
     }
     println("Loaded: " + images.length + " images");
     println("Loaded: " + songs.length + " images");
@@ -200,13 +203,13 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-
+  
     //Aspect ratio Images
     int imageNum = 16;
     if (images != null && images.length > 0) {
       float imgWidth = divs[imageNum+2];
       float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
-      
+
       if (imgHeight > divs[imageNum+3]) {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
