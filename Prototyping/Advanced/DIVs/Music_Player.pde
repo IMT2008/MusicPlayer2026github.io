@@ -8,7 +8,7 @@ class MusicPlayer {
   PImage[] images;
   SoundFile[] songs;
   int currentIndex = 0;
-  String[] textBox;
+  String[] songName;
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -76,7 +76,7 @@ class MusicPlayer {
 
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
-    textBox = new String[musicFiles.length];
+    songName = new String[musicFiles.length];
 
     if (imageFiles.length != musicFiles.length) {
       ERRORCheck("ERROR: Image and Music count don't match!");
@@ -88,11 +88,11 @@ class MusicPlayer {
     for (int i = 0; i < imageFiles.length; i++) {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
       songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
-      textBox[i] = musicFiles[i].getName();
+      songName[i] = musicFiles[i].getName();
     }
     println("Loaded: " + images.length + " images");
     println("Loaded: " + songs.length + " images");
-    println(textBox[currentIndex]);
+    println("Loaded: " + songName.length);
   }//End Load Images
 
   void playCurrentSong() {
@@ -222,7 +222,7 @@ class MusicPlayer {
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(20);
-    text(textBox[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
+    text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
   }//End See Music GUI
 
   //
