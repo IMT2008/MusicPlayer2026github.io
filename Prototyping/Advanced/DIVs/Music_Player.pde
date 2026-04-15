@@ -76,6 +76,7 @@ class MusicPlayer {
 
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
+    textBox = new String[musicFiles.length];
 
     if (imageFiles.length != musicFiles.length) {
       ERRORCheck("ERROR: Image and Music count don't match!");
@@ -87,11 +88,11 @@ class MusicPlayer {
     for (int i = 0; i < imageFiles.length; i++) {
       images[i] = loadImage(imagePath + imageFiles[i].getName());
       songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
-      textBox[i] = musicPath + musicFiles[i].getName();
-      println(textBox[3]);
+      textBox[i] = musicFiles[i].getName();
     }
     println("Loaded: " + images.length + " images");
     println("Loaded: " + songs.length + " images");
+    println(textBox[currentIndex]);
   }//End Load Images
 
   void playCurrentSong() {
@@ -192,6 +193,7 @@ class MusicPlayer {
   }//End DIVs
   //
   void seeQuitMusicButton() {
+    fill(255);
     for ( int j=4; j<9; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
@@ -203,7 +205,7 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-  
+
     //Aspect ratio Images
     int imageNum = 16;
     if (images != null && images.length > 0) {
@@ -216,7 +218,13 @@ class MusicPlayer {
       }
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
+    int box = 12;
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text(textBox[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
   }//End See Music GUI
+
   //
   void rectDIV( float x, float y, float w, float h) {
     rect(x, y, w, h);
