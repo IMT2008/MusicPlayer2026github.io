@@ -91,8 +91,8 @@ class MusicPlayer {
       songName[i] = musicFiles[i].getName();
     }
     println("Loaded: " + images.length + " images");
-    println("Loaded: " + songs.length + " images");
-    println("Loaded: " + songName.length);
+    println("Loaded: " + songs.length + " songs");
+    println("Loaded: " + songName.length + " song names");
   }//End Load Images
 
   void playCurrentSong() {
@@ -218,7 +218,13 @@ class MusicPlayer {
       }
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
+    //Fonts
     int box = 12;
+    float[] fontSize = new float[7];
+    for (int i = 0; i<fontSize.length;i++){
+    fontSize[i] = appHeight;
+    }//End fontSize
+    
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(20);
