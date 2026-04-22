@@ -83,17 +83,17 @@ class MusicPlayer {
       ERRORCheck("Images:", imageFiles.length);
       ERRORCheck("Songs:", musicFiles.length);
       exit();
-    }
-
-    for (int i = 0; i < imageFiles.length; i++) {
-      images[i] = loadImage(imagePath + imageFiles[i].getName());
-      songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
-      songName[i] = musicFiles[i].getName();
-    }
-    println("Loaded: " + images.length + " images");
-    println("Loaded: " + songs.length + " songs");
-    println("Loaded: " + songName.length + " song names");
-  }//End Load Images
+    } else {
+      for (int i = 0; i < imageFiles.length; i++) {
+        images[i] = loadImage(imagePath + imageFiles[i].getName());
+        songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
+        songName[i] = musicFiles[i].getName();
+      }
+      println("Loaded: " + images.length + " images");
+      println("Loaded: " + songs.length + " songs");
+      println("Loaded: " + songName.length + " song names");
+    }//End Load Images
+  }
 
   void playCurrentSong() {
     for (int i = 0; i < songs.length; i++) {
@@ -221,10 +221,10 @@ class MusicPlayer {
     //Fonts
     int box = 12;
     float[] fontSize = new float[7];
-    for (int i = 0; i<fontSize.length;i++){
-    fontSize[i] = appHeight;
+    for (int i = 0; i<fontSize.length; i++) {
+      fontSize[i] = appHeight;
     }//End fontSize
-    
+
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(20);

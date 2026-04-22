@@ -29,6 +29,8 @@ Minim minim; //initates entire class
 int numberOfSongs = 1; //Best Practice
 int numberOfSoundEffects = 1; //Best Practice
 AudioPlayer[] playList = new AudioPlayer[ numberOfSongs ];
+AudioMetaData[] playListMetaData = new AudioMetaData[ numberOfSongs ];
+
 AudioPlayer[] soundEffects = new AudioPlayer[ numberOfSoundEffects];
 int currentSong = numberOfSongs - numberOfSongs; //ZERO, Math Property
 //
@@ -44,13 +46,16 @@ void setup() {
   String dependencies = "/Dependencies/";
   String musicFolder = "Music/";
   String soundEffectsFolder = "Sound Effects/";
-  String songName1 = "Song1.mp3";
+  String[] songName;
   String soundEffect1 = "nomagician-ui-button-sound-cancel-back-exit-continue-467877.mp3";
 
   String musicDirectory = upArrow + upArrow + upArrow + dependencies + musicFolder;
   String soundEffectDirectory = upArrow + upArrow + upArrow + dependencies + soundEffectsFolder;
-  String pathway = musicDirectory + songName1;
+  
+  
+  String pathway; // COME BACK
   playList[ currentSong ] = minim.loadFile( pathway );
+  playListMetaData[currentSong] = playList[ currentSong ].getMetaData();
   pathway = soundEffectDirectory + soundEffect1;
   soundEffects[currentSong] = minim.loadFile( pathway ); //ERROR: Verify Spelling & Library installed, Sketch / Import Library
 
@@ -74,6 +79,7 @@ void setup() {
     printArray(playList);
     printArray(soundEffects);
   }
+  inspectMetaData(playListMetaData[currentSong]);
 }//End Setup
 //
 void draw() {
