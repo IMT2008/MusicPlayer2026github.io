@@ -1,4 +1,5 @@
-void inspectMetaData( AudioMetaData song ) {
+void inspectMetaData( AudioMetaData[] metaData ) {
+  for (AudioMetaData song : metaData){
   println(); //Empty Space
   println("File Name: " + song.fileName() );
   println("Length (in milliseconds): " + song.length() );
@@ -17,4 +18,5 @@ void inspectMetaData( AudioMetaData song ) {
   println("Publisher: " + song.publisher() );
   println("Encoded: " + song.encoded() );
   println(); //Empty Space
+  }
 }//End Inspeact Meta Data

@@ -218,17 +218,19 @@ class MusicPlayer {
       }
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
-    //Fonts
+    //Fonts Aspect Ratio Images
     int box = 12;
     float[] fontSize = new float[7];
-    for (int i = 0; i<fontSize.length; i++) {
-      fontSize[i] = appHeight;
-    }//End fontSize
-
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(20);
-    text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
+    PFont font;
+    String georgia = "Georgia";
+    //for (int i = 0; i<fontSize.length; i++) {
+      fontSize[1] = appHeight;
+      font = createFont(georgia, fontSize[1]);
+      textFont(font);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
+   // }//End fontSize
   }//End See Music GUI
 
   //

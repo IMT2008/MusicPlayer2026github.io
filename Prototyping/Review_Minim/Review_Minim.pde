@@ -26,7 +26,7 @@ import ddf.minim.ugens.*;
 //
 //Global variables
 Minim minim; //initates entire class
-int numberOfSongs = 1; //Best Practice
+int numberOfSongs = 7; //Best Practice
 int numberOfSoundEffects = 1; //Best Practice
 AudioPlayer[] playList = new AudioPlayer[ numberOfSongs ];
 AudioMetaData[] playListMetaData = new AudioMetaData[ numberOfSongs ];
@@ -42,22 +42,30 @@ void setup() {
   //
   //Folders/ MusicLoading
   minim = new Minim(this);
+
   String upArrow = "../";
   String dependencies = "/Dependencies/";
   String musicFolder = "Music/";
   String soundEffectsFolder = "Sound Effects/";
   String[] songName;
   String soundEffect1 = "nomagician-ui-button-sound-cancel-back-exit-continue-467877.mp3";
+  String fileExtension_mp3 = ".mp3";
+
 
   String musicDirectory = upArrow + upArrow + upArrow + dependencies + musicFolder;
   String soundEffectDirectory = upArrow + upArrow + upArrow + dependencies + soundEffectsFolder;
-  
-  
+
+
   String pathway; // COME BACK
-  playList[ currentSong ] = minim.loadFile( pathway );
-  playListMetaData[currentSong] = playList[ currentSong ].getMetaData();
+  for (String name : songName) {
+    pathway = musicDirectory + name + fileExtension_mp3;
+    playList[ currentSong ] = minim.loadFile( pathway );
+    playListMetaData[currentSong] = playList[ currentSong ].getMetaData();
+    currentSong++;
+  }
   pathway = soundEffectDirectory + soundEffect1;
   soundEffects[currentSong] = minim.loadFile( pathway ); //ERROR: Verify Spelling & Library installed, Sketch / Import Library
+  currentSong = resetDefault(currentSong);
 
 
   //
@@ -79,10 +87,11 @@ void setup() {
     printArray(playList);
     printArray(soundEffects);
   }
-  inspectMetaData(playListMetaData[currentSong]);
+  inspectMetaData(playListMetaData);
 }//End Setup
 //
 void draw() {
+  drawText( playListMetaData[currentSong].title(), playListMetaData[currentSong].genre() ); //Note: also author
 }//End Draw
 //
 //
@@ -91,9 +100,9 @@ void mousePressed() {
 //
 void keyPressed() {
   /* Simple Play
-  playList[currentSong].play();
-  currentSong++;
-  */
+   playList[currentSong].play();
+   currentSong++;
+   */
   //
   /* Key Board Short Cuts ... learning what the Music Buttons could be
    Note: CAP Lock with ||
