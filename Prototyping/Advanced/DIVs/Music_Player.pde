@@ -65,14 +65,17 @@ class MusicPlayer {
   //Functions or Behaivours
 
   void loadImages() {
-    String mainPath = sketchPath("../../../Dependencies/");
-    String imagePath = mainPath + "Images/";
-    String musicPath = mainPath + "Music/";
+    String upArrow = "../";
+    String musicFolder = "Music/";
+    String imageFolder = "Images/";
+    String dependencies = "Dependencies/";
+    String musicDirectory = upArrow + upArrow + upArrow + dependencies + musicFolder;
+    String imageDirectory = upArrow + upArrow + upArrow + dependencies + imageFolder;
 
-    File imagefolder = new File(imagePath);
-    File musicFolder = new File(musicPath);
+    File imagefolder = new File(sketchPath(imageDirectory));
+    File musicfolder = new File(sketchPath(musicDirectory));
     File[] imageFiles = imagefolder.listFiles();
-    File[] musicFiles = musicFolder.listFiles();
+    File[] musicFiles = musicfolder.listFiles();
 
     images = new PImage[imageFiles.length];
     songs = new SoundFile[musicFiles.length];
@@ -85,8 +88,8 @@ class MusicPlayer {
       exit();
     } else {
       for (int i = 0; i < imageFiles.length; i++) {
-        images[i] = loadImage(imagePath + imageFiles[i].getName());
-        songs[i]= new SoundFile(app, musicPath + musicFiles[i].getName());
+        images[i] = loadImage(imageDirectory + imageFiles[i].getName());
+        songs[i]= new SoundFile(app, musicDirectory + musicFiles[i].getName());
         songName[i] = musicFiles[i].getName();
       }
       println("Loaded: " + images.length + " images");
@@ -223,14 +226,13 @@ class MusicPlayer {
     float[] fontSize = new float[7];
     PFont font;
     String georgia = "Georgia";
-    //for (int i = 0; i<fontSize.length; i++) {
-      fontSize[1] = appHeight;
-      font = createFont(georgia, fontSize[1]);
-      textFont(font);
-      fill(0);
-      textAlign(CENTER, CENTER);
-      text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
-   // }//End fontSize
+    fontSize[1] = divs[box+3];
+
+    font = createFont(georgia, fontSize[1]);
+    textFont(font);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
   }//End See Music GUI
 
   //
