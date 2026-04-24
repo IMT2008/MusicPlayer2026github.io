@@ -30,7 +30,6 @@ int numberOfSongs = 7; //Best Practice
 int numberOfSoundEffects = 1; //Best Practice
 AudioPlayer[] playList = new AudioPlayer[ numberOfSongs ];
 AudioMetaData[] playListMetaData = new AudioMetaData[ numberOfSongs ];
-
 AudioPlayer[] soundEffects = new AudioPlayer[ numberOfSoundEffects];
 int currentSong = numberOfSongs - numberOfSongs; //ZERO, Math Property
 //
@@ -44,50 +43,57 @@ void setup() {
   minim = new Minim(this);
 
   String upArrow = "../";
-  String dependencies = "/Dependencies/";
   String musicFolder = "Music/";
   String soundEffectsFolder = "Sound Effects/";
-  String[] songName;
+  String dependencies = "Dependencies/";
+
+  //
+  String[] songName = new String[numberOfSongs] ;
+
+  //
   String soundEffect1 = "nomagician-ui-button-sound-cancel-back-exit-continue-467877.mp3";
   String fileExtension_mp3 = ".mp3";
-
-
+  //
+  //Directory/Pathway
   String musicDirectory = upArrow + upArrow + upArrow + dependencies + musicFolder;
   String soundEffectDirectory = upArrow + upArrow + upArrow + dependencies + soundEffectsFolder;
-
-
+  //
   String pathway; // COME BACK
   for (String name : songName) {
     pathway = musicDirectory + name + fileExtension_mp3;
     playList[ currentSong ] = minim.loadFile( pathway );
     playListMetaData[currentSong] = playList[ currentSong ].getMetaData();
+    playListMetaData[currentSong] = playList[ currentSong ].fileName();
     currentSong++;
   }
-  pathway = soundEffectDirectory + soundEffect1;
-  soundEffects[currentSong] = minim.loadFile( pathway ); //ERROR: Verify Spelling & Library installed, Sketch / Import Library
   currentSong = resetDefault(currentSong);
-
-
+  //
+  pathway = soundEffectDirectory + soundEffect1 + fileExtension_mp3;
+  soundEffects[currentSong] = minim.loadFile( pathway ); //ERROR: Verify Spelling & Library installed, Sketch / Import Library
   //
   //ERROR Check Music and Sound Effect Variables
   //Thrown by commenting out FILE, playList[] or soundEffects[]
-  if ( playList[currentSong]==null || soundEffects[currentSong]==null) { //ERROR, play list is NULL
+  for ( AudioPlayer song : playList ) {
+    if ( song == null ) { //ERROR, play list is NULL
+      //See FILE or minim.loadFile
+      println("The Play List did not load properly");
+      printArray(playList);
+      exit();
+    }
+  }//End Play List ERROR Check
+  //
+  if ( soundEffects[currentSong]==null ) { //ERROR, play list is NULL
     //See FILE or minim.loadFile
-    println("The Play List or Sound Effects did not load properly");
-    printArray(playList);
+    println("The Sound Effects did not load properly");
     printArray(soundEffects);
-    /*
-  println("Music Pathway", musicDirectory);
-     println("Full Music File Pathway", file);
-     */
-  } else {
-    //playList[currentSong].play();
-    soundEffects[currentSong].play();
-    //
-    printArray(playList);
-    printArray(soundEffects);
+    exit();
   }
-  inspectMetaData(playListMetaData);
+  //
+  //playList[currentSong].play();
+  //soundEffects[currentSong].play();
+  //
+  inspectMetaData( playListMetaData );
+  //
 }//End Setup
 //
 void draw() {
