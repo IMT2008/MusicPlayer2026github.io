@@ -227,9 +227,14 @@ class MusicPlayer {
     PFont font;
     String georgia = "Georgia";
     fontSize[1] = divs[box+3];
-
     font = createFont(georgia, fontSize[1]);
-    textFont(font);
+
+    if ( textWidth(songName[currentIndex]) > divs[box+2]) {
+      fontSize[1] *= 0.99;
+      textFont(font, fontSize[1]);
+    } else {
+      textFont(font, fontSize[1]);
+    }
     fill(0);
     textAlign(CENTER, CENTER);
     text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
