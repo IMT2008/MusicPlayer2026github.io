@@ -2,11 +2,13 @@ class MusicPlayer {
   //
   //Global Variables
   PApplet app;
+  Minim minim;
   float[] divs;
   Boolean musicGUI=false;
 
   PImage[] images;
-  SoundFile[] songs;
+  AudioPlayer[] songs;
+  AudioMetaData[] songsMetaData;
   int currentIndex = 0;
   String[] songName;
 
@@ -25,6 +27,7 @@ class MusicPlayer {
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
     this.divs = new float[numberOfRectangles*4];
     app = sketch;
+    minim = new Minim(app);
     divs();
     loadImages();
     playCurrentSong();
@@ -78,7 +81,8 @@ class MusicPlayer {
     File[] musicFiles = musicfolder.listFiles();
 
     images = new PImage[imageFiles.length];
-    songs = new SoundFile[musicFiles.length];
+    songs = new AudioPlayer[musicFiles.length];
+    songsMetaData = new AudioMetaData[musicFiles.length];
     songName = new String[musicFiles.length];
 
     if (imageFiles.length != musicFiles.length) {
@@ -89,7 +93,8 @@ class MusicPlayer {
     } else {
       for (int i = 0; i < imageFiles.length; i++) {
         images[i] = loadImage(imageDirectory + imageFiles[i].getName());
-        songs[i]= new SoundFile(app, musicDirectory + musicFiles[i].getName());
+        songs[i] = minim.loadFile( musicDirectory + musicFiles[i].getName());
+        songsMetaData[i] = songs[i].getMetaData();
         songName[i] = musicFiles[i].getName();
       }
       println("Loaded: " + images.length + " images");
@@ -98,10 +103,15 @@ class MusicPlayer {
     }//End Load Images
   }
 
-  void playCurrentSong() {
-    for (int i = 0; i < songs.length; i++) {
-      songs[i].stop();
+  void stopAllSongs() {
+    for (int i = 0; i< songs.length; i++) {
+      songs[i].pause();
+      songs[i].rewind();
     }
+  }//End StopAllSongs
+  //
+  void playCurrentSong() {
+    stopAllSongs();
     songs[currentIndex].play();
   }//End playCurrentSong
 
@@ -208,7 +218,7 @@ class MusicPlayer {
     for ( j=12; j<divs.length; j+=4 ) {
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
-
+    //
     //Aspect ratio Images
     int imageNum = 16;
     if (images != null && images.length > 0) {
@@ -221,23 +231,34 @@ class MusicPlayer {
       }
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
+    //
     //Fonts Aspect Ratio Images
     int box = 12;
     float[] fontSize = new float[7];
     PFont font;
     String georgia = "Georgia";
+    int iWhile=0;
+
     fontSize[1] = divs[box+3];
     font = createFont(georgia, fontSize[1]);
+    textFont(font, fontSize[1]);
 
-    if ( textWidth(songName[currentIndex]) > divs[box+2]) {
+    while ( textWidth(songName[currentIndex]) > divs[box+2]) {
+      iWhile++;
+      if ( iWhile>10000 ) {
+        ERRORCheck("Infninte WHILE Loop");
+        exit();
+      }
       fontSize[1] *= 0.99;
-      textFont(font, fontSize[1]);
-    } else {
       textFont(font, fontSize[1]);
     }
     fill(0);
     textAlign(CENTER, CENTER);
     text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
+    //
+    //Songs Meta Data
+    int metaData = 60;
+    text(songsMetaData[currentIndex].genre(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
   }//End See Music GUI
 
   //

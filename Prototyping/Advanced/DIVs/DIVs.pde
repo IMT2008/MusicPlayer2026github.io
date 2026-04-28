@@ -1,11 +1,15 @@
-
 /* DIVs for Music Interface
  */
 //
 //Libraries
 import java.io.File; //Partial & Wild card, *
-import processing.sound.*;
-//SoundFile file;//delete after test
+
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
 //
 //Classes - Objects
 MusicPlayer musicPlayer;
