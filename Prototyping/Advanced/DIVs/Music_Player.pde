@@ -115,6 +115,27 @@ class MusicPlayer {
     songs[currentIndex].play();
   }//End playCurrentSong
 
+  String inspectMetaData() {
+    AudioMetaData meta = songsMetaData[currentIndex];
+    return
+      "File Name: " + meta.fileName() + "\n"+
+      "Length (in milliseconds): " + meta.length() + "\n"+
+      "Title: " + meta.title() +"\n"+
+      "Author: " + meta.author() +"\n"+
+      "Album: " + meta.album() +"\n"+
+      "Date: " + meta.date() +"\n"+
+      "Comment: " + meta.comment() +"\n"+
+      "Lyrics: " + meta.lyrics() +"\n"+
+      "Track: " + meta.track()+"\n"+
+      "Genre: " + meta.genre() +"\n"+
+      "Copyright: " + meta.copyright() +"\n"+
+      "Disc: " + meta.disc() +"\n"+
+      "Composer: " + meta.composer() +"\n"+
+      "Orchestra: " + meta.orchestra() +"\n"+
+      "Publisher: " + meta.publisher() +"\n"+
+      "Encoded: " + meta.encoded() ;
+  }//End inspect meta data
+
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
@@ -122,27 +143,38 @@ class MusicPlayer {
     divs[3] = appHeight*1/2 ;
 
     float referent = divs[2]/13;
-    float column1 = divs[0] + referent;
-    float row1 = divs[1] + referent;
-    float column2 = column1 + referent;
-    float column3 = column2 + referent;
-    float column4 = column3 + referent;
-    float column5 = column4 + referent;
-    float column6 = column5 + referent*2;
     float textWidth = referent*5;
     float textHeight = referent*3;
-    float row2 = row1 + referent + referent*1/2;
-    float row3 = row2 + textHeight+ referent*1/2;
-    float row4 = row3 + referent + referent*1/2;
+
+    float[] column = new float[6];
+    column[0] = divs[0]+ referent;
+    for (int i = 1; i < column.length; i++) {
+      if (i==5) {
+        column[i] = column[i-1] + referent* 2;
+      } else {
+        column[i] = column[i-1] + referent;
+      }
+    }
+
+    float[] row = new float[4];
+    row[0] = divs[1]+ referent;
+    for (int i = 1; i<row.length; i++) {
+      if (i == 2) {
+        row[i] = row[i-1]+ textHeight + referent* 1/2;
+      } else {
+        row[i] = row[i-1] + referent + referent * 1/2;
+      }
+    }
+
     float testHeight = referent*2.5 + textHeight*2;
     float errorIncrease = referent*2;
 
     while (divs[3] < testHeight) {
       divs[1] -= errorIncrease;
-      row1 = divs[1] + referent;
-      row2 = row1  + referent + referent* 1/2;
-      row3 = row2 + textHeight + referent*1/2;
-      row4 = row3 + referent + referent*1/2;
+      row[0] = divs[1] + referent;
+      row[1] = row[0]  + referent + referent* 1/2;
+      row[2] = row[1] + textHeight + referent*1/2;
+      row[3] = row[2] + referent + referent*1/2;
       divs[3] += errorIncrease;
     }
     for (int i = 4; i < divs.length; i++) {
@@ -152,17 +184,17 @@ class MusicPlayer {
       } else if (i % 4 == 0 && int(i/4) == 2) {
         divs[i] = appWidth*0;
       } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
-        divs[i] = column1;
+        divs[i] = column[0];
       } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
-        divs[i] = column2;
+        divs[i] = column[1];
       } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
-        divs[i] = column3;
+        divs[i] = column[2];
       } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
-        divs[i] = column4;
+        divs[i] = column[3];
       } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
-        divs[i] = column5;
+        divs[i] = column[4];
       } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
-        divs[i] = column6;
+        divs[i] = column[5];
       } else {
         //Empty Else
       }
@@ -172,15 +204,15 @@ class MusicPlayer {
       } else if (i % 4 == 1 && int(i/4) == 2) {
         divs[i] = appHeight - referent;
       } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
-        divs[i] = row1;
+        divs[i] = row[0];
       } else if (i % 4 == 1 && int(i/4) == 4) {
-        divs[i] = row2;
+        divs[i] = row[1];
       } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
-        divs[i] = row3;
+        divs[i] = row[2];
       } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
-        divs[i] = row4;
+        divs[i] = row[3];
       } else if (i % 4 == 1 && (int(i/4) == 16)) {
-        divs[i] = row3 - referent *1/2;
+        divs[i] = row[2] - referent *1/2;
       } else {
         //Empty Else
       }
@@ -204,21 +236,8 @@ class MusicPlayer {
       }
     }
   }//End DIVs
-  //
-  void seeQuitMusicButton() {
-    fill(255);
-    for ( int j=4; j<9; j+=4 ) {
-      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-    }
-  }//End See Quit & Music Button
-  //
-  void seeMusicGUI() {
-    int j=0;
-    rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-    for ( j=12; j<divs.length; j+=4 ) {
-      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-    }
-    //
+
+  void drawImage() {
     //Aspect ratio Images
     int imageNum = 16;
     if (images != null && images.length > 0) {
@@ -231,7 +250,9 @@ class MusicPlayer {
       }
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
-    //
+  }//End draw Image
+
+  void drawText() {
     //Fonts Aspect Ratio Images
     int box = 12;
     float[] fontSize = new float[7];
@@ -256,9 +277,41 @@ class MusicPlayer {
     textAlign(CENTER, CENTER);
     text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
     //
-    //Songs Meta Data
+    //song meta data
     int metaData = 60;
-    text(songsMetaData[currentIndex].genre(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
+    fontSize[2] = divs[metaData+3];
+    while (textWidth(inspectMetaData()) > divs[metaData+2]) {
+      iWhile++;
+      if ( iWhile>10000 ) {
+        ERRORCheck("Infninte WHILE Loop");
+        exit();
+      }
+      fontSize[2] *= 0.99;
+      textFont(font, fontSize[2]);
+    }
+    textAlign(LEFT, CENTER);
+    String meta = "MetaData: " + "\n";
+    text(meta + inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
+  }//End draww song title
+
+
+  //
+  void seeQuitMusicButton() {
+    fill(255);
+    for ( int j=4; j<9; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+  }//End See Quit & Music Button
+  //
+  void seeMusicGUI() {
+    int j=0;
+    rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    for ( j=12; j<divs.length; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+    drawImage();//images
+    drawText();//song title + meta data
+    //
   }//End See Music GUI
 
   //
