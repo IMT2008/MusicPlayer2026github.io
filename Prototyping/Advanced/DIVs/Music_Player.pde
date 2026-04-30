@@ -21,7 +21,7 @@ class MusicPlayer {
   MusicPlayer(int numberOfRectangles) {
     this.divs = new float[numberOfRectangles*4];
     divs();
-    loadImages();
+    loadFiles();
   }//End Constructor
   //
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
@@ -29,7 +29,7 @@ class MusicPlayer {
     app = sketch;
     minim = new Minim(app);
     divs();
-    loadImages();
+    loadFiles();
     playCurrentSong();
   }//End Constructor
   //
@@ -55,6 +55,8 @@ class MusicPlayer {
       currentIndex = (currentIndex + 1) % images.length;
       playCurrentSong();
     }
+    //ButtonInputs
+    buttonInput();
   }//End Key Pressed
   //
   Boolean varSwitch(Boolean variable) {
@@ -67,7 +69,7 @@ class MusicPlayer {
   //
   //Functions or Behaivours
 
-  void loadImages() {
+  void loadFiles() {
     String upArrow = "../";
     String musicFolder = "Music/";
     String imageFolder = "Images/";
@@ -135,6 +137,38 @@ class MusicPlayer {
       "Publisher: " + meta.publisher() +"\n"+
       "Encoded: " + meta.encoded() ;
   }//End inspect meta data
+  //
+  void buttonInput(){
+    if (key == 'P' || key == 'p') songs[currentIndex].loop(0);//play
+    //
+    if(key == 'O' || key == 'o') 
+      if ( songs[currentIndex].isPlaying() ) {//Pause
+      songs[currentIndex].pause();
+    } else {
+      songs[currentIndex].play();
+    }
+    //
+    if ( key=='S' | key=='s' ) {//Stop
+    if ( songs[currentIndex].isPlaying() ) {
+      songs[currentIndex].pause(); //single tap
+    } else {
+      songs[currentIndex].rewind(); //double tap
+    }
+  }
+  //
+   if ( key=='L' || key=='l' ) songs[currentIndex].loop(1); // Loop ONCE: Plays, then plays again, then stops & rewinds
+  if ( key=='K' || key=='k' ) songs[currentIndex].loop(); // Loop Infinitely //Parameter: BLANK or -1
+  if ( key=='F' || key=='f' ) songs[currentIndex].skip( 10000 ); // Fast Forward, Rewind, & Play Again //Parameter: milliseconds
+  if ( key=='R' || key=='r' ) songs[currentIndex].skip( -10000 ); // Fast Reverse & Play //Parameter: negative numbers
+  if ( key=='W' || key=='w' ) { // MUTE
+    if ( songs[currentIndex].isMuted() ) {
+      songs[currentIndex].unmute();
+    } else {
+      songs[currentIndex].mute();
+    }
+  }
+}//End Button input
+  
 
   void divs() {
     divs[0] = appWidth*1/4 ;
@@ -251,13 +285,13 @@ class MusicPlayer {
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
   }//End draw Image
-
+  //
   void drawText() {
     //Fonts Aspect Ratio Images
-    int box = 12;
     float[] fontSize = new float[7];
     PFont font;
     String georgia = "Georgia";
+    int box = 12;
     int iWhile=0;
 
     fontSize[1] = divs[box+3];
@@ -282,7 +316,7 @@ class MusicPlayer {
     fontSize[2] = divs[metaData+3];
     while (textWidth(inspectMetaData()) > divs[metaData+2]) {
       iWhile++;
-      if ( iWhile>10000 ) {
+      if (iWhile>10000) {
         ERRORCheck("Infninte WHILE Loop");
         exit();
       }
@@ -290,11 +324,8 @@ class MusicPlayer {
       textFont(font, fontSize[2]);
     }
     textAlign(LEFT, CENTER);
-    String meta = "MetaData: " + "\n";
-    text(meta + inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
+    text(inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
   }//End draww song title
-
-
   //
   void seeQuitMusicButton() {
     fill(255);
