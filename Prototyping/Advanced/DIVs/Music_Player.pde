@@ -36,6 +36,7 @@ class MusicPlayer {
   void draw() {
     //ERRORCheck("Hello World");
     seeMusicGUI();
+    buttonHovering();
   }//End Draw
   //
   void mousePressed() {
@@ -138,38 +139,62 @@ class MusicPlayer {
       "Encoded: " + meta.encoded() ;
   }//End inspect meta data
   //
-  void buttonInput(){
+
+  void buttonInput() {
     if (key == 'P' || key == 'p') songs[currentIndex].loop(0);//play
     //
-    if(key == 'O' || key == 'o') 
+    if (key == 'O' || key == 'o')
       if ( songs[currentIndex].isPlaying() ) {//Pause
-      songs[currentIndex].pause();
-    } else {
-      songs[currentIndex].play();
-    }
+        songs[currentIndex].pause();
+      } else {
+        songs[currentIndex].play();
+      }
     //
     if ( key=='S' | key=='s' ) {//Stop
-    if ( songs[currentIndex].isPlaying() ) {
-      songs[currentIndex].pause(); //single tap
-    } else {
-      songs[currentIndex].rewind(); //double tap
+      if ( songs[currentIndex].isPlaying() ) {
+        songs[currentIndex].pause(); //single tap
+      } else {
+        songs[currentIndex].rewind(); //double tap
+      }
     }
-  }
-  //
-   if ( key=='L' || key=='l' ) songs[currentIndex].loop(1); // Loop ONCE: Plays, then plays again, then stops & rewinds
-  if ( key=='K' || key=='k' ) songs[currentIndex].loop(); // Loop Infinitely //Parameter: BLANK or -1
-  if ( key=='F' || key=='f' ) songs[currentIndex].skip( 10000 ); // Fast Forward, Rewind, & Play Again //Parameter: milliseconds
-  if ( key=='R' || key=='r' ) songs[currentIndex].skip( -10000 ); // Fast Reverse & Play //Parameter: negative numbers
-  if ( key=='W' || key=='w' ) { // MUTE
-    if ( songs[currentIndex].isMuted() ) {
-      songs[currentIndex].unmute();
-    } else {
-      songs[currentIndex].mute();
+    //
+    if ( key=='L' || key=='l' ) songs[currentIndex].loop(1); // Loop ONCE: Plays, then plays again, then stops & rewinds
+    if ( key=='K' || key=='k' ) songs[currentIndex].loop(); // Loop Infinitely //Parameter: BLANK or -1
+    if ( key=='F' || key=='f' ) songs[currentIndex].skip( 10000 ); // Fast Forward, Rewind, & Play Again //Parameter: milliseconds
+    if ( key=='R' || key=='r' ) songs[currentIndex].skip( -10000 ); // Fast Reverse & Play //Parameter: negative numbers
+    if ( key=='W' || key=='w' ) { // MUTE
+      if ( songs[currentIndex].isMuted() ) {
+        songs[currentIndex].unmute();
+      } else {
+        songs[currentIndex].mute();
+      }
     }
-  }
-}//End Button input
-  
+  }//End Button input
 
+  void buttonHovering() {
+    int button = 32;
+    //20
+    //24
+    //28
+    //32
+    
+    color red = #c64239;
+    color pink = #f6c2db;
+    color blue = #aad4dd;
+    color green = #8bdaa8;
+
+      if (isHovering(button)) {
+        fill(blue);
+      } else {
+        fill(255);
+      }
+      rect(divs[button], divs[button+1], divs[button+2], divs[button+3]);
+  }//End hovering
+  //
+  boolean isHovering(int num) {
+    return ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] );
+  }//End isHovering
+//
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
