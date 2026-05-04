@@ -296,64 +296,166 @@ class MusicPlayer {
   }//End DIVs
   //
   //Test
+  // PLAY BUTTON - Triangle pointing right
+  void drawPlayButton(float x, float y, float d) {
+    triangle(x, y, x+d, y+d/2, x, y+d);
+  }//End drawPlayButton
+  // PAUSE BUTTON - Two rectangles
+  void drawPauseButton(float x, float y, float d) {
+    float rectWidth = d/8;
+    float rectHeight = 2*d/3;
 
-  void drawSimpleTriangle(float x, float y, float w, float h) {
-    triangle(x+w*0.3, y + h*0.2, x+w*0.3, y + h*0.8, x+w*0.7, y+h*0.5);
-  }//END simple triangle
-  //
-  void drawPlayIcon(float x, float y, float w, float h) {
-    drawSimpleTriangle(x, y, w, h);
-  }//end play 
-  void drawNextIcon(float x, float y, float w, float h) {
-    drawSimpleTriangle(x, y, w*0.8, h);
+    // First rectangle (left)
+    rect(x+d/6, y+d/6, rectWidth, rectHeight);
+    // Second rectangle (right)
+    rect(x+2*d/3, y+d/6, rectWidth, rectHeight);
+  }//End drawPauseButton
 
-    line(x + w*0.75, y + h*0.3, x + w*0.75, y + h*0.7);
-  }//end next
-  void drawSkipIcon(float x, float y, float w, float h) {
-    drawSimpleTriangle(x + w*0.2, y, w*0.8, h);
+  // REWIND BUTTON - Triangle pointing left with rectangle
+  void drawRewindButton(float x, float y, float d) {
+    triangle(x+d/2, y+d/6, x+d/6, y+d/2, x+d/2, y+5*d/6);
+    rect(x+d/6-d/6, y+d/4, d/6, d/2);
+  }//End drawRewindButton
 
-    line(x + w*0.25, y + h*0.3, x + w*0.25, y + h*0.7);
-  }//end skip
-  void drawDoubleTriangle(float x, float y, float w, float h) {
-  float halfW = w * 0.5;
+  // BACKWARD BUTTON - Two triangles pointing left
+  void drawBackwardButton(float x, float y, float d) {
+    // First triangle (larger and centered)
+    triangle(x+7*d/8, y+d/6, x+d/2, y+d/2, x+7*d/8, y+5*d/6);
+    // Second triangle (larger and centered)
+    triangle(x+d/2, y+d/6, x+d/8, y+d/2, x+d/2, y+5*d/6);
+  }//End drawBackwardButton
 
-  // left triangle
-  triangle(
-    x + halfW*0.3, y + h*0.2,
-    x + halfW*0.3, y + h*0.8,
-    x + halfW*0.7, y + h*0.5
-  );
+  // FORWARD BUTTON - Triangle pointing right with rectangle
+  void drawForwardButton(float x, float y, float d) {
+    triangle(x+d/6, y+d/6, x+d/2, y+d/2, x+d/6, y+5*d/6);
+    rect(x+d/2, y+d/4, d/6, d/2);
+  }//End drawForwardButton
 
-  // right triangle (shifted right)
-  triangle(
-    x + halfW + halfW*0.3, y + h*0.2,
-    x + halfW + halfW*0.3, y + h*0.8,
-    x + halfW + halfW*0.7, y + h*0.5
-  );
-}//end double
+  // SKIP BUTTON - Two triangles pointing right
+  void drawSkipButton(float x, float y, float d) {
+    // First triangle (larger and centered)
+    triangle(x+d/8, y+d/6, x+d/2, y+d/2, x+d/8, y+5*d/6);
+    // Second triangle (larger and centered)
+    triangle(x+d/2, y+d/6, x+7*d/8, y+d/2, x+d/2, y+5*d/6);
+  }//End drawSkipButton
+
+  // STOP BUTTON - Square
+  void drawStopButton(float x, float y, float d) {
+    rect(x, y, d, d);
+  }//End drawStopButton
+
+  // MUTE BUTTON - Square with X
+  void drawMuteButton(float x, float y, float d) {
+    // Draw square
+    rect(x, y, d, d);
+
+    // X through it
+    line(x, y, x+d, y+d);
+    line(x+d, y, x, y+d);
+  }//End drawMuteButton
+
+  // LOOP BUTTON - Small square with triangle peeking out of corner
+  void drawLoopButton(float x, float y, float d) {
+    // Draw small square
+    float squareSize = 3*d/4;
+    rect(x+d/8, y+d/8, squareSize, squareSize);
+
+    // Triangle on its side peeking out of bottom-right corner
+    triangle(x+d-d/8, y+d-d/8, x+d+d/12, y+d-d/8-d/12, x+d+d/12, y+d-d/8+d/12);
+  }//End drawLoopButton
+
+
+  // SHUFFLE BUTTON - X with triangles at the ends
+  void drawShuffleButton(float x, float y, float d) {
+    // First line (top-left to bottom-right)
+    line(x, y, x+d, y+d);
+    // Triangle at bottom-right end (centered)
+    triangle(x+d, y+d, x+d-d/10, y+d-d/10, x+d-d/10, y+d+d/10);
+
+    // Second line (top-right to bottom-left)
+    line(x+d, y, x, y+d);
+    // Triangle at top-right end (centered)
+    triangle(x+d, y, x+d-d/10, y-d/10, x+d-d/10, y+d/10);
+  }//End drawShuffleButton
+
+
+  // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
+  void drawAddToQueueButton(float x, float y, float d) {
+    // Four queue lines (top two shorter, bottom two longer)
+    line(x, y+d/6, x+d/2, y+d/6);
+    line(x, y+d/3, x+d/2, y+d/3);
+    line(x, y+d/2, x+2*d/3, y+d/2);
+    line(x, y+2*d/3, x+2*d/3, y+2*d/3);
+
+    // Mini plus sign in top right corner
+    float plusX = x + 3*d/4;
+    float plusY = y + d/4;
+    float plusSize = d/6;
+
+    line(plusX, plusY-plusSize/2, plusX, plusY+plusSize/2);
+    line(plusX-plusSize/2, plusY, plusX+plusSize/2, plusY);
+  }//End drawAddToQueueButton
+
+  // RANDOM SONG BUTTON - Star or Random symbol (dice)
+  void drawRandomSongButton(float x, float y, float d) {
+    // Draw a dice symbol with dots
+    float dotSize = d/8;
+    // Top-left dot
+    circle(x+d/6, y+d/6, dotSize);
+    // Bottom-right dot
+    circle(x+5*d/6, y+5*d/6, dotSize);
+    // Center dot
+    circle(x+d/2, y+d/2, dotSize);
+    // Top-right dot
+    circle(x+5*d/6, y+d/6, dotSize);
+    // Bottom-left dot
+    circle(x+d/6, y+5*d/6, dotSize);
+  }//End drawRandomSongButton
 
   void drawButtons() {
-    int[] boxes = {20, 24, 28, 32, 36};
+    int[] boxes = new int[10];
+
+    for (int i = 0; i < boxes.length; i++) {
+      boxes[i] = 20 + (i * 4);
+    }
 
     for (int i = 0; i < boxes.length; i ++) {
       int index = boxes[i];
       fill(255);
-      float x = divs[index];
-      float y= divs[index+1];
-      float w= divs[index+2];
-      float h= divs[index+3];
+      float boxX = divs[index];
+      float boxY = divs[index+1];
+      float boxD= divs[index+2];
 
-      drawSymbol(i, x, y, w, h);
+      float iconD = smallerDivDimension(boxD);
+      float shift = (boxD - iconD)/2;
+      float x =boxX + shift;
+      float y =boxY + shift;
+
+      drawSymbol(i, x, y, iconD);
     }
   }//end drawButtons
 
-  void drawSymbol(int i, float x, float y, float w, float h) {
-    if (i == 0) drawSimpleTriangle(x, y, w, h);        // box 20
-    if (i == 1) drawDoubleTriangle(x, y, w, h);        // box 24
-    if (i == 2) drawPlayIcon(x, y, w, h);              // box 28
-    if (i == 3) drawNextIcon(x, y, w, h);              // box 32
-    if (i == 4) drawSkipIcon(x, y, w, h);
+  void drawSymbol(int i, float x, float y, float d) {
+
+    if (i == 0) drawRewindButton(x, y, d);        
+    if (i == 1) drawBackwardButton(x, y, d);        
+    if (i == 2) drawPlayButton(x, y, d);              
+    if (i == 3) drawForwardButton(x, y, d);            
+    if (i == 4) drawSkipButton(x, y, d);
+    if (i == 5) drawMuteButton(x, y, d);        
+    if (i == 6) drawLoopButton(x, y, d);        
+    if (i == 7) drawShuffleButton(x, y, d);              
+    if (i == 8) drawAddToQueueButton(x, y, d);              
+    if (i == 9) drawRandomSongButton(x, y, d);
   }//end drawsymbol
+  float smallerDivDimension(float divXY, float divDimension) {
+    return divXY = divXY + divDimension*1/4;
+  }//div dimension
+
+  float smallerDivDimension(float divDimension) {
+    return divDimension = divDimension*1/2;
+  }//div dimension
+
   //
   void drawImage() {
     //Aspect ratio Images
