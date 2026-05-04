@@ -36,7 +36,6 @@ class MusicPlayer {
   void draw() {
     //ERRORCheck("Hello World");
     seeMusicGUI();
-    buttonHovering();
   }//End Draw
   //
   void mousePressed() {
@@ -177,24 +176,24 @@ class MusicPlayer {
     //24
     //28
     //32
-    
+
     color red = #c64239;
     color pink = #f6c2db;
     color blue = #aad4dd;
     color green = #8bdaa8;
 
-      if (isHovering(button)) {
-        fill(blue);
-      } else {
-        fill(255);
-      }
-      rect(divs[button], divs[button+1], divs[button+2], divs[button+3]);
+    if (isHovering(button)) {
+      fill(blue);
+    } else {
+      fill(255);
+    }
+    rect(divs[button], divs[button+1], divs[button+2], divs[button+3]);
   }//End hovering
   //
   boolean isHovering(int num) {
     return ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] );
   }//End isHovering
-//
+  //
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
@@ -295,6 +294,32 @@ class MusicPlayer {
       }
     }
   }//End DIVs
+  //
+  //Test
+
+  void drawSimpleTriangle(float x, float y, float w, float h) {
+    triangle(x+w*0.3, y + h*0.2, x+w*0.3, y + h*0.8, x+w*0.7, y+h*0.5);
+  }//END TEST
+
+  void drawButtons() {
+    int[] boxes = {20, 24, 28, 32, 36};
+
+    for (int i = 0; i < boxes.length; i ++) {
+      int index = boxes[i];
+      fill(255);
+      float x = divs[index];
+      float y= divs[index+1];
+      float w= divs[index+2];
+      float h= divs[index+3];
+      
+      drawIcon(i, x, y, w, h);
+    }
+  }//end drawButtons
+
+
+
+
+
 
   void drawImage() {
     //Aspect ratio Images
@@ -367,6 +392,10 @@ class MusicPlayer {
     }
     drawImage();//images
     drawText();//song title + meta data
+    drawTestButtons();
+
+    //drawButtons();
+
     //
   }//End See Music GUI
 
