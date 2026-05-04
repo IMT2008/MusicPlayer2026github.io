@@ -299,7 +299,38 @@ class MusicPlayer {
 
   void drawSimpleTriangle(float x, float y, float w, float h) {
     triangle(x+w*0.3, y + h*0.2, x+w*0.3, y + h*0.8, x+w*0.7, y+h*0.5);
-  }//END TEST
+  }//END simple triangle
+  //
+  void drawPlayIcon(float x, float y, float w, float h) {
+    drawSimpleTriangle(x, y, w, h);
+  }//end play 
+  void drawNextIcon(float x, float y, float w, float h) {
+    drawSimpleTriangle(x, y, w*0.8, h);
+
+    line(x + w*0.75, y + h*0.3, x + w*0.75, y + h*0.7);
+  }//end next
+  void drawSkipIcon(float x, float y, float w, float h) {
+    drawSimpleTriangle(x + w*0.2, y, w*0.8, h);
+
+    line(x + w*0.25, y + h*0.3, x + w*0.25, y + h*0.7);
+  }//end skip
+  void drawDoubleTriangle(float x, float y, float w, float h) {
+  float halfW = w * 0.5;
+
+  // left triangle
+  triangle(
+    x + halfW*0.3, y + h*0.2,
+    x + halfW*0.3, y + h*0.8,
+    x + halfW*0.7, y + h*0.5
+  );
+
+  // right triangle (shifted right)
+  triangle(
+    x + halfW + halfW*0.3, y + h*0.2,
+    x + halfW + halfW*0.3, y + h*0.8,
+    x + halfW + halfW*0.7, y + h*0.5
+  );
+}//end double
 
   void drawButtons() {
     int[] boxes = {20, 24, 28, 32, 36};
@@ -311,16 +342,19 @@ class MusicPlayer {
       float y= divs[index+1];
       float w= divs[index+2];
       float h= divs[index+3];
-      
-      drawIcon(i, x, y, w, h);
+
+      drawSymbol(i, x, y, w, h);
     }
   }//end drawButtons
 
-
-
-
-
-
+  void drawSymbol(int i, float x, float y, float w, float h) {
+    if (i == 0) drawSimpleTriangle(x, y, w, h);        // box 20
+    if (i == 1) drawDoubleTriangle(x, y, w, h);        // box 24
+    if (i == 2) drawPlayIcon(x, y, w, h);              // box 28
+    if (i == 3) drawNextIcon(x, y, w, h);              // box 32
+    if (i == 4) drawSkipIcon(x, y, w, h);
+  }//end drawsymbol
+  //
   void drawImage() {
     //Aspect ratio Images
     int imageNum = 16;
@@ -392,7 +426,7 @@ class MusicPlayer {
     }
     drawImage();//images
     drawText();//song title + meta data
-    drawTestButtons();
+    drawButtons();
 
     //drawButtons();
 
