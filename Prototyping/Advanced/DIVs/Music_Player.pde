@@ -135,9 +135,7 @@ class MusicPlayer {
   String inspectMetaData() {
     AudioMetaData meta = songsMetaData[currentIndex];
     return
-      "File Name: " + meta.fileName() + "\n"+
       "Length (in milliseconds): " + meta.length() + "\n"+
-      "Title: " + meta.title() +"\n"+
       "Author: " + meta.author() +"\n"+
       "Album: " + meta.album() +"\n"+
       "Date: " + meta.date() +"\n"+
@@ -233,7 +231,7 @@ class MusicPlayer {
           playState = 0;
         }
       }
-      // SECOND CLICK → stop
+      // SECOND CLICK = stop
       if (clickCount == 2) {
         songs[currentIndex].pause();
         songs[currentIndex].rewind();
@@ -387,6 +385,8 @@ class MusicPlayer {
   }//End DIVs
   //
   //BUTTON SYMBOLS
+  
+  
   // PLAY BUTTON - Triangle pointing right
   void drawPlayButton(float x, float y, float d) {
     triangle(x, y, x+d, y+d/2, x, y+d);
