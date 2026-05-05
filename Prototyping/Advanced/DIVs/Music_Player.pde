@@ -12,6 +12,7 @@ class MusicPlayer {
   int currentIndex = 0;
   String[] songName;
   int playState = 0;
+  int loopState = 0;
   int clickCount = 0;
   int lastClickTime = 0;
   int doubleClickDelay = 300; // milliseconds
@@ -229,7 +230,7 @@ class MusicPlayer {
           playState = 1;
         } else {
           songs[currentIndex].play();
-          playState = 0; 
+          playState = 0;
         }
       }
       // SECOND CLICK → stop
@@ -237,7 +238,7 @@ class MusicPlayer {
         songs[currentIndex].pause();
         songs[currentIndex].rewind();
         clickCount = 0; // reset
-        playState = 2; 
+        playState = 2;
       }
     }
     if (i == 3) { // next song
@@ -254,8 +255,21 @@ class MusicPlayer {
         songs[currentIndex].mute();
       }
     }
-    if (i == 6) { // loop
-      songs[currentIndex].loop();
+    if (i == 6) { // loop cycle: off → once → infinite → off
+      loopState++;
+      if (loopState > 2) {
+        loopState = 0;
+      }
+      if (loopState == 0) {
+        songs[currentIndex].pause();
+        songs[currentIndex].rewind();
+      }
+      if (loopState == 1) {
+        songs[currentIndex].loop(1); // loop once
+      }
+      if (loopState == 2) {
+        songs[currentIndex].loop(); // infinite loop
+      }
     }
     if (i == 7) { // shuffle
       currentIndex = int(random(songs.length));
@@ -433,27 +447,36 @@ class MusicPlayer {
 
   // LOOP BUTTON - Small square with triangle peeking out of corner
   void drawLoopButton(float x, float y, float d) {
-    // Draw small square
-    float squareSize = 3*d/4;
-    rect(x+d/8, y+d/8, squareSize, squareSize);
+    rect(x, y, d, d);
+    float s = d * 0.35;  // size of triangle
 
-    // Triangle on its side peeking out of bottom-right corner
-    triangle(x+d-d/8, y+d-d/8, x+d+d/12, y+d-d/8-d/12, x+d+d/12, y+d-d/8+d/12);
+    float o = d * 0.15; // overlap amount
+
+    float bx = x + d + o;
+    float by = y + d + o;
+
+    triangle(bx - s, by - s, bx, by - s/2, bx - s, by);
+
+    fill(0);
+    if (loopState == 1) {
+      textAlign(CENTER, CENTER);
+      text("1", x + d/2, y + d/2);
+    }
+
+    if (loopState == 2) {
+      textAlign(CENTER, CENTER);
+      text("∞", x + d/2, y + d/2);
+    }
   }//End drawLoopButton
 
   // SHUFFLE BUTTON - X with triangles at the ends
   void drawShuffleButton(float x, float y, float d) {
     // First line (top-left to bottom-right)
-    line(x, y, x+d, y+d);
-    // Triangle at bottom-right end (centered)
-    triangle(x+d, y+d, x+d-d/10, y+d-d/10, x+d-d/10, y+d+d/10);
-
-    // Second line (top-right to bottom-left)
-    line(x+d, y, x, y+d);
-    // Triangle at top-right end (centered)
+    line(x, y, x+d, y+d); // Triangle at bottom-right end (centered)
+    triangle(x+d, y+d, x+d-d/10, y+d-d/10, x+d-d/10, y+d+d/10); // Second line (top-right to bottom-left)
+    line(x+d, y, x, y+d); // Triangle at top-right end (centered)
     triangle(x+d, y, x+d-d/10, y-d/10, x+d-d/10, y+d/10);
   }//End drawShuffleButton
-
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
   void drawAddToQueueButton(float x, float y, float d) {
     // Four queue lines (top two shorter, bottom two longer)
