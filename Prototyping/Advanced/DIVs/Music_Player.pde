@@ -42,6 +42,8 @@ class MusicPlayer {
   void draw() {
     //ERRORCheck("Hello World");
     seeMusicGUI();
+    buttonHovering();
+    drawButtons();
   }//End Draw
   //
   void mousePressed() {
@@ -49,11 +51,9 @@ class MusicPlayer {
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
     num=8;
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
-    // test//
+
     for (int i = 0; i < boxes.length; i++) {
       int index = boxes[i];
-
-
       if ( mouseX>divs[index] && mouseX<divs[index]+divs[index+2] && mouseY>divs[index+1] && mouseY<divs[index+1]+divs[index+3] ) {
         buttonPressed(i);
       }
@@ -70,8 +70,6 @@ class MusicPlayer {
       currentIndex = (currentIndex + 1) % images.length;
       playCurrentSong();
     }
-    //ButtonInputs
-    buttonInput();
   }//End Key Pressed
   //
   Boolean varSwitch(Boolean variable) {
@@ -148,51 +146,22 @@ class MusicPlayer {
   }//End inspect meta data
   //
 
-  void buttonInput() {
-    if (key == 'P' || key == 'p') songs[currentIndex].loop(0);//play
-    //
-    if (key == 'O' || key == 'o')
-      if ( songs[currentIndex].isPlaying() ) {//Pause
-        songs[currentIndex].pause();
-      } else {
-        songs[currentIndex].play();
-      }
-    //
-    if ( key=='S' | key=='s' ) {//Stop
-      if ( songs[currentIndex].isPlaying() ) {
-        songs[currentIndex].pause(); //single tap
-      } else {
-        songs[currentIndex].rewind(); //double tap
-      }
-    }
-    //
-    if ( key=='L' || key=='l' ) songs[currentIndex].loop(1); // Loop ONCE: Plays, then plays again, then stops & rewinds
-    if ( key=='K' || key=='k' ) songs[currentIndex].loop(); // Loop Infinitely //Parameter: BLANK or -1
-    if ( key=='F' || key=='f' ) songs[currentIndex].skip( 10000 ); // Fast Forward, Rewind, & Play Again //Parameter: milliseconds
-    if ( key=='R' || key=='r' ) songs[currentIndex].skip( -10000 ); // Fast Reverse & Play //Parameter: negative numbers
-    if ( key=='W' || key=='w' ) { // MUTE
-      if ( songs[currentIndex].isMuted() ) {
-        songs[currentIndex].unmute();
-      } else {
-        songs[currentIndex].mute();
-      }
-    }
-  }//End Button input
-
   void buttonHovering() {
-    int button = 32;
-
+    int[] button = new int[10];
     color red = #c64239;
     color pink = #f6c2db;
     color blue = #aad4dd;
     color green = #8bdaa8;
 
-    if (isHovering(button)) {
-      fill(blue);
-    } else {
-      fill(255);
+    for (int i = 0; i < button.length; i++) {
+      button[i] = 20 + (i * 4);
+      if (isHovering(button[i])) {
+        fill(pink);
+      } else {
+        fill(255);
+      }
+      rect(divs[button[i]], divs[button[i]+1], divs[button[i]+2], divs[button[i]+3]);
     }
-    rect(divs[button], divs[button+1], divs[button+2], divs[button+3]);
   }//End hovering
   //
   boolean isHovering(int num) {
@@ -212,7 +181,7 @@ class MusicPlayer {
       songs[currentIndex].skip(-10000);
     }
     if (i == 1) { // rewind
-      songs[currentIndex].skip(-5000);
+      songs[currentIndex].rewind();
     }
     if (i == 2) { // play / pause / stop
       int now = millis();
@@ -221,7 +190,6 @@ class MusicPlayer {
       }
       clickCount++;
       lastClickTime = now;
-      // FIRST CLICK → play/pause
       if (clickCount == 1) {
         if (songs[currentIndex].isPlaying()) {
           songs[currentIndex].pause();
@@ -231,7 +199,6 @@ class MusicPlayer {
           playState = 0;
         }
       }
-      // SECOND CLICK = stop
       if (clickCount == 2) {
         songs[currentIndex].pause();
         songs[currentIndex].rewind();
@@ -253,7 +220,7 @@ class MusicPlayer {
         songs[currentIndex].mute();
       }
     }
-    if (i == 6) { // loop cycle: off → once → infinite → off
+    if (i == 6) {
       loopState++;
       if (loopState > 2) {
         loopState = 0;
@@ -281,112 +248,9 @@ class MusicPlayer {
       playCurrentSong();
     }
   }
-
-  //
-  void divs() {
-    divs[0] = appWidth*1/4 ;
-    divs[1] = appHeight*1/4 ;
-    divs[2] = appWidth*1/2 ;
-    divs[3] = appHeight*1/2 ;
-
-    float referent = divs[2]/13;
-    float textWidth = referent*5;
-    float textHeight = referent*3;
-
-    float[] column = new float[6];
-    column[0] = divs[0]+ referent;
-    for (int i = 1; i < column.length; i++) {
-      if (i==5) {
-        column[i] = column[i-1] + referent* 2;
-      } else {
-        column[i] = column[i-1] + referent;
-      }
-    }
-
-    float[] row = new float[4];
-    row[0] = divs[1]+ referent;
-    for (int i = 1; i<row.length; i++) {
-      if (i == 2) {
-        row[i] = row[i-1]+ textHeight + referent* 1/2;
-      } else {
-        row[i] = row[i-1] + referent + referent * 1/2;
-      }
-    }
-
-    float testHeight = referent*2.5 + textHeight*2;
-    float errorIncrease = referent*2;
-
-    while (divs[3] < testHeight) {
-      divs[1] -= errorIncrease;
-      row[0] = divs[1] + referent;
-      row[1] = row[0]  + referent + referent* 1/2;
-      row[2] = row[1] + textHeight + referent*1/2;
-      row[3] = row[2] + referent + referent*1/2;
-      divs[3] += errorIncrease;
-    }
-    for (int i = 4; i < divs.length; i++) {
-      // X Position
-      if (i % 4 == 0 && int(i/4) == 1) {
-        divs[i] = appWidth - referent;
-      } else if (i % 4 == 0 && int(i/4) == 2) {
-        divs[i] = appWidth*0;
-      } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
-        divs[i] = column[0];
-      } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
-        divs[i] = column[1];
-      } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
-        divs[i] = column[2];
-      } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
-        divs[i] = column[3];
-      } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
-        divs[i] = column[4];
-      } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
-        divs[i] = column[5];
-      } else {
-        //Empty Else
-      }
-      // Y Position
-      if (i % 4 == 1 && int(i/4) == 1) {
-        divs[i] = appHeight*0;
-      } else if (i % 4 == 1 && int(i/4) == 2) {
-        divs[i] = appHeight - referent;
-      } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
-        divs[i] = row[0];
-      } else if (i % 4 == 1 && int(i/4) == 4) {
-        divs[i] = row[1];
-      } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
-        divs[i] = row[2];
-      } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
-        divs[i] = row[3];
-      } else if (i % 4 == 1 && (int(i/4) == 16)) {
-        divs[i] = row[2] - referent *1/2;
-      } else {
-        //Empty Else
-      }
-      // Width
-      if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
-        divs[i] = textWidth;
-      } else if (i % 4 == 2) {
-        divs[i] = referent;
-      } else {
-        //Empty Else
-      }
-      // Height
-      if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
-        divs[i] = textHeight;
-      } else if (i % 4 == 3 && (int(i/4)==15)) {
-        divs[i] = textHeight + referent;
-      } else if (i % 4 == 3) {
-        divs[i] = referent;
-      } else {
-        //Empty Else
-      }
-    }
-  }//End DIVs
-  //
   //BUTTON SYMBOLS
-  
-  
+
+
   // PLAY BUTTON - Triangle pointing right
   void drawPlayButton(float x, float y, float d) {
     triangle(x, y, x+d, y+d/2, x, y+d);
@@ -557,7 +421,110 @@ class MusicPlayer {
   float smallerDivDimension(float divDimension) {
     return divDimension = divDimension*1/2;
   }//div dimension
+
+
+  //End button symbols
   //
+  void divs() {
+    divs[0] = appWidth*1/4 ;
+    divs[1] = appHeight*1/4 ;
+    divs[2] = appWidth*1/2 ;
+    divs[3] = appHeight*1/2 ;
+
+    float referent = divs[2]/13;
+    float textWidth = referent*5;
+    float textHeight = referent*3;
+
+    float[] column = new float[6];
+    column[0] = divs[0]+ referent;
+    for (int i = 1; i < column.length; i++) {
+      if (i==5) {
+        column[i] = column[i-1] + referent* 2;
+      } else {
+        column[i] = column[i-1] + referent;
+      }
+    }
+
+    float[] row = new float[4];
+    row[0] = divs[1]+ referent;
+    for (int i = 1; i<row.length; i++) {
+      if (i == 2) {
+        row[i] = row[i-1]+ textHeight + referent* 1/2;
+      } else {
+        row[i] = row[i-1] + referent + referent * 1/2;
+      }
+    }
+
+    float testHeight = referent*2.5 + textHeight*2;
+    float errorIncrease = referent*2;
+
+    while (divs[3] < testHeight) {
+      divs[1] -= errorIncrease;
+      row[0] = divs[1] + referent;
+      row[1] = row[0]  + referent + referent* 1/2;
+      row[2] = row[1] + textHeight + referent*1/2;
+      row[3] = row[2] + referent + referent*1/2;
+      divs[3] += errorIncrease;
+    }
+    for (int i = 4; i < divs.length; i++) {
+      // X Position
+      if (i % 4 == 0 && int(i/4) == 1) {
+        divs[i] = appWidth - referent;
+      } else if (i % 4 == 0 && int(i/4) == 2) {
+        divs[i] = appWidth*0;
+      } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
+        divs[i] = column[0];
+      } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
+        divs[i] = column[1];
+      } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
+        divs[i] = column[2];
+      } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
+        divs[i] = column[3];
+      } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
+        divs[i] = column[4];
+      } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
+        divs[i] = column[5];
+      } else {
+        //Empty Else
+      }
+      // Y Position
+      if (i % 4 == 1 && int(i/4) == 1) {
+        divs[i] = appHeight*0;
+      } else if (i % 4 == 1 && int(i/4) == 2) {
+        divs[i] = appHeight - referent;
+      } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
+        divs[i] = row[0];
+      } else if (i % 4 == 1 && int(i/4) == 4) {
+        divs[i] = row[1];
+      } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
+        divs[i] = row[2];
+      } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
+        divs[i] = row[3];
+      } else if (i % 4 == 1 && (int(i/4) == 16)) {
+        divs[i] = row[2] - referent *1/2;
+      } else {
+        //Empty Else
+      }
+      // Width
+      if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
+        divs[i] = textWidth;
+      } else if (i % 4 == 2) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+      // Height
+      if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
+        divs[i] = textHeight;
+      } else if (i % 4 == 3 && (int(i/4)==15)) {
+        divs[i] = textHeight + referent;
+      } else if (i % 4 == 3) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+    }
+  }//End DIVs
   //
   void drawImage() {
     //Aspect ratio Images
@@ -630,10 +597,6 @@ class MusicPlayer {
     }
     drawImage();//images
     drawText();//song title + meta data
-    drawButtons();
-
-    //drawButtons();
-
     //
   }//End See Music GUI
 
