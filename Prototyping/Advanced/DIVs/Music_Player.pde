@@ -5,6 +5,7 @@ class MusicPlayer {
   Minim minim;
   float[] divs;
   Boolean musicGUI=false;
+  Boolean shuffleOn = false;
 
   PImage[] images;
   AudioPlayer[] songs;
@@ -16,6 +17,10 @@ class MusicPlayer {
   int clickCount = 0;
   int lastClickTime = 0;
   int doubleClickDelay = 300; // milliseconds
+  color red = #c64239;
+  color pink = #f6c2db;
+  color blue = #aad4dd;
+  color green = #8bdaa8;
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -148,10 +153,6 @@ class MusicPlayer {
 
   void buttonHovering() {
     int[] button = new int[10];
-    color red = #c64239;
-    color pink = #f6c2db;
-    color blue = #aad4dd;
-    color green = #8bdaa8;
 
     for (int i = 0; i < button.length; i++) {
       button[i] = 20 + (i * 4);
@@ -176,7 +177,6 @@ class MusicPlayer {
   }//end setupboxes
 
   void buttonPressed(int i) {
-
     if (i == 0) { // skip back
       songs[currentIndex].skip(-10000);
     }
@@ -237,7 +237,12 @@ class MusicPlayer {
       }
     }
     if (i == 7) { // shuffle
-      currentIndex = int(random(songs.length));
+      shuffleOn = !shuffleOn;
+      if (shuffleOn == true) {
+        currentIndex = int(random(songs.length));
+      } else {
+        currentIndex = (currentIndex + 1) % images.length;
+      }
       playCurrentSong();
     }
     if (i == 8) {
@@ -259,7 +264,6 @@ class MusicPlayer {
   void drawPauseButton(float x, float y, float d) {
     float rectWidth = d/8;
     float rectHeight = 2*d/3;
-
     // First rectangle (left)
     rect(x+d/6, y+d/6, rectWidth, rectHeight);
     // Second rectangle (right)
@@ -279,7 +283,6 @@ class MusicPlayer {
     // Second triangle (larger and centered)
     triangle(x+d/2, y+d/6, x+d/8, y+d/2, x+d/2, y+5*d/6);
   }//End drawBackwardButton
-
   // FORWARD BUTTON - Triangle pointing right with rectangle
   void drawForwardButton(float x, float y, float d) {
     triangle(x+d/6, y+d/6, x+d/2, y+d/2, x+d/6, y+5*d/6);
@@ -293,53 +296,43 @@ class MusicPlayer {
     // Second triangle (larger and centered)
     triangle(x+d/2, y+d/6, x+7*d/8, y+d/2, x+d/2, y+5*d/6);
   }//End drawSkipButton
-
   // STOP BUTTON - Square
   void drawStopButton(float x, float y, float d) {
     rect(x, y, d, d);
   }//End drawStopButton
-
   // MUTE BUTTON - Square with X
   void drawMuteButton(float x, float y, float d) {
     // Draw square
     rect(x, y, d, d);
-
     // X through it
     line(x, y, x+d, y+d);
     line(x+d, y, x, y+d);
   }//End drawMuteButton
-
   // LOOP BUTTON - Small square with triangle peeking out of corner
   void drawLoopButton(float x, float y, float d) {
     rect(x, y, d, d);
     float s = d * 0.35;  // size of triangle
-
     float o = d * 0.15; // overlap amount
-
     float bx = x + d + o;
     float by = y + d + o;
-
     triangle(bx - s, by - s, bx, by - s/2, bx - s, by);
-
     fill(0);
     if (loopState == 1) {
       textAlign(CENTER, CENTER);
       text("1", x + d/2, y + d/2);
     }
-
     if (loopState == 2) {
       textAlign(CENTER, CENTER);
       text("∞", x + d/2, y + d/2);
     }
   }//End drawLoopButton
-
   // SHUFFLE BUTTON - X with triangles at the ends
   void drawShuffleButton(float x, float y, float d) {
     // First line (top-left to bottom-right)
     line(x, y, x+d, y+d); // Triangle at bottom-right end (centered)
-    triangle(x+d, y+d, x+d-d/10, y+d-d/10, x+d-d/10, y+d+d/10); // Second line (top-right to bottom-left)
+    triangle(x+d, y+d, x+d-d/5, y+d-d/5, x+d-d/5, y+d+d/5); // Second line (top-right to bottom-left)
     line(x+d, y, x, y+d); // Triangle at top-right end (centered)
-    triangle(x+d, y, x+d-d/10, y-d/10, x+d-d/10, y+d/10);
+    triangle(x+d, y, x+d-d/5, y-d/5, x+d-d/5, y+d/5);
   }//End drawShuffleButton
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
   void drawAddToQueueButton(float x, float y, float d) {
@@ -348,16 +341,13 @@ class MusicPlayer {
     line(x, y+d/3, x+d/2, y+d/3);
     line(x, y+d/2, x+2*d/3, y+d/2);
     line(x, y+2*d/3, x+2*d/3, y+2*d/3);
-
     // Mini plus sign in top right corner
     float plusX = x + 3*d/4;
     float plusY = y + d/4;
     float plusSize = d/6;
-
     line(plusX, plusY-plusSize/2, plusX, plusY+plusSize/2);
     line(plusX-plusSize/2, plusY, plusX+plusSize/2, plusY);
   }//End drawAddToQueueButton
-
   // RANDOM SONG BUTTON - Star or Random symbol (dice)
   void drawRandomSongButton(float x, float y, float d) {
     // Draw a dice symbol with dots
@@ -376,11 +366,9 @@ class MusicPlayer {
 
   void drawButtons() {
     int[] boxes = new int[10];
-
     for (int i = 0; i < boxes.length; i++) {
       boxes[i] = 20 + (i * 4);
     }
-
     for (int i = 0; i < boxes.length; i ++) {
       int index = boxes[i];
       fill(255);
@@ -444,7 +432,6 @@ class MusicPlayer {
         column[i] = column[i-1] + referent;
       }
     }
-
     float[] row = new float[4];
     row[0] = divs[1]+ referent;
     for (int i = 1; i<row.length; i++) {
@@ -454,7 +441,6 @@ class MusicPlayer {
         row[i] = row[i-1] + referent + referent * 1/2;
       }
     }
-
     float testHeight = referent*2.5 + textHeight*2;
     float errorIncrease = referent*2;
 
