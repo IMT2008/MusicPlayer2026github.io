@@ -42,6 +42,7 @@ class MusicPlayer {
     loadFiles();
     playCurrentSong();
     setupBoxes();
+    loadSettings();
   }//End Constructor
   //
   void draw() {
@@ -157,7 +158,7 @@ class MusicPlayer {
     for (int i = 0; i < button.length; i++) {
       button[i] = 20 + (i * 4);
       if (isHovering(button[i])) {
-        fill(pink);
+        fill(blue);
       } else {
         fill(255);
       }
@@ -208,6 +209,7 @@ class MusicPlayer {
     }
     if (i == 3) { // next song
       currentIndex = (currentIndex + 1) % songs.length;
+      saveSettings();
       playCurrentSong();
     }
     if (i == 4) { // skip forward
@@ -222,6 +224,7 @@ class MusicPlayer {
     }
     if (i == 6) {
       loopState++;
+      saveSettings();
       if (loopState > 2) {
         loopState = 0;
       }
@@ -238,7 +241,8 @@ class MusicPlayer {
     }
     if (i == 7) { // shuffle
       shuffleOn = !shuffleOn;
-      if (shuffleOn == true) {
+      saveSettings();
+      if (shuffleOn) {
         currentIndex = int(random(songs.length));
       } else {
         currentIndex = (currentIndex + 1) % images.length;
@@ -253,9 +257,29 @@ class MusicPlayer {
       playCurrentSong();
     }
   }
+  void saveSettings() {
+    String[] settings = {
+      str(shuffleOn),
+      str(loopState),
+      str(currentIndex)
+    };
+    saveStrings("setting.txt", settings);
+  }//end saveSettings
+  void loadSettings() {
+    try {
+      String[] settings = loadStrings("setting.txt");
+      if (settings != null) {
+        shuffleOn = boolean(settings[0]);
+        loopState = int(settings[1]);
+        currentIndex = int(settings[2]);
+      }
+    }
+    catch (Exception e) {
+      println("File is empty.");
+    }
+  }//end loadSettings
+
   //BUTTON SYMBOLS
-
-
   // PLAY BUTTON - Triangle pointing right
   void drawPlayButton(float x, float y, float d) {
     triangle(x, y, x+d, y+d/2, x, y+d);
@@ -402,7 +426,14 @@ class MusicPlayer {
     if (i == 4) drawSkipButton(x, y, d);
     if (i == 5) drawMuteButton(x, y, d);
     if (i == 6) drawLoopButton(x, y, d);
-    if (i == 7) drawShuffleButton(x, y, d);
+    if (i == 7) {
+      if (shuffleOn) {
+        fill(green);
+      } else {
+        fill(255);
+      }
+      drawShuffleButton(x, y, d);
+    }
     if (i == 8) drawAddToQueueButton(x, y, d);
     if (i == 9) drawRandomSongButton(x, y, d);
   }//end drawsymbol
