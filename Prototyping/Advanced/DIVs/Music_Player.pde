@@ -19,8 +19,12 @@ class MusicPlayer {
   int doubleClickDelay = 300; // milliseconds
   color red = #c64239;
   color pink = #f6c2db;
+  color purple = #C3B1E1;
   color blue = #aad4dd;
   color green = #8bdaa8;
+  color yellow = #FDFD96;
+  color orange = #FAC898;
+  color grey = #D3D3D3;
 
   //
   //Constructor & Multiple Constructors (different parameters)
@@ -48,7 +52,6 @@ class MusicPlayer {
   void draw() {
     //ERRORCheck("Hello World");
     seeMusicGUI();
-    buttonHovering();
     drawButtons();
   }//End Draw
   //
@@ -85,6 +88,10 @@ class MusicPlayer {
       return variable=true;
     }
   }//End Boolean Variable Switch
+  //
+  int boxIndex(int i) {
+    return 20 + (i * 4);
+  }//end boxIndex
   //
   //Functions or Behaivours
 
@@ -152,28 +159,48 @@ class MusicPlayer {
   }//End inspect meta data
   //
 
-  void buttonHovering() {
-    int[] button = new int[10];
+  color getButtonColor(int i) {
 
-    for (int i = 0; i < button.length; i++) {
-      button[i] = 20 + (i * 4);
-      if (isHovering(button[i])) {
-        fill(blue);
-      } else {
-        fill(255);
-      }
-      rect(divs[button[i]], divs[button[i]+1], divs[button[i]+2], divs[button[i]+3]);
+    int index = boxIndex(i);
+
+    float x = divs[index];
+    float y = divs[index + 1];
+    float w = divs[index + 2];
+    float h = divs[index + 3];
+
+    boolean hover = mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h;
+    boolean pressed = hover && mousePressed;
+    // --------------------
+    // STATE BUTTONS FIRST
+    // --------------------
+
+    if (i == 2) {
+      if (playState == 1) return yellow;
+      if (playState == 2) return red;
     }
-  }//End hovering
+
+    if (i == 6) {
+      if (loopState == 0) return grey;
+      if (loopState == 1) return green;
+      if (loopState == 2) return red;
+    }
+
+    // --------------------
+    // DEFAULT INTERACTION
+    // --------------------
+
+    if (pressed) return green;
+    if (hover) return blue;
+
+    return grey;
+  }
   //
-  boolean isHovering(int num) {
-    return ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] );
-  }//End isHovering
   //
   int[] boxes = new int[10];
   void setupBoxes() {
     for (int i = 0; i < boxes.length; i++) {
-      boxes[i] = 20 + (i * 4);
+      boxes[i] = boxIndex(i);
+      ;
     }
   }//end setupboxes
 
@@ -181,9 +208,26 @@ class MusicPlayer {
     if (i == 0) { // skip back
       songs[currentIndex].skip(-10000);
     }
+
     if (i == 1) { // rewind
-      songs[currentIndex].rewind();
+      int now = millis();
+      if (now - lastClickTime > doubleClickDelay) {
+        clickCount = 0;
+      }
+      clickCount++;
+      lastClickTime = now;
+      if (clickCount == 1) {
+        songs[currentIndex].rewind();
+      } else if (clickCount == 2) {
+        currentIndex--;
+        if (currentIndex < 0) {
+          currentIndex = songs.length - 1;
+        }
+        playCurrentSong();
+        clickCount = 0;
+      }
     }
+
     if (i == 2) { // play / pause / stop
       int now = millis();
       if (now - lastClickTime > doubleClickDelay) {
@@ -200,21 +244,24 @@ class MusicPlayer {
           playState = 0;
         }
       }
-      if (clickCount == 2) {
+      if (clickCount == 2) {//double click
         songs[currentIndex].pause();
         songs[currentIndex].rewind();
-        clickCount = 0; // reset
         playState = 2;
+        clickCount = 0; // reset
       }
     }
+
     if (i == 3) { // next song
       currentIndex = (currentIndex + 1) % songs.length;
       saveSettings();
       playCurrentSong();
     }
+
     if (i == 4) { // skip forward
       songs[currentIndex].skip(10000);
     }
+
     if (i == 5) { // mute
       if (songs[currentIndex].isMuted()) {
         songs[currentIndex].unmute();
@@ -222,15 +269,15 @@ class MusicPlayer {
         songs[currentIndex].mute();
       }
     }
-    if (i == 6) {
+
+    if (i == 6) {// loop
       loopState++;
       saveSettings();
       if (loopState > 2) {
         loopState = 0;
       }
+      saveSettings();
       if (loopState == 0) {
-        songs[currentIndex].pause();
-        songs[currentIndex].rewind();
       }
       if (loopState == 1) {
         songs[currentIndex].loop(1); // loop once
@@ -239,24 +286,26 @@ class MusicPlayer {
         songs[currentIndex].loop(); // infinite loop
       }
     }
+
     if (i == 7) { // shuffle
       shuffleOn = !shuffleOn;
       saveSettings();
       if (shuffleOn) {
         currentIndex = int(random(songs.length));
-      } else {
-        currentIndex = (currentIndex + 1) % images.length;
+        playCurrentSong();
       }
-      playCurrentSong();
     }
+
     if (i == 8) {
       println("Playlist button (not set yet)");
     }
+
     if (i == 9) { // random song
       currentIndex = int(random(songs.length));
       playCurrentSong();
     }
-  }
+  }//end button input
+  //
   void saveSettings() {
     String[] settings = {
       str(shuffleOn),
@@ -279,170 +328,211 @@ class MusicPlayer {
     }
   }//end loadSettings
 
+
+
+  void rightTriangle(float x, float y, float w, float h) {
+    triangle(x, y, x+w, y+h/2, x, y+h);
+  }
+
+  void leftTriangle(float x, float y, float w, float h) {
+    triangle(x+w, y, x, y+h/2, x+w, y+h);
+  }
+
+  void basicRect(float x, float y, float w, float h) {
+    rect(x, y, w, h);
+  }
+
+  void xShape(float x, float y, float w, float h) {
+    line(x, y, x+w, y+h);
+    line(x+w, y, x, y+h);
+  }
+
   //BUTTON SYMBOLS
-  // PLAY BUTTON - Triangle pointing right
-  void drawPlayButton(float x, float y, float d) {
-    triangle(x, y, x+d, y+d/2, x, y+d);
+  void drawPlayButton(float x, float y, float w, float h) {
+    rightTriangle(x, y, w, h);
   }//End drawPlayButton
+
   // PAUSE BUTTON - Two rectangles
-  void drawPauseButton(float x, float y, float d) {
-    float rectWidth = d/8;
-    float rectHeight = 2*d/3;
-    // First rectangle (left)
-    rect(x+d/6, y+d/6, rectWidth, rectHeight);
-    // Second rectangle (right)
-    rect(x+2*d/3, y+d/6, rectWidth, rectHeight);
+  void drawPauseButton(float x, float y, float w, float h) {
+
+    float barW = w * 0.25;
+    float gap = w * 0.50;
+
+    basicRect(x, y, barW, h);
+    basicRect(x + barW + gap, y, barW, h);
   }//End drawPauseButton
 
   // REWIND BUTTON - Triangle pointing left with rectangle
-  void drawRewindButton(float x, float y, float d) {
-    triangle(x+d/2, y+d/6, x+d/6, y+d/2, x+d/2, y+5*d/6);
-    rect(x+d/6-d/6, y+d/4, d/6, d/2);
-  }//End drawRewindButton
+  void drawRewindButton(float x, float y, float w, float h) {
+
+    leftTriangle(x + w*0.15, y, w*0.7, h);
+
+    basicRect(x, y, w*0.15, h);
+  }
 
   // BACKWARD BUTTON - Two triangles pointing left
-  void drawBackwardButton(float x, float y, float d) {
-    // First triangle (larger and centered)
-    triangle(x+7*d/8, y+d/6, x+d/2, y+d/2, x+7*d/8, y+5*d/6);
-    // Second triangle (larger and centered)
-    triangle(x+d/2, y+d/6, x+d/8, y+d/2, x+d/2, y+5*d/6);
+  void drawBackwardButton(float x, float y, float w, float h) {
+
+    leftTriangle(x, y, w/2, h);
+    leftTriangle(x + w/2, y, w/2, h);
   }//End drawBackwardButton
+
   // FORWARD BUTTON - Triangle pointing right with rectangle
-  void drawForwardButton(float x, float y, float d) {
-    triangle(x+d/6, y+d/6, x+d/2, y+d/2, x+d/6, y+5*d/6);
-    rect(x+d/2, y+d/4, d/6, d/2);
+  void drawForwardButton(float x, float y, float w, float h) {
+
+    rightTriangle(x, y, w*0.7, h);
+
+    basicRect( x + w*0.72, y, w*0.15, h);
   }//End drawForwardButton
 
   // SKIP BUTTON - Two triangles pointing right
-  void drawSkipButton(float x, float y, float d) {
-    // First triangle (larger and centered)
-    triangle(x+d/8, y+d/6, x+d/2, y+d/2, x+d/8, y+5*d/6);
-    // Second triangle (larger and centered)
-    triangle(x+d/2, y+d/6, x+7*d/8, y+d/2, x+d/2, y+5*d/6);
+  void drawSkipButton(float x, float y, float w, float h) {
+
+    rightTriangle(x, y, w/2, h);
+    rightTriangle(x + w/2, y, w/2, h);
   }//End drawSkipButton
+
   // STOP BUTTON - Square
-  void drawStopButton(float x, float y, float d) {
-    rect(x, y, d, d);
+  void drawStopButton(float x, float y, float w, float h) {
+    basicRect(x, y, w, h);
   }//End drawStopButton
+
   // MUTE BUTTON - Square with X
-  void drawMuteButton(float x, float y, float d) {
-    // Draw square
-    rect(x, y, d, d);
-    // X through it
-    line(x, y, x+d, y+d);
-    line(x+d, y, x, y+d);
+  void drawMuteButton(float x, float y, float w, float h) {
+
+    basicRect(x, y, w, h);
+
+    xShape(x, y, w, h);
   }//End drawMuteButton
+
   // LOOP BUTTON - Small square with triangle peeking out of corner
-  void drawLoopButton(float x, float y, float d) {
-    rect(x, y, d, d);
-    float s = d * 0.35;  // size of triangle
-    float o = d * 0.15; // overlap amount
-    float bx = x + d + o;
-    float by = y + d + o;
-    triangle(bx - s, by - s, bx, by - s/2, bx - s, by);
+  void drawLoopButton(float x, float y, float w, float h) {
+
+    basicRect(x, y, w, h);
+
+    rightTriangle(x + w*0.75, y + h*0.75, w*0.35, h*0.35);
+
     fill(0);
+
+    textAlign(CENTER, CENTER);
+
     if (loopState == 1) {
-      textAlign(CENTER, CENTER);
-      text("1", x + d/2, y + d/2);
-    }
-    if (loopState == 2) {
-      textAlign(CENTER, CENTER);
-      text("∞", x + d/2, y + d/2);
+      text("1", x + w/2, y + h/2);
+    } else if (loopState == 2) {
+      text("∞", x + w/2, y + h/2);
     }
   }//End drawLoopButton
+
   // SHUFFLE BUTTON - X with triangles at the ends
-  void drawShuffleButton(float x, float y, float d) {
-    // First line (top-left to bottom-right)
-    line(x, y, x+d, y+d); // Triangle at bottom-right end (centered)
-    triangle(x+d, y+d, x+d-d/5, y+d-d/5, x+d-d/5, y+d+d/5); // Second line (top-right to bottom-left)
-    line(x+d, y, x, y+d); // Triangle at top-right end (centered)
-    triangle(x+d, y, x+d-d/5, y-d/5, x+d-d/5, y+d/5);
-  }//End drawShuffleButton
+  void drawShuffleButton(float x, float y, float w, float h) {
+
+    float a = w * 0.25;
+    xShape(x, y, w, h);
+    rightTriangle(x+w-a/2, y-a/2, a, a);
+    rightTriangle(x+w-a/2, y+h-a/2, a, a);
+  }//end shuffle
+
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
-  void drawAddToQueueButton(float x, float y, float d) {
-    // Four queue lines (top two shorter, bottom two longer)
-    line(x, y+d/6, x+d/2, y+d/6);
-    line(x, y+d/3, x+d/2, y+d/3);
-    line(x, y+d/2, x+2*d/3, y+d/2);
-    line(x, y+2*d/3, x+2*d/3, y+2*d/3);
-    // Mini plus sign in top right corner
-    float plusX = x + 3*d/4;
-    float plusY = y + d/4;
-    float plusSize = d/6;
-    line(plusX, plusY-plusSize/2, plusX, plusY+plusSize/2);
-    line(plusX-plusSize/2, plusY, plusX+plusSize/2, plusY);
-  }//End drawAddToQueueButton
+  void drawAddToQueueButton(float x, float y, float w, float h) {
+
+    // queue lines
+    line(x, y+h*0.2, x+w*0.5, y+h*0.2);
+    line(x, y+h*0.4, x+w*0.5, y+h*0.4);
+
+    line(x, y+h*0.6, x+w*0.7, y+h*0.6);
+    line(x, y+h*0.8, x+w*0.7, y+h*0.8);
+
+    // plus sign
+    float px = x + w*0.75;
+    float py = y + h*0.25;
+
+    float s = w*0.15;
+
+    line(px, py-s, px, py+s);
+    line(px-s, py, px+s, py);
+  }
+
   // RANDOM SONG BUTTON - Star or Random symbol (dice)
-  void drawRandomSongButton(float x, float y, float d) {
-    // Draw a dice symbol with dots
-    float dotSize = d/8;
-    // Top-left dot
-    circle(x+d/6, y+d/6, dotSize);
-    // Bottom-right dot
-    circle(x+5*d/6, y+5*d/6, dotSize);
-    // Center dot
-    circle(x+d/2, y+d/2, dotSize);
-    // Top-right dot
-    circle(x+5*d/6, y+d/6, dotSize);
-    // Bottom-left dot
-    circle(x+d/6, y+5*d/6, dotSize);
-  }//End drawRandomSongButton
+  void drawRandomSongButton(float x, float y, float w, float h) {
+
+    float s = w * 0.12;
+
+    circle(x+w*0.2, y+h*0.2, s);
+    circle(x+w*0.8, y+h*0.2, s);
+
+    circle(x+w*0.5, y+h*0.5, s);
+
+    circle(x+w*0.2, y+h*0.8, s);
+    circle(x+w*0.8, y+h*0.8, s);
+  }
 
   void drawButtons() {
     int[] boxes = new int[10];
     for (int i = 0; i < boxes.length; i++) {
-      boxes[i] = 20 + (i * 4);
+      boxes[i] = boxIndex(i);
     }
     for (int i = 0; i < boxes.length; i ++) {
       int index = boxes[i];
       fill(255);
       float boxX = divs[index];
-      float boxY = divs[index+1];
-      float boxD= divs[index+2];
+      float boxY = divs[index + 1];
 
-      float iconD = smallerDivDimension(boxD);
-      float shift = (boxD - iconD)/2;
-      float x =boxX + shift;
-      float y =boxY + shift;
+      float boxW = divs[index + 2];
+      float boxH = divs[index + 3];
 
-      drawSymbol(i, x, y, iconD);
+      float iconW = smallerDivDimension(boxW);
+      float iconH = smallerDivDimension(boxH);
+
+      float shiftX = (boxW - iconW) / 2;
+      float shiftY = (boxH - iconH) / 2;
+
+      float x = boxX + shiftX;
+      float y = boxY + shiftY;
+
+      fill(getButtonColor(i));
+      rect(boxX, boxY, boxW, boxH);
+      fill(255);
+
+      drawSymbol(i, x, y, iconW, iconH);
     }
   }//end drawButtons
 
-  void drawSymbol(int i, float x, float y, float d) {
+  void drawSymbol(int i, float x, float y, float w, float h) {
 
-    if (i == 0) drawBackwardButton(x, y, d);
-    if (i == 1) drawRewindButton(x, y, d);
+    if (i == 0) drawBackwardButton(x, y, w, h);
+    if (i == 1) drawRewindButton(x, y, w, h);
     if (i == 2) {
       if (playState == 0) {
-        drawPlayButton(x, y, d);
+        drawPlayButton(x, y, w, h);
       } else if (playState == 1) {
-        drawPauseButton(x, y, d);
+        drawPauseButton(x, y, w, h);
       } else if (playState == 2) {
-        drawStopButton(x, y, d);
+        drawStopButton(x, y, w, h);
       }
     }
-    if (i == 3) drawForwardButton(x, y, d);
-    if (i == 4) drawSkipButton(x, y, d);
-    if (i == 5) drawMuteButton(x, y, d);
-    if (i == 6) drawLoopButton(x, y, d);
+    if (i == 3) drawForwardButton(x, y, w, h);
+    if (i == 4) drawSkipButton(x, y, w, h);
+    if (i == 5) drawMuteButton(x, y, w, h);
+    if (i == 6) drawLoopButton(x, y, w, h);
     if (i == 7) {
       if (shuffleOn) {
         fill(green);
       } else {
         fill(255);
       }
-      drawShuffleButton(x, y, d);
+      drawShuffleButton(x, y, w, h);
     }
-    if (i == 8) drawAddToQueueButton(x, y, d);
-    if (i == 9) drawRandomSongButton(x, y, d);
+    if (i == 8) drawAddToQueueButton(x, y, w, h);
+    if (i == 9) drawRandomSongButton(x, y, w, h);
   }//end drawsymbol
+
   float smallerDivDimension(float divDimension) {
-    return divDimension = divDimension*1/2;
-  }//div dimension
+    return divDimension * 1/2;
+  }//end smallerDivDimension
 
 
   //End button symbols
+
   //
   void divs() {
     divs[0] = appWidth*1/4 ;
