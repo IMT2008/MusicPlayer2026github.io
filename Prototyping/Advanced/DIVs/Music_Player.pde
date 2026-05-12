@@ -17,6 +17,7 @@ class MusicPlayer {
   int clickCount = 0;
   int lastClickTime = 0;
   int doubleClickDelay = 300; // milliseconds
+  String miniPlaylistText = "Mini Playlist:\n";
   color red = #c64239;
   color pink = #f6c2db;
   color purple = #C3B1E1;
@@ -318,7 +319,12 @@ class MusicPlayer {
     }
 
     if (i == 8) {
-      println("Playlist button (not set yet)");
+      miniPlaylistText = "Mini Playlist:\n";
+
+      for (int j = 1; j <= 3; j++) {
+        int nextIndex = (currentIndex + j) % songs.length;
+        miniPlaylistText += j + ". " + songName[nextIndex] + "\n";
+      }
     }
 
     if (i == 9) { // random song
@@ -676,59 +682,40 @@ class MusicPlayer {
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
   }//End draw Image
-  
-  void fitText(String words, float x, float y, float w, float h){}//end fitText
-  
-  
-  
-  
-  
-  
-  
-  //
-  void drawText() {
-    //Fonts Aspect Ratio Images
-    float[] fontSize = new float[7];
+
+  void fitText(String words, float x, float y, float w, float h, int alignX) {
     PFont font;
     String georgia = "Georgia";
-    int box = 12;
-    int iWhile=0;
+    float fontSize = h;
 
-    fontSize[1] = divs[box+3];
-    font = createFont(georgia, fontSize[1]);
-    textFont(font, fontSize[1]);
+    font = createFont(georgia, fontSize);
+    textFont(font, fontSize);
 
-    while ( textWidth(songName[currentIndex]) > divs[box+2]) {
+    int iWhile = 0;
+    while ( textWidth(words) > w) {
       iWhile++;
       if ( iWhile>10000 ) {
         ERRORCheck("Infninte WHILE Loop");
         exit();
       }
-      fontSize[1] *= 0.99;
-      textFont(font, fontSize[1]);
+      fontSize *= 0.99;
+      textFont(font, fontSize);
     }
     fill(0);
-    textAlign(CENTER, CENTER);
-    text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
-    //
-    //song meta data
-    int metaData = 60;
-    fontSize[2] = divs[metaData+3];
-    while (textWidth(inspectMetaData()) > divs[metaData+2]) {
-      iWhile++;
-      if (iWhile>10000) {
-        ERRORCheck("Infninte WHILE Loop");
-        exit();
-      }
-      fontSize[2] *= 0.99;
-      textFont(font, fontSize[2]);
-    }
-    textAlign(LEFT, CENTER);
-    text(inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
+    textAlign(alignX, CENTER);
+    text(words, x, y, w, h);
+  }//end fitText
+
+  //
+  void drawText() {
+    fill(0);
+    fitText(songName[currentIndex], divs[12], divs[13], divs[14], divs[15], CENTER);
+    fitText(inspectMetaData(), divs[60], divs[61], divs[62], divs[63], LEFT);
+    fitText(miniPlaylistText, divs[64], divs[65], divs[66], divs[67], LEFT);
   }//End draww song title
   //
   void seeQuitMusicButton() {
-    
+
     for ( int j=4; j<9; j+=4 ) {
 
       if (j==4) {
@@ -745,8 +732,7 @@ class MusicPlayer {
       }
       if (j==8) {
         fill(0);
-        textAlign(CENTER, CENTER);
-        text("Music", divs[j], divs[j+1], divs[j+2], divs[j+3]);
+        fitText("Music", divs[j], divs[j+1], divs[j+2], divs[j+3], LEFT);
       }
       fill(255);
     }
