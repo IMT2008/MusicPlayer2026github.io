@@ -676,6 +676,15 @@ class MusicPlayer {
       image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
     }
   }//End draw Image
+  
+  void fitText(String words, float x, float y, float w, float h){}//end fitText
+  
+  
+  
+  
+  
+  
+  
   //
   void drawText() {
     //Fonts Aspect Ratio Images
