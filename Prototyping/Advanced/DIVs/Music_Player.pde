@@ -358,404 +358,422 @@ class MusicPlayer {
     }
   }//end loadSettings
   //
-    //------BUTTON SYMBOLS------//
-    void rightTriangle(float x, float y, float w, float h) {
-      triangle(x, y, x+w, y+h/2, x, y+h);
+  //------BUTTON SYMBOLS------//
+  void rightTriangle(float x, float y, float w, float h) {
+    triangle(x, y, x+w, y+h/2, x, y+h);
+  }
+
+  void leftTriangle(float x, float y, float w, float h) {
+    triangle(x+w, y, x, y+h/2, x+w, y+h);
+  }
+
+  void basicRect(float x, float y, float w, float h) {
+    rect(x, y, w, h);
+  }
+
+  void xShape(float x, float y, float w, float h) {
+    line(x, y, x+w, y+h);
+    line(x+w, y, x, y+h);
+  }
+
+  //BUTTON SYMBOLS
+  void drawPlayButton(float x, float y, float w, float h) {
+    rightTriangle(x, y, w, h);
+  }//End drawPlayButton
+
+  // PAUSE BUTTON - Two rectangles
+  void drawPauseButton(float x, float y, float w, float h) {
+
+    float barW = w * 0.25;
+    float gap = w * 0.50;
+
+    basicRect(x, y, barW, h);
+    basicRect(x + barW + gap, y, barW, h);
+  }//End drawPauseButton
+
+  // REWIND BUTTON - Triangle pointing left with rectangle
+  void drawRewindButton(float x, float y, float w, float h) {
+
+    leftTriangle(x + w*0.15, y, w*0.7, h);
+
+    basicRect(x, y, w*0.15, h);
+  }
+
+  // BACKWARD BUTTON - Two triangles pointing left
+  void drawBackwardButton(float x, float y, float w, float h) {
+
+    leftTriangle(x, y, w/2, h);
+    leftTriangle(x + w/2, y, w/2, h);
+  }//End drawBackwardButton
+
+  // FORWARD BUTTON - Triangle pointing right with rectangle
+  void drawForwardButton(float x, float y, float w, float h) {
+
+    rightTriangle(x, y, w*0.7, h);
+
+    basicRect( x + w*0.72, y, w*0.15, h);
+  }//End drawForwardButton
+
+  // SKIP BUTTON - Two triangles pointing right
+  void drawSkipButton(float x, float y, float w, float h) {
+
+    rightTriangle(x, y, w/2, h);
+    rightTriangle(x + w/2, y, w/2, h);
+  }//End drawSkipButton
+
+  // STOP BUTTON - Square
+  void drawStopButton(float x, float y, float w, float h) {
+    basicRect(x, y, w, h);
+  }//End drawStopButton
+
+  // MUTE BUTTON - Square with X
+  void drawMuteButton(float x, float y, float w, float h) {
+
+    basicRect(x, y, w, h);
+
+    xShape(x, y, w, h);
+  }//End drawMuteButton
+
+  // LOOP BUTTON - Small square with triangle peeking out of corner
+  void drawLoopButton(float x, float y, float w, float h) {
+
+    basicRect(x, y, w, h);
+
+    rightTriangle(x + w*0.75, y + h*0.75, w*0.35, h*0.35);
+
+    fill(0);
+
+    textAlign(CENTER, CENTER);
+
+    if (loopState == 1) {
+      text("1", x + w/2, y + h/2);
+    } else if (loopState == 2) {
+      text("∞", x + w/2, y + h/2);
     }
+  }//End drawLoopButton
 
-    void leftTriangle(float x, float y, float w, float h) {
-      triangle(x+w, y, x, y+h/2, x+w, y+h);
+  // SHUFFLE BUTTON - X with triangles at the ends
+  void drawShuffleButton(float x, float y, float w, float h) {
+
+    float a = w * 0.25;
+    xShape(x, y, w, h);
+    rightTriangle(x+w-a/2, y-a/2, a, a);
+    rightTriangle(x+w-a/2, y+h-a/2, a, a);
+  }//end shuffle
+
+  // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
+  void drawAddToQueueButton(float x, float y, float w, float h) {
+
+    // queue lines
+    line(x, y+h*0.2, x+w*0.5, y+h*0.2);
+    line(x, y+h*0.4, x+w*0.5, y+h*0.4);
+
+    line(x, y+h*0.6, x+w*0.7, y+h*0.6);
+    line(x, y+h*0.8, x+w*0.7, y+h*0.8);
+
+    // plus sign
+    float px = x + w*0.75;
+    float py = y + h*0.25;
+
+    float s = w*0.15;
+
+    line(px, py-s, px, py+s);
+    line(px-s, py, px+s, py);
+  }
+
+  // RANDOM SONG BUTTON - Star or Random symbol (dice)
+  void drawRandomSongButton(float x, float y, float w, float h) {
+
+    float s = w * 0.12;
+
+    circle(x+w*0.2, y+h*0.2, s);
+    circle(x+w*0.8, y+h*0.2, s);
+
+    circle(x+w*0.5, y+h*0.5, s);
+
+    circle(x+w*0.2, y+h*0.8, s);
+    circle(x+w*0.8, y+h*0.8, s);
+  }
+
+  void drawButtons() {
+    int[] boxes = new int[10];
+    for (int i = 0; i < boxes.length; i++) {
+      boxes[i] = boxIndex(i);
     }
-
-    void basicRect(float x, float y, float w, float h) {
-      rect(x, y, w, h);
-    }
-
-    void xShape(float x, float y, float w, float h) {
-      line(x, y, x+w, y+h);
-      line(x+w, y, x, y+h);
-    }
-
-    //BUTTON SYMBOLS
-    void drawPlayButton(float x, float y, float w, float h) {
-      rightTriangle(x, y, w, h);
-    }//End drawPlayButton
-
-    // PAUSE BUTTON - Two rectangles
-    void drawPauseButton(float x, float y, float w, float h) {
-
-      float barW = w * 0.25;
-      float gap = w * 0.50;
-
-      basicRect(x, y, barW, h);
-      basicRect(x + barW + gap, y, barW, h);
-    }//End drawPauseButton
-
-    // REWIND BUTTON - Triangle pointing left with rectangle
-    void drawRewindButton(float x, float y, float w, float h) {
-
-      leftTriangle(x + w*0.15, y, w*0.7, h);
-
-      basicRect(x, y, w*0.15, h);
-    }
-
-    // BACKWARD BUTTON - Two triangles pointing left
-    void drawBackwardButton(float x, float y, float w, float h) {
-
-      leftTriangle(x, y, w/2, h);
-      leftTriangle(x + w/2, y, w/2, h);
-    }//End drawBackwardButton
-
-    // FORWARD BUTTON - Triangle pointing right with rectangle
-    void drawForwardButton(float x, float y, float w, float h) {
-
-      rightTriangle(x, y, w*0.7, h);
-
-      basicRect( x + w*0.72, y, w*0.15, h);
-    }//End drawForwardButton
-
-    // SKIP BUTTON - Two triangles pointing right
-    void drawSkipButton(float x, float y, float w, float h) {
-
-      rightTriangle(x, y, w/2, h);
-      rightTriangle(x + w/2, y, w/2, h);
-    }//End drawSkipButton
-
-    // STOP BUTTON - Square
-    void drawStopButton(float x, float y, float w, float h) {
-      basicRect(x, y, w, h);
-    }//End drawStopButton
-
-    // MUTE BUTTON - Square with X
-    void drawMuteButton(float x, float y, float w, float h) {
-
-      basicRect(x, y, w, h);
-
-      xShape(x, y, w, h);
-    }//End drawMuteButton
-
-    // LOOP BUTTON - Small square with triangle peeking out of corner
-    void drawLoopButton(float x, float y, float w, float h) {
-
-      basicRect(x, y, w, h);
-
-      rightTriangle(x + w*0.75, y + h*0.75, w*0.35, h*0.35);
-
-      fill(0);
-
-      textAlign(CENTER, CENTER);
-
-      if (loopState == 1) {
-        text("1", x + w/2, y + h/2);
-      } else if (loopState == 2) {
-        text("∞", x + w/2, y + h/2);
-      }
-    }//End drawLoopButton
-
-    // SHUFFLE BUTTON - X with triangles at the ends
-    void drawShuffleButton(float x, float y, float w, float h) {
-
-      float a = w * 0.25;
-      xShape(x, y, w, h);
-      rightTriangle(x+w-a/2, y-a/2, a, a);
-      rightTriangle(x+w-a/2, y+h-a/2, a, a);
-    }//end shuffle
-
-    // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
-    void drawAddToQueueButton(float x, float y, float w, float h) {
-
-      // queue lines
-      line(x, y+h*0.2, x+w*0.5, y+h*0.2);
-      line(x, y+h*0.4, x+w*0.5, y+h*0.4);
-
-      line(x, y+h*0.6, x+w*0.7, y+h*0.6);
-      line(x, y+h*0.8, x+w*0.7, y+h*0.8);
-
-      // plus sign
-      float px = x + w*0.75;
-      float py = y + h*0.25;
-
-      float s = w*0.15;
-
-      line(px, py-s, px, py+s);
-      line(px-s, py, px+s, py);
-    }
-
-    // RANDOM SONG BUTTON - Star or Random symbol (dice)
-    void drawRandomSongButton(float x, float y, float w, float h) {
-
-      float s = w * 0.12;
-
-      circle(x+w*0.2, y+h*0.2, s);
-      circle(x+w*0.8, y+h*0.2, s);
-
-      circle(x+w*0.5, y+h*0.5, s);
-
-      circle(x+w*0.2, y+h*0.8, s);
-      circle(x+w*0.8, y+h*0.8, s);
-    }
-
-    void drawButtons() {
-      int[] boxes = new int[10];
-      for (int i = 0; i < boxes.length; i++) {
-        boxes[i] = boxIndex(i);
-      }
-      for (int i = 0; i < boxes.length; i ++) {
-        int index = boxes[i];
-        fill(255);
-        float boxX = divs[index];
-        float boxY = divs[index + 1];
-
-        float boxW = divs[index + 2];
-        float boxH = divs[index + 3];
-
-        float iconW = smallerDivDimension(boxW);
-        float iconH = smallerDivDimension(boxH);
-
-        float shiftX = (boxW - iconW) / 2;
-        float shiftY = (boxH - iconH) / 2;
-
-        float x = boxX + shiftX;
-        float y = boxY + shiftY;
-
-        fill(getButtonColor(i));
-        rect(boxX, boxY, boxW, boxH);
-        fill(255);
-
-        drawSymbol(i, x, y, iconW, iconH);
-      }
-    }//end drawButtons
-
-    void drawSymbol(int i, float x, float y, float w, float h) {
-
-      if (i == 0) drawBackwardButton(x, y, w, h);
-      if (i == 1) drawRewindButton(x, y, w, h);
-      if (i == 2) {
-        if (playState == 0) {
-          drawPlayButton(x, y, w, h);
-        } else if (playState == 1) {
-          drawPauseButton(x, y, w, h);
-        } else if (playState == 2) {
-          drawStopButton(x, y, w, h);
-        }
-      }
-      if (i == 3) drawForwardButton(x, y, w, h);
-      if (i == 4) drawSkipButton(x, y, w, h);
-      if (i == 5) drawMuteButton(x, y, w, h);
-      if (i == 6) drawLoopButton(x, y, w, h);
-      if (i == 7) {
-        if (shuffleOn) {
-          fill(green);
-        } else {
-          fill(255);
-        }
-        drawShuffleButton(x, y, w, h);
-      }
-      if (i == 8) drawAddToQueueButton(x, y, w, h);
-      if (i == 9) drawRandomSongButton(x, y, w, h);
-    }//end drawsymbol
-
-    float smallerDivDimension(float divDimension) {
-      return divDimension * 1/2;
-    }//end smallerDivDimension
-
-
-    //End button symbols
-
-    //
-    void divs() {
-      divs[0] = appWidth*1/4 ;
-      divs[1] = appHeight*1/4 ;
-      divs[2] = appWidth*1/2 ;
-      divs[3] = appHeight*1/2 ;
-
-      float referent = divs[2]/13;
-      float textWidth = referent*5;
-      float textHeight = referent*3;
-
-      float[] column = new float[6];
-      column[0] = divs[0]+ referent;
-      for (int i = 1; i < column.length; i++) {
-        if (i==5) {
-          column[i] = column[i-1] + referent* 2;
-        } else {
-          column[i] = column[i-1] + referent;
-        }
-      }
-      float[] row = new float[4];
-      row[0] = divs[1]+ referent;
-      for (int i = 1; i<row.length; i++) {
-        if (i == 2) {
-          row[i] = row[i-1]+ textHeight + referent* 1/2;
-        } else {
-          row[i] = row[i-1] + referent + referent * 1/2;
-        }
-      }
-      float testHeight = referent*2.5 + textHeight*2;
-      float errorIncrease = referent*2;
-
-      while (divs[3] < testHeight) {
-        divs[1] -= errorIncrease;
-        row[0] = divs[1] + referent;
-        row[1] = row[0]  + referent + referent* 1/2;
-        row[2] = row[1] + textHeight + referent*1/2;
-        row[3] = row[2] + referent + referent*1/2;
-        divs[3] += errorIncrease;
-      }
-      for (int i = 4; i < divs.length; i++) {
-        // X Position
-        if (i % 4 == 0 && int(i/4) == 1) {
-          divs[i] = appWidth - referent;
-        } else if (i % 4 == 0 && int(i/4) == 2) {
-          divs[i] = appWidth*0;
-        } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
-          divs[i] = column[0];
-        } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
-          divs[i] = column[1];
-        } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
-          divs[i] = column[2];
-        } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
-          divs[i] = column[3];
-        } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
-          divs[i] = column[4];
-        } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
-          divs[i] = column[5];
-        } else {
-          //Empty Else
-        }
-        // Y Position
-        if (i % 4 == 1 && int(i/4) == 1) {
-          divs[i] = appHeight*0;
-        } else if (i % 4 == 1 && int(i/4) == 2) {
-          divs[i] = appHeight - referent;
-        } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
-          divs[i] = row[0];
-        } else if (i % 4 == 1 && int(i/4) == 4) {
-          divs[i] = row[1];
-        } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
-          divs[i] = row[2];
-        } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
-          divs[i] = row[3];
-        } else if (i % 4 == 1 && (int(i/4) == 16)) {
-          divs[i] = row[2] - referent *1/2;
-        } else {
-          //Empty Else
-        }
-        // Width
-        if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
-          divs[i] = textWidth;
-        } else if (i % 4 == 2) {
-          divs[i] = referent;
-        } else {
-          //Empty Else
-        }
-        // Height
-        if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
-          divs[i] = textHeight;
-        } else if (i % 4 == 3 && (int(i/4)==15)) {
-          divs[i] = textHeight + referent;
-        } else if (i % 4 == 3) {
-          divs[i] = referent;
-        } else {
-          //Empty Else
-        }
-      }
-    }//End DIVs
-    //
-    void drawImage() {
-      //Aspect ratio Images
-      int imageNum = 16;
-      if (images != null && images.length > 0) {
-        float imgWidth = divs[imageNum+2];
-        float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
-
-        if (imgHeight > divs[imageNum+3]) {
-          imgHeight = divs[imageNum+3];
-          imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
-        }
-        image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
-      }
-    }//End draw Image
-    //
-    void drawText() {
-      //Fonts Aspect Ratio Images
-      float[] fontSize = new float[7];
-      PFont font;
-      String georgia = "Georgia";
-      int box = 12;
-      int iWhile=0;
-
-      fontSize[1] = divs[box+3];
-      font = createFont(georgia, fontSize[1]);
-      textFont(font, fontSize[1]);
-
-      while ( textWidth(songName[currentIndex]) > divs[box+2]) {
-        iWhile++;
-        if ( iWhile>10000 ) {
-          ERRORCheck("Infninte WHILE Loop");
-          exit();
-        }
-        fontSize[1] *= 0.99;
-        textFont(font, fontSize[1]);
-      }
-      fill(0);
-      textAlign(CENTER, CENTER);
-      text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
-      //
-      //song meta data
-      int metaData = 60;
-      fontSize[2] = divs[metaData+3];
-      while (textWidth(inspectMetaData()) > divs[metaData+2]) {
-        iWhile++;
-        if (iWhile>10000) {
-          ERRORCheck("Infninte WHILE Loop");
-          exit();
-        }
-        fontSize[2] *= 0.99;
-        textFont(font, fontSize[2]);
-      }
-      textAlign(LEFT, CENTER);
-      text(inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
-    }//End draww song title
-    //
-    void seeQuitMusicButton() {
+    for (int i = 0; i < boxes.length; i ++) {
+      int index = boxes[i];
       fill(255);
-      for ( int j=4; j<9; j+=4 ) {
-        rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-      }
-    }//End See Quit & Music Button
-    //
-    void seeMusicGUI() {
-      int j=0;
-      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-      for ( j=12; j<divs.length; j+=4 ) {
-        rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-      }
-      drawImage();//images
-      drawText();//song title + meta data
-      //
-    }//End See Music GUI
+      float boxX = divs[index];
+      float boxY = divs[index + 1];
 
+      float boxW = divs[index + 2];
+      float boxH = divs[index + 3];
+
+      float iconW = smallerDivDimension(boxW);
+      float iconH = smallerDivDimension(boxH);
+
+      float shiftX = (boxW - iconW) / 2;
+      float shiftY = (boxH - iconH) / 2;
+
+      float x = boxX + shiftX;
+      float y = boxY + shiftY;
+
+      fill(getButtonColor(i));
+      rect(boxX, boxY, boxW, boxH);
+      fill(255);
+
+      drawSymbol(i, x, y, iconW, iconH);
+    }
+  }//end drawButtons
+
+  void drawSymbol(int i, float x, float y, float w, float h) {
+
+    if (i == 0) drawBackwardButton(x, y, w, h);
+    if (i == 1) drawRewindButton(x, y, w, h);
+    if (i == 2) {
+      if (playState == 0) {
+        drawPlayButton(x, y, w, h);
+      } else if (playState == 1) {
+        drawPauseButton(x, y, w, h);
+      } else if (playState == 2) {
+        drawStopButton(x, y, w, h);
+      }
+    }
+    if (i == 3) drawForwardButton(x, y, w, h);
+    if (i == 4) drawSkipButton(x, y, w, h);
+    if (i == 5) drawMuteButton(x, y, w, h);
+    if (i == 6) drawLoopButton(x, y, w, h);
+    if (i == 7) {
+      if (shuffleOn) {
+        fill(green);
+      } else {
+        fill(255);
+      }
+      drawShuffleButton(x, y, w, h);
+    }
+    if (i == 8) drawAddToQueueButton(x, y, w, h);
+    if (i == 9) drawRandomSongButton(x, y, w, h);
+  }//end drawsymbol
+
+  float smallerDivDimension(float divDimension) {
+    return divDimension * 1/2;
+  }//end smallerDivDimension
+
+
+  //End button symbols
+
+  //
+  void divs() {
+    divs[0] = appWidth*1/4 ;
+    divs[1] = appHeight*1/4 ;
+    divs[2] = appWidth*1/2 ;
+    divs[3] = appHeight*1/2 ;
+
+    float referent = divs[2]/13;
+    float textWidth = referent*5;
+    float textHeight = referent*3;
+
+    float[] column = new float[6];
+    column[0] = divs[0]+ referent;
+    for (int i = 1; i < column.length; i++) {
+      if (i==5) {
+        column[i] = column[i-1] + referent* 2;
+      } else {
+        column[i] = column[i-1] + referent;
+      }
+    }
+    float[] row = new float[4];
+    row[0] = divs[1]+ referent;
+    for (int i = 1; i<row.length; i++) {
+      if (i == 2) {
+        row[i] = row[i-1]+ textHeight + referent* 1/2;
+      } else {
+        row[i] = row[i-1] + referent + referent * 1/2;
+      }
+    }
+    float testHeight = referent*2.5 + textHeight*2;
+    float errorIncrease = referent*2;
+
+    while (divs[3] < testHeight) {
+      divs[1] -= errorIncrease;
+      row[0] = divs[1] + referent;
+      row[1] = row[0]  + referent + referent* 1/2;
+      row[2] = row[1] + textHeight + referent*1/2;
+      row[3] = row[2] + referent + referent*1/2;
+      divs[3] += errorIncrease;
+    }
+    for (int i = 4; i < divs.length; i++) {
+      // X Position
+      if (i % 4 == 0 && int(i/4) == 1) {
+        divs[i] = appWidth - referent;
+      } else if (i % 4 == 0 && int(i/4) == 2) {
+        divs[i] = appWidth*0;
+      } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
+        divs[i] = column[0];
+      } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
+        divs[i] = column[1];
+      } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
+        divs[i] = column[2];
+      } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
+        divs[i] = column[3];
+      } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
+        divs[i] = column[4];
+      } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
+        divs[i] = column[5];
+      } else {
+        //Empty Else
+      }
+      // Y Position
+      if (i % 4 == 1 && int(i/4) == 1) {
+        divs[i] = appHeight*0;
+      } else if (i % 4 == 1 && int(i/4) == 2) {
+        divs[i] = appHeight - referent;
+      } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
+        divs[i] = row[0];
+      } else if (i % 4 == 1 && int(i/4) == 4) {
+        divs[i] = row[1];
+      } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
+        divs[i] = row[2];
+      } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
+        divs[i] = row[3];
+      } else if (i % 4 == 1 && (int(i/4) == 16)) {
+        divs[i] = row[2] - referent *1/2;
+      } else {
+        //Empty Else
+      }
+      // Width
+      if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
+        divs[i] = textWidth;
+      } else if (i % 4 == 2) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+      // Height
+      if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
+        divs[i] = textHeight;
+      } else if (i % 4 == 3 && (int(i/4)==15)) {
+        divs[i] = textHeight + referent;
+      } else if (i % 4 == 3) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+    }
+  }//End DIVs
+  //
+  void drawImage() {
+    //Aspect ratio Images
+    int imageNum = 16;
+    if (images != null && images.length > 0) {
+      float imgWidth = divs[imageNum+2];
+      float imgHeight = imgWidth * images[currentIndex].height / images[currentIndex].width;
+
+      if (imgHeight > divs[imageNum+3]) {
+        imgHeight = divs[imageNum+3];
+        imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
+      }
+      image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
+    }
+  }//End draw Image
+  //
+  void drawText() {
+    //Fonts Aspect Ratio Images
+    float[] fontSize = new float[7];
+    PFont font;
+    String georgia = "Georgia";
+    int box = 12;
+    int iWhile=0;
+
+    fontSize[1] = divs[box+3];
+    font = createFont(georgia, fontSize[1]);
+    textFont(font, fontSize[1]);
+
+    while ( textWidth(songName[currentIndex]) > divs[box+2]) {
+      iWhile++;
+      if ( iWhile>10000 ) {
+        ERRORCheck("Infninte WHILE Loop");
+        exit();
+      }
+      fontSize[1] *= 0.99;
+      textFont(font, fontSize[1]);
+    }
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(songName[currentIndex], divs[box], divs[box+1], divs[box+2], divs[box+3]);
     //
-    void rectDIV( float x, float y, float w, float h) {
-      rect(x, y, w, h);
-    } //End RECT
+    //song meta data
+    int metaData = 60;
+    fontSize[2] = divs[metaData+3];
+    while (textWidth(inspectMetaData()) > divs[metaData+2]) {
+      iWhile++;
+      if (iWhile>10000) {
+        ERRORCheck("Infninte WHILE Loop");
+        exit();
+      }
+      fontSize[2] *= 0.99;
+      textFont(font, fontSize[2]);
+    }
+    textAlign(LEFT, CENTER);
+    text(inspectMetaData(), divs[metaData], divs[metaData+1], divs[metaData+2], divs[metaData+3]);
+  }//End draww song title
+  //
+  void seeQuitMusicButton() {
+    
+    for ( int j=4; j<9; j+=4 ) {
+
+      if (j==4) {
+        fill(red);
+      } else {
+        fill(grey);
+      }
+
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+      fill(255);
+
+      if (j==4) {
+        xShape(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+      }
+      if (j==8) {
+        fill(0);
+        textAlign(CENTER, CENTER);
+        text("Music", divs[j], divs[j+1], divs[j+2], divs[j+3]);
+      }
+      fill(255);
+    }
+  }//End See Quit & Music Button
+  //
+  void seeMusicGUI() {
+    int j=0;
+    rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    for ( j=12; j<divs.length; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+    drawImage();//images
+    drawText();//song title + meta data
     //
-    //Getters
-    Boolean musicPlayerGUI() {
-      return musicGUI;
-    }//End Music Player GUI
-    //
-    //
-    //Setters
-    //
-    //Output - Println
-    //Mutliple ERROR statements based on parameters, like Contructors
-    void ERRORCheck(String description) {
-      println(description);
-    }//End
-    void ERRORCheck(String description, float variable) {
-      println(description, variable);
-    }//End
-    //
-  }//End Music Player Class
+  }//End See Music GUI
+
+  //
+  void rectDIV( float x, float y, float w, float h) {
+    rect(x, y, w, h);
+  } //End RECT
+  //
+  //Getters
+  Boolean musicPlayerGUI() {
+    return musicGUI;
+  }//End Music Player GUI
+  //
+  //
+  //Setters
+  //
+  //Output - Println
+  //Mutliple ERROR statements based on parameters, like Contructors
+  void ERRORCheck(String description) {
+    println(description);
+  }//End
+  void ERRORCheck(String description, float variable) {
+    println(description, variable);
+  }//End
+  //
+}//End Music Player Class
