@@ -18,6 +18,7 @@ class MusicPlayer {
   int loopState = 0;
   int rewindClickCount = 0;
   int rewindLastClick = 0;
+  int[] boxes = new int[10];
 
   int playClickCount = 0;
   int playLastClick = 0;
@@ -222,10 +223,10 @@ class MusicPlayer {
       }
     }
     updateMiniPlaylistText();
-    saveSettings();
     playCurrentSong();
+    saveSettings();
   }//End PlayNextMiniQueueSOng
-
+ 
   String inspectMetaData() {
     AudioMetaData meta = songsMetaData[currentIndex];
     return
@@ -243,9 +244,7 @@ class MusicPlayer {
   //
 
   color getButtonColor(int i) {
-
     int index = boxIndex(i);
-
     float x = divs[index];
     float y = divs[index + 1];
     float w = divs[index + 2];
@@ -274,11 +273,10 @@ class MusicPlayer {
     }
     if (pressed) return green;
     if (hover) return orange;
-    return pink;
+    return blue;
   }
   //
   //
-  int[] boxes = new int[10];
   void setupBoxes() {
     for (int i = 0; i < boxes.length; i++) {
       boxes[i] = boxIndex(i);
@@ -432,28 +430,33 @@ class MusicPlayer {
   }//end saveSettings
   //
   void loadSettings() {
-    try {
-      String[] settings = loadStrings("setting.txt");
-
-      if (settings == null || settings.length < 6) return;
-
-      shuffleOn = settings[0].equals("true");
-      loopState = int(settings[1]);
-      currentIndex = int(settings[2]);
-      playState = int(settings[3]);
-      muteOn = settings[4].equals("true");
-      miniPlayOn = settings[5].equals("true");
-    }
-    catch (Exception e) {
-      println("load failed");
-      shuffleOn = false;
-      loopState = 0;
-      currentIndex = 0;
-      playState = 0;
-      muteOn = false;
-      miniPlayOn = false;
+    String[] settings = loadStrings("setting.txt");
+    if (settings != null && settings.length > 0) {
+      try {
+        shuffleOn = settings[0].equals("true");
+        loopState = int(settings[1]);
+        currentIndex = int(settings[2]);
+        playState = int(settings[3]);
+        muteOn = settings[4].equals("true");
+        miniPlayOn = settings[5].equals("true");
+      }
+      catch (Exception e) {
+        println("load failed: " + e);
+        resetToDefaults();
+      }
+    } else {
+      println("File is empty.");
+      resetToDefaults();
     }
   }//end loadSettings
+  void resetToDefaults() {
+    shuffleOn = false;
+    loopState = 0;
+    currentIndex = 0;
+    playState = 0;
+    muteOn = false;
+    miniPlayOn = false;
+  }// end Reset
   //
   //------BUTTON SYMBOLS------//
   void rightTriangle(float x, float y, float w, float h) {
@@ -563,31 +566,20 @@ class MusicPlayer {
     line(x, y+h*0.6, x+w*1, y+h*0.6);
     line(x, y+h*0.8, x+w*1, y+h*0.8);
 
-    // plus sign
-    float px = x + w*0.75;
-    float py = y + h*0.25;
+    if (miniPlayOn) {
+      float a = w * 0.25;
+      rightTriangle(x+w-a, y, a, a);
+    } else {
+      float px = x + w*0.75;
+      float py = y + h*0.25;
 
-    float s = w*0.15;
+      float s = w*0.15;
 
-    line(px, py-s, px, py+s);
-    line(px-s, py, px+s, py);
-  }
-  //------Test-----//
-  void drawAddToQueuePlay(float x, float y, float w, float h) {
-
-    // queue lines
-    line(x, y+h*0.2, x+w*0.5, y+h*0.2);
-    line(x, y+h*0.4, x+w*0.5, y+h*0.4);
-
-    line(x, y+h*0.6, x+w*1, y+h*0.6);
-    line(x, y+h*0.8, x+w*1, y+h*0.8);
-
-    float a = w * 0.25;
-
-    rightTriangle(x+w-a, y, a, a);
+      line(px, py-s, px, py+s);
+      line(px-s, py, px+s, py);
+    }
   }
 
-  // RANDOM SONG BUTTON - Star or Random symbol (dice)
   void drawRandomSongButton(float x, float y, float w, float h) {
 
     float s = w * 0.12;
@@ -602,10 +594,6 @@ class MusicPlayer {
   }
 
   void drawButtons() {
-    int[] boxes = new int[10];
-    for (int i = 0; i < boxes.length; i++) {
-      boxes[i] = boxIndex(i);
-    }
     for (int i = 0; i < boxes.length; i ++) {
       int index = boxes[i];
       fill(255);
@@ -650,12 +638,7 @@ class MusicPlayer {
     if (i == 5) drawMuteButton(x, y, w, h);
     if (i == 6) drawLoopButton(x, y, w, h);
     if (i == 7) drawShuffleButton(x, y, w, h);
-    if (i == 8)
-      if (miniPlayOn) {
-        drawAddToQueuePlay(x, y, w, h);
-      } else {
-        drawAddToQueueButton(x, y, w, h);
-      }
+    if (i == 8) drawAddToQueueButton(x, y, w, h);
     if (i == 9) drawRandomSongButton(x, y, w, h);
   }//end drawsymbol
 
@@ -813,18 +796,14 @@ class MusicPlayer {
   }//End draww song title
   //
   void seeQuitMusicButton() {
-
     for ( int j=4; j<9; j+=4 ) {
-
       if (j==4) {
         fill(red);
       } else {
         fill(grey);
       }
-
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       fill(255);
-
       if (j==4) {
         xShape(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       }
