@@ -59,13 +59,14 @@ class MusicPlayer {
     minim = new Minim(app);
     divs();
     loadFiles();
-    loadSettings();
-    playCurrentSong();
-    setupBoxes();
 
     for (int i = 0; i < miniQueue.length; i++) {
       miniQueue[i] =-1;
     }
+
+    loadSettings();
+    playCurrentSong();
+    setupBoxes();
   }//End Constructor
   //
   void draw() {
@@ -191,9 +192,11 @@ class MusicPlayer {
   void updateMiniPlaylistText() {
     miniPlaylistText = "Mini Playlist:\n";
     for (int i = 0; i < queueSize; i++) {
-      miniPlaylistText +=
-        (i + 1) + ". " +
-        songName[miniQueue[i]] + "\n";
+      if (miniQueue[i] != -1) {
+        miniPlaylistText +=
+          (i + 1) + ". " +
+          songName[miniQueue[i]] + "\n";
+      }
     }
   }//end updateMiniplayText
 
@@ -226,6 +229,10 @@ class MusicPlayer {
     playCurrentSong();
     saveSettings();
   }//End PlayNextMiniQueueSOng
+
+  void nextSongButton() {
+    playNextMiniQueueSong();
+  }//End Next Song Button
 
   String inspectMetaData() {
     AudioMetaData meta = songsMetaData[currentIndex];
@@ -335,7 +342,7 @@ class MusicPlayer {
     }
 
     if (i == 3) { // next song
-      playNextMiniQueueSong();
+      nextSongButton();
     }
 
     if (i == 4) { // skip forward
@@ -420,16 +427,17 @@ class MusicPlayer {
   }//end button input
   //
   void saveSettings() {
-    String[] settings = {
-      str(shuffleOn),
-      str(loopState),
-      str(currentIndex),
-      str(playState),
-      str(muteOn),
-      str(miniPlayOn),
-      str(queueSize),
-      str(savedSongIndex)
-    };
+    String[] settings = new String[6 + miniQueue.length];
+    settings[0] = str(shuffleOn);
+    settings[1] = str(loopState);
+    settings[2] = str(currentIndex);
+    settings[3] = str(playState);
+    settings[4] = str(muteOn);
+    settings[5] = str(miniPlayOn);
+
+    for (int i = 0; i < miniQueue.length; i++) {
+      settings[6+i] = str(miniQueue[i]);
+    }
     saveStrings("setting.txt", settings);
   }//end saveSettings
   //
@@ -443,8 +451,14 @@ class MusicPlayer {
         playState = int(settings[3]);
         muteOn = settings[4].equals("true");
         miniPlayOn = settings[5].equals("true");
-        queueSize = int(settings[6]);
-        savedSongIndex = int(settings[7]);
+
+        for (int i = 0; i < miniQueue.length; i++) {
+          miniQueue[i] = int(settings[6+i]);
+          if (miniQueue[i] != -1) {
+            queueSize++;
+          }
+        }
+        updateMiniPlaylistText();
       }
       catch (Exception e) {
         println("load failed: " + e);
@@ -462,8 +476,10 @@ class MusicPlayer {
     playState = 0;
     muteOn = false;
     miniPlayOn = false;
-    queueSize = 0;
-    savedSongIndex = 0;
+    for (int i = 0; i < miniQueue.length; i++) {
+      miniQueue[i] = -1;
+    }
+    updateMiniPlaylistText();
   }// end Reset
   //
   //------BUTTON SYMBOLS------//
@@ -768,7 +784,10 @@ class MusicPlayer {
         imgHeight = divs[imageNum+3];
         imgWidth = imgHeight * images[currentIndex].width / images[currentIndex].height;
       }
-      image(images[currentIndex], divs[imageNum], divs[imageNum+1], imgWidth, imgHeight);
+      float centerX = divs[imageNum] + (divs[imageNum + 2] - imgWidth)/2;
+      float centerY = divs[imageNum+1] + (divs[imageNum + 3] - imgHeight)/2;
+
+      image(images[currentIndex], centerX, centerY, imgWidth, imgHeight);
     }
   }//End draw Image
 
