@@ -63,7 +63,7 @@ class MusicPlayer {
     playCurrentSong();
     setupBoxes();
 
-    for (int i = 0; i<miniQueue.length; i++) {
+    for (int i = 0; i < miniQueue.length; i++) {
       miniQueue[i] =-1;
     }
   }//End Constructor
@@ -226,7 +226,7 @@ class MusicPlayer {
     playCurrentSong();
     saveSettings();
   }//End PlayNextMiniQueueSOng
- 
+
   String inspectMetaData() {
     AudioMetaData meta = songsMetaData[currentIndex];
     return
@@ -395,6 +395,7 @@ class MusicPlayer {
           if (!alreadyAdded) {
             miniQueue[queueSize] = currentIndex;
             queueSize++;
+            saveSettings();
             updateMiniPlaylistText();
           }
         }
@@ -408,6 +409,7 @@ class MusicPlayer {
         }
         queueClickCount = 0;
       }
+      saveSettings();
     }
 
     if (i == 9) { // random song
@@ -424,7 +426,9 @@ class MusicPlayer {
       str(currentIndex),
       str(playState),
       str(muteOn),
-      str(miniPlayOn)
+      str(miniPlayOn),
+      str(queueSize),
+      str(savedSongIndex)
     };
     saveStrings("setting.txt", settings);
   }//end saveSettings
@@ -439,6 +443,8 @@ class MusicPlayer {
         playState = int(settings[3]);
         muteOn = settings[4].equals("true");
         miniPlayOn = settings[5].equals("true");
+        queueSize = int(settings[6]);
+        savedSongIndex = int(settings[7]);
       }
       catch (Exception e) {
         println("load failed: " + e);
@@ -456,6 +462,8 @@ class MusicPlayer {
     playState = 0;
     muteOn = false;
     miniPlayOn = false;
+    queueSize = 0;
+    savedSongIndex = 0;
   }// end Reset
   //
   //------BUTTON SYMBOLS------//
