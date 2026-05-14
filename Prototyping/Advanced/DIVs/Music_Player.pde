@@ -483,12 +483,9 @@ class MusicPlayer {
   }// end Reset
   //
   //------BUTTON SYMBOLS------//
-  void rightTriangle(float x, float y, float w, float h) {
-    triangle(x, y, x+w, y+h/2, x, y+h);
-  }
-
-  void leftTriangle(float x, float y, float w, float h) {
-    triangle(x+w, y, x, y+h/2, x+w, y+h);
+  void basicTriangle(float x, float y, float w, float h, int dir) {
+    float dx = w * dir;
+    triangle(x, y, x+dx, y+h/2, x, y+h);
   }
 
   void basicRect(float x, float y, float w, float h) {
@@ -502,47 +499,41 @@ class MusicPlayer {
 
   //BUTTON SYMBOLS
   void drawPlayButton(float x, float y, float w, float h) {
-    rightTriangle(x, y, w, h);
+    basicTriangle(x, y, w, h, 1);
   }//End drawPlayButton
 
   // PAUSE BUTTON - Two rectangles
   void drawPauseButton(float x, float y, float w, float h) {
 
-    float barW = w * 0.25;
-    float gap = w * 0.50;
+    float barW = w * 1/4;
+    float gap = w * 3/4;
 
     basicRect(x, y, barW, h);
-    basicRect(x + barW + gap, y, barW, h);
+    basicRect(x + gap, y, barW, h);
   }//End drawPauseButton
 
   // REWIND BUTTON - Triangle pointing left with rectangle
   void drawRewindButton(float x, float y, float w, float h) {
-
-    leftTriangle(x + w*0.15, y, w*0.7, h);
-
-    basicRect(x, y, w*0.15, h);
+    basicTriangle(x + w, y, w * 3/4, h, -1);
+    basicRect(x, y, w * 1/4, h);
   }
 
   // BACKWARD BUTTON - Two triangles pointing left
   void drawBackwardButton(float x, float y, float w, float h) {
-
-    leftTriangle(x, y, w/2, h);
-    leftTriangle(x + w/2, y, w/2, h);
+    basicTriangle(x + w/2, y, w/2, h, -1);
+    basicTriangle(x + w, y, w/2, h, -1);
   }//End drawBackwardButton
 
   // FORWARD BUTTON - Triangle pointing right with rectangle
   void drawForwardButton(float x, float y, float w, float h) {
-
-    rightTriangle(x, y, w*0.7, h);
-
-    basicRect( x + w*0.72, y, w*0.15, h);
+    basicTriangle(x, y, w * 3/4, h, 1);
+    basicRect( x + w * 3/4, y, w * 1/4, h);
   }//End drawForwardButton
 
   // SKIP BUTTON - Two triangles pointing right
   void drawSkipButton(float x, float y, float w, float h) {
-
-    rightTriangle(x, y, w/2, h);
-    rightTriangle(x + w/2, y, w/2, h);
+    basicTriangle(x, y, w/2, h, 1);
+    basicTriangle(x + w/2, y, w/2, h, 1);
   }//End drawSkipButton
 
   // STOP BUTTON - Square
@@ -552,9 +543,7 @@ class MusicPlayer {
 
   // MUTE BUTTON - Square with X
   void drawMuteButton(float x, float y, float w, float h) {
-
     basicRect(x, y, w, h);
-
     xShape(x, y, w, h);
   }//End drawMuteButton
 
@@ -562,7 +551,8 @@ class MusicPlayer {
   void drawLoopButton(float x, float y, float w, float h) {
 
     basicRect(x, y, w, h);
-    rightTriangle(x + w*0.75, y + h*0.75, w*0.35, h*0.35);
+
+    basicTriangle(x + w * 17/20, y + h * 17/20, w * 1/4, h * 1/4, 1);
 
     if (loopState == 1) {
       fitText("1", x, y, w, h, CENTER);
@@ -573,34 +563,33 @@ class MusicPlayer {
 
   // SHUFFLE BUTTON - X with triangles at the ends
   void drawShuffleButton(float x, float y, float w, float h) {
-
-    float a = w * 0.25;
+    float a = w * 1/4;
     xShape(x, y, w, h);
-    rightTriangle(x+w-a/2, y-a/2, a, a);
-    rightTriangle(x+w-a/2, y+h-a/2, a, a);
+    basicTriangle(x+w-a/2, y-a/2, a, a, 1);
+    basicTriangle(x+w-a/2, y+h-a/2, a, a, 1);
   }//end shuffle
 
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
   void drawAddToQueueButton(float x, float y, float w, float h) {
 
     // queue lines
-    line(x, y+h*0.2, x+w*0.5, y+h*0.2);
-    line(x, y+h*0.4, x+w*0.5, y+h*0.4);
+    line(x, y + h * 0.25, x + w * 0.5, y + h * 0.25);
+    line(x, y + h * 0.45, x + w * 0.5, y + h * 0.45);
 
-    line(x, y+h*0.6, x+w*1, y+h*0.6);
-    line(x, y+h*0.8, x+w*1, y+h*0.8);
+    line(x, y + h * 0.65, x + w, y + h * 0.65);
+    line(x, y + h * 0.85, x + w, y + h * 0.85);
 
     if (miniPlayOn) {
-      float a = w * 0.25;
-      rightTriangle(x+w-a, y, a, a);
+      float a = w * 1/4;
+      basicTriangle(x+w-a, y, a, a, 1);
     } else {
-      float px = x + w*0.75;
-      float py = y + h*0.25;
+      float px = x + w * 3/4;
+      float py = y + h * 1/4;
 
-      float s = w*0.15;
+      float s = w * 0.15;
 
-      line(px, py-s, px, py+s);
-      line(px-s, py, px+s, py);
+      line(px, py - s, px, py + s);
+      line(px - s, py, px + s, py);
     }
   }
 
