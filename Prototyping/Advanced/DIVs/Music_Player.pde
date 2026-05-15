@@ -102,6 +102,7 @@ class MusicPlayer {
     }
     if (key == 'C' || key == 'c') {
       clearMiniQueue();
+      saveSettings();
     }
   }//End Key Pressed
   //
@@ -243,23 +244,7 @@ class MusicPlayer {
     }
   }//end apply mute state
 
-
-  String inspectMetaData() {
-    AudioMetaData meta = songsMetaData[currentIndex];
-    return
-      "Length (in milliseconds): " + meta.length() + "\n"+
-      "Author: " + meta.author() +"\n"+
-      "Album: " + meta.album() +"\n"+
-      "Date: " + meta.date() +"\n"+
-      "Comment: " + meta.comment() +"\n"+
-      "Lyrics: " + meta.lyrics() +"\n"+
-      "Track: " + meta.track()+"\n"+
-      "Genre: " + meta.genre() +"\n"+
-      "Publisher: " + meta.publisher() +"\n"+
-      "Encoded: " + meta.encoded() ;
-  }//End inspect meta data
   //
-
   color getButtonColor(int i) {
     int index = boxIndex(i);
     float x = divs[index];
@@ -770,6 +755,21 @@ class MusicPlayer {
     }
   }//End DIVs
   //
+  String inspectMetaData() {
+    AudioMetaData meta = songsMetaData[currentIndex];
+    return
+      "Length (in milliseconds): " + meta.length() + "\n"+
+      "Author: " + meta.author() +"\n"+
+      "Album: " + meta.album() +"\n"+
+      "Date: " + meta.date() +"\n"+
+      "Comment: " + meta.comment() +"\n"+
+      "Lyrics: " + meta.lyrics() +"\n"+
+      "Track: " + meta.track()+"\n"+
+      "Genre: " + meta.genre() +"\n"+
+      "Publisher: " + meta.publisher() +"\n"+
+      "Encoded: " + meta.encoded() ;
+  }//End inspect meta data
+  //
   void drawImage() {
     //Aspect ratio Images
     int imageNum = 16;
@@ -810,7 +810,6 @@ class MusicPlayer {
     textAlign(alignX, CENTER);
     text(words, x, y, w, h);
   }//end fitText
-
   //
   void drawText() {
     fill(0);
@@ -849,7 +848,6 @@ class MusicPlayer {
     drawText();//song title + meta data
     //
   }//End See Music GUI
-
   //
   void rectDIV( float x, float y, float w, float h) {
     rect(x, y, w, h);
