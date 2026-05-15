@@ -49,11 +49,9 @@ class MusicPlayer {
     minim = new Minim(app);
     divs();
     loadFiles();
-
     for (int i = 0; i < miniQueue.length; i++) {
       miniQueue[i] =-1;
     }
-
     loadSettings();
     playCurrentSong();
     setupBoxes();
@@ -145,8 +143,6 @@ class MusicPlayer {
       println("Loaded: " + songName.length + " song names");
     }//End Load Images
   }
-
-
   void stopAllSongs() {
     for (int i = 0; i < songs.length; i++) {
       songs[i].pause();
@@ -224,6 +220,7 @@ class MusicPlayer {
 
   void nextSongButton() {
     playNextMiniQueueSong();
+    applyShuffleState();
   }//End Next Song Button
 
   void applyMuteState() {
@@ -234,6 +231,11 @@ class MusicPlayer {
     }
   }//end apply mute state
 
+  void applyShuffleState() {
+    if (shuffleOn) {
+      currentIndex = int(random(songs.length));
+    }
+  }//end shuffle state
   //
   color getButtonColor(int i) {
     int index = boxIndex(i);
@@ -352,9 +354,7 @@ class MusicPlayer {
     }
     if (i == 7) { // shuffle
       shuffleOn = !shuffleOn;
-      if (shuffleOn) {
-        currentIndex = int(random(songs.length));
-      }
+      applyShuffleState();
       applyMuteState();
       saveSettings();
       playCurrentSong();
