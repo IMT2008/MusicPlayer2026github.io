@@ -1,0 +1,180 @@
+class MusicPlayer {
+  //
+  //Global Variables
+  float[] divs;
+  Boolean musicGUI=false;
+  //Constructor & Multiple Constructors (different parameters)
+  MusicPlayer() {
+  }
+  //End Constructor
+  //
+  MusicPlayer(int numberOfRectangles) {
+    this.divs = new float[numberOfRectangles*4];
+    divs();
+  }//End Constructor
+  //
+  void draw() {
+    //ERRORCheck("Hello World");
+    seeMusicGUI();
+  }//End Draw
+  //
+  void mousePressed() {
+    int num=4;
+    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
+    num=8;
+    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
+
+  }// End Mouse Pressed
+  //
+  void keyPressed() {
+    //key=='CAP' || key=='LOWER' //Note" Caps Lock
+    //key==CODED || keyCode==ESC //Special Keys
+    if (key==CODED || keyCode==ESC) exit();
+    if (key=='Q' || key=='q') exit();
+    if (key=='M' || key=='m') musicGUI = varSwitch(musicGUI);
+  }//End Key Pressed
+  //
+  Boolean varSwitch(Boolean variable) {
+    if ( variable==true ) {
+      return variable=false;
+    } else {
+      return variable=true;
+    }
+  }//End Boolean Variable Switch
+
+  void divs() {
+    divs[0] = appWidth*1/4 ;
+    divs[1] = appHeight*1/4 ;
+    divs[2] = appWidth*1/2 ;
+    divs[3] = appHeight*1/2 ;
+
+    float referent = divs[2]/13;
+    float textWidth = referent*5;
+    float textHeight = referent*3;
+
+    float[] column = new float[6];
+    column[0] = divs[0]+ referent;
+    for (int i = 1; i < column.length; i++) {
+      if (i==5) {
+        column[i] = column[i-1] + referent* 2;
+      } else {
+        column[i] = column[i-1] + referent;
+      }
+    }
+    float[] row = new float[4];
+    row[0] = divs[1]+ referent;
+    for (int i = 1; i<row.length; i++) {
+      if (i == 2) {
+        row[i] = row[i-1]+ textHeight + referent* 1/2;
+      } else {
+        row[i] = row[i-1] + referent + referent * 1/2;
+      }
+    }
+    float testHeight = referent*2.5 + textHeight*2;
+    float errorIncrease = referent*2;
+
+    while (divs[3] < testHeight) {
+      divs[1] -= errorIncrease;
+      row[0] = divs[1] + referent;
+      row[1] = row[0]  + referent + referent* 1/2;
+      row[2] = row[1] + textHeight + referent*1/2;
+      row[3] = row[2] + referent + referent*1/2;
+      divs[3] += errorIncrease;
+    }
+    for (int i = 4; i < divs.length; i++) {
+      // X Position
+      if (i % 4 == 0 && int(i/4) == 1) {
+        divs[i] = appWidth - referent;
+      } else if (i % 4 == 0 && int(i/4) == 2) {
+        divs[i] = appWidth*0;
+      } else if (i % 4 == 0 && (int(i/4) >= 3 && int(i/4) <= 5 || int(i/4) == 10 )) {
+        divs[i] = column[0];
+      } else if (i % 4 == 0 && (int(i/4) == 6 || int(i/4) == 11)) {
+        divs[i] = column[1];
+      } else if (i % 4 == 0 && (int(i/4) == 7|| int(i/4) == 12)) {
+        divs[i] = column[2];
+      } else if (i % 4 == 0 && (int(i/4) == 8|| int(i/4) == 13)) {
+        divs[i] = column[3];
+      } else if (i % 4 == 0 && (int(i/4) == 9 || int(i/4) == 14 )) {
+        divs[i] = column[4];
+      } else if (i % 4 == 0 && (int(i/4) == 15 || int(i/4) == 16)) {
+        divs[i] = column[5];
+      } else {
+        //Empty Else
+      }
+      // Y Position
+      if (i % 4 == 1 && int(i/4) == 1) {
+        divs[i] = appHeight*0;
+      } else if (i % 4 == 1 && int(i/4) == 2) {
+        divs[i] = appHeight - referent;
+      } else if (i % 4 == 1 && (int(i/4) == 3 || int(i/4) == 15)) {
+        divs[i] = row[0];
+      } else if (i % 4 == 1 && int(i/4) == 4) {
+        divs[i] = row[1];
+      } else if (i % 4 == 1 && (int(i/4) >= 5 && int(i/4)<= 9)) {
+        divs[i] = row[2];
+      } else if (i % 4 == 1 && (int(i/4) >= 10 && int(i/4) <= 14)) {
+        divs[i] = row[3];
+      } else if (i % 4 == 1 && (int(i/4) == 16)) {
+        divs[i] = row[2] - referent *1/2;
+      } else {
+        //Empty Else
+      }
+      // Width
+      if (i % 4 == 2 && (int(i/4) == 3 || int(i/4) == 4 || int(i/4) == 15 ||int(i/4) == 16)) {
+        divs[i] = textWidth;
+      } else if (i % 4 == 2) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+      // Height
+      if (i % 4 == 3 && (int(i/4) == 4|| int(i/4) == 16)) {
+        divs[i] = textHeight;
+      } else if (i % 4 == 3 && (int(i/4)==15)) {
+        divs[i] = textHeight + referent;
+      } else if (i % 4 == 3) {
+        divs[i] = referent;
+      } else {
+        //Empty Else
+      }
+    }
+  }//End DIVs
+
+  //
+  void seeQuitMusicButton() {
+    for ( int j=4; j<9; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+  }//End See Quit & Music Button
+  //
+  void seeMusicGUI() {
+    int j=0;
+    rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    for ( j=12; j<divs.length; j+=4 ) {
+      rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
+    }
+  }//End See Music GUI
+//
+  void rectDIV( float x, float y, float w, float h) {
+    rect(x, y, w, h);
+  } //End RECT
+  //
+  //Getters
+  Boolean musicPlayerGUI() {
+    return musicGUI;
+  }//End Music Player GUI
+  //
+  //
+  //Setters
+  //
+  //Output - Println
+  //Mutliple ERROR statements based on parameters, like Contructors
+  void ERRORCheck(String description) {
+    println(description);
+  }//End
+  void ERRORCheck(String description, float variable) {
+    println(description, variable);
+  }//End
+  //
+}//End Music Player Class
