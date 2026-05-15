@@ -33,25 +33,15 @@ class MusicPlayer {
   int savedSongIndex = 0;
 
   color red = #c64239;
-  color pink = #f6c2db;
-  color purple = #C3B1E1;
   color blue = #aad4dd;
   color green = #8bdaa8;
   color yellow = #FDFD96;
   color orange = #FAC898;
-  color grey = #D3D3D3;
-
   //
   //Constructor & Multiple Constructors (different parameters)
   MusicPlayer() {
   }
   //End Constructor
-  //
-  MusicPlayer(int numberOfRectangles) {
-    this.divs = new float[numberOfRectangles*4];
-    divs();
-    loadFiles();
-  }//End Constructor
   //
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
     this.divs = new float[numberOfRectangles*4];
@@ -262,7 +252,6 @@ class MusicPlayer {
     if (i == 5) {
       if (muteOn) return red;
     }
-
     if (i == 6) {
       if (loopState == 1) return green;
       if (loopState == 2) return red;
@@ -289,7 +278,6 @@ class MusicPlayer {
     if (i == 0) { // skip back
       songs[currentIndex].skip(-10000);
     }
-
     if (i == 1) { // rewind
       int now = millis();
       if (now - rewindLastClick > doubleClickDelay) {
@@ -335,11 +323,9 @@ class MusicPlayer {
       }
       saveSettings();
     }
-
     if (i == 3) { // next song
       nextSongButton();
     }
-
     if (i == 4) { // skip forward
       songs[currentIndex].skip(10000);
     }
@@ -349,7 +335,6 @@ class MusicPlayer {
       applyMuteState();
       saveSettings();
     }
-
     if (i == 6) {// loop
       loopState++;
       if (loopState > 2) {
@@ -365,7 +350,6 @@ class MusicPlayer {
         songs[currentIndex].loop(); // infinite loop
       }
     }
-
     if (i == 7) { // shuffle
       shuffleOn = !shuffleOn;
       if (shuffleOn) {
@@ -410,7 +394,6 @@ class MusicPlayer {
       }
       saveSettings();
     }
-
     if (i == 9) { // random song
       currentIndex = int(random(songs.length));
       saveSettings();
@@ -427,7 +410,6 @@ class MusicPlayer {
     settings[3] = str(playState);
     settings[4] = str(muteOn);
     settings[5] = str(miniPlayOn);
-
     for (int i = 0; i < miniQueue.length; i++) {
       settings[6+i] = str(miniQueue[i]);
     }
@@ -578,23 +560,17 @@ class MusicPlayer {
     } else {
       float px = x + w * 3/4;
       float py = y + h * 1/4;
-
       float s = w * 0.15;
-
       line(px, py - s, px, py + s);
       line(px - s, py, px + s, py);
     }
   }
 
   void drawRandomSongButton(float x, float y, float w, float h) {
-
-    float s = w * 0.12;
-
+    float s = w * 0.20;
     circle(x+w*0.2, y+h*0.2, s);
     circle(x+w*0.8, y+h*0.2, s);
-
     circle(x+w*0.5, y+h*0.5, s);
-
     circle(x+w*0.2, y+h*0.8, s);
     circle(x+w*0.8, y+h*0.8, s);
   }
@@ -627,7 +603,6 @@ class MusicPlayer {
   }//end drawButtons
 
   void drawSymbol(int i, float x, float y, float w, float h) {
-
     if (i == 0) drawBackwardButton(x, y, w, h);
     if (i == 1) drawRewindButton(x, y, w, h);
     if (i == 2) {
@@ -651,10 +626,7 @@ class MusicPlayer {
   float smallerDivDimension(float divDimension) {
     return divDimension * 1/2;
   }//end smallerDivDimension
-
-
   //End button symbols
-
   //
   void divs() {
     divs[0] = appWidth*1/4 ;
@@ -823,7 +795,7 @@ class MusicPlayer {
       if (j==4) {
         fill(red);
       } else {
-        fill(grey);
+        fill(255);
       }
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       fill(255);
