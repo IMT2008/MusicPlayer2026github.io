@@ -4,6 +4,7 @@ class MusicPlayer {
   PApplet app;
   Minim minim;
   float[] divs;
+  int[] boxes = new int[10];
   Boolean musicGUI=false;
   Boolean shuffleOn = false;
   Boolean muteOn = false;
@@ -18,8 +19,6 @@ class MusicPlayer {
   int loopState = 0;
   int rewindClickCount = 0;
   int rewindLastClick = 0;
-  int[] boxes = new int[10];
-
   int playClickCount = 0;
   int playLastClick = 0;
 
@@ -41,32 +40,24 @@ class MusicPlayer {
   color orange = #FAC898;
   color grey = #D3D3D3;
 
-  //
   //Constructor & Multiple Constructors (different parameters)
   MusicPlayer() {
   }
   //End Constructor
-  //
-  MusicPlayer(int numberOfRectangles) {
-    this.divs = new float[numberOfRectangles*4];
-    divs();
-    loadFiles();
-  }//End Constructor
   //
   MusicPlayer(int numberOfRectangles, PApplet sketch) {
     this.divs = new float[numberOfRectangles*4];
     app = sketch;
     minim = new Minim(app);
     divs();
+    setupBoxes();
     loadFiles();
 
     for (int i = 0; i < miniQueue.length; i++) {
       miniQueue[i] =-1;
     }
-
     loadSettings();
     playCurrentSong();
-    setupBoxes();
   }//End Constructor
   //
   void draw() {
@@ -81,7 +72,6 @@ class MusicPlayer {
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
     num=8;
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
-
     for (int i = 0; i < boxes.length; i++) {
       int index = boxes[i];
       if ( mouseX>divs[index] && mouseX<divs[index]+divs[index+2] && mouseY>divs[index+1] && mouseY<divs[index+1]+divs[index+3] ) {
@@ -100,9 +90,6 @@ class MusicPlayer {
       currentIndex = (currentIndex + 1) % images.length;
       playCurrentSong();
     }
-    if (key == 'C' || key == 'c') {
-      clearMiniQueue();
-    }
   }//End Key Pressed
   //
   Boolean varSwitch(Boolean variable) {
@@ -112,11 +99,17 @@ class MusicPlayer {
       return variable=true;
     }
   }//End Boolean Variable Switch
-  //
+
   int boxIndex(int i) {
     return 20 + (i * 4);
   }//end boxIndex
-  //
+
+  void setupBoxes() {
+    for (int i = 0; i < boxes.length; i++) {
+      boxes[i] = boxIndex(i);
+    }
+  }//end setupboxes
+
   //Functions or Behaivours
 
   void loadFiles() {
@@ -152,9 +145,8 @@ class MusicPlayer {
       println("Loaded: " + images.length + " images");
       println("Loaded: " + songs.length + " songs");
       println("Loaded: " + songName.length + " song names");
-    }//End Load Images
-  }
-
+    }
+  }//End Load Images
 
   void stopAllSongs() {
     for (int i = 0; i < songs.length; i++) {
@@ -163,9 +155,9 @@ class MusicPlayer {
     }
   }//End StopAllSongs
   //
+
   void playCurrentSong() {
     stopAllSongs();
-
     if (playState == 0) {
       songs[currentIndex].play();
     } else if (playState == 1) {
@@ -175,12 +167,10 @@ class MusicPlayer {
       songs[currentIndex].pause();
       songs[currentIndex].rewind();
     }
-    applyMuteState();
   }//end playcurrentsong
 
   void autoNextSong() {
     if (songs[currentIndex].position() >= songs[currentIndex].length() - 200) {
-
       songs[currentIndex].pause();
       songs[currentIndex].rewind();
 
@@ -227,38 +217,13 @@ class MusicPlayer {
       }
     }
     updateMiniPlaylistText();
-    playCurrentSong();
     saveSettings();
+    playCurrentSong();
   }//End PlayNextMiniQueueSOng
 
   void nextSongButton() {
     playNextMiniQueueSong();
   }//End Next Song Button
-
-  void applyMuteState() {
-    if (muteOn) {
-      songs[currentIndex].mute();
-    } else {
-      songs[currentIndex].unmute();
-    }
-  }//end apply mute state
-
-
-  String inspectMetaData() {
-    AudioMetaData meta = songsMetaData[currentIndex];
-    return
-      "Length (in milliseconds): " + meta.length() + "\n"+
-      "Author: " + meta.author() +"\n"+
-      "Album: " + meta.album() +"\n"+
-      "Date: " + meta.date() +"\n"+
-      "Comment: " + meta.comment() +"\n"+
-      "Lyrics: " + meta.lyrics() +"\n"+
-      "Track: " + meta.track()+"\n"+
-      "Genre: " + meta.genre() +"\n"+
-      "Publisher: " + meta.publisher() +"\n"+
-      "Encoded: " + meta.encoded() ;
-  }//End inspect meta data
-  //
 
   color getButtonColor(int i) {
     int index = boxIndex(i);
@@ -277,7 +242,6 @@ class MusicPlayer {
     if (i == 5) {
       if (muteOn) return red;
     }
-
     if (i == 6) {
       if (loopState == 1) return green;
       if (loopState == 2) return red;
@@ -292,13 +256,6 @@ class MusicPlayer {
     if (hover) return orange;
     return blue;
   }
-  //
-  //
-  void setupBoxes() {
-    for (int i = 0; i < boxes.length; i++) {
-      boxes[i] = boxIndex(i);
-    }
-  }//end setupboxes
 
   void buttonPressed(int i) {
     if (i == 0) { // skip back
@@ -361,7 +318,11 @@ class MusicPlayer {
 
     if (i == 5) { // mute
       muteOn = !muteOn;
-      applyMuteState();
+      if (muteOn) {
+        songs[currentIndex].unmute();
+      } else {
+        songs[currentIndex].mute();
+      }
       saveSettings();
     }
 
@@ -386,7 +347,6 @@ class MusicPlayer {
       if (shuffleOn) {
         currentIndex = int(random(songs.length));
       }
-      applyMuteState();
       saveSettings();
       playCurrentSong();
     }
@@ -430,10 +390,9 @@ class MusicPlayer {
       currentIndex = int(random(songs.length));
       saveSettings();
       playCurrentSong();
-      applyMuteState();
     }
   }//end button input
-  //
+
   void saveSettings() {
     String[] settings = new String[6 + miniQueue.length];
     settings[0] = str(shuffleOn);
@@ -489,7 +448,7 @@ class MusicPlayer {
     }
     updateMiniPlaylistText();
   }// end Reset
-  //
+
   //------BUTTON SYMBOLS------//
   void basicTriangle(float x, float y, float w, float h, int dir) {
     float dx = w * dir;
@@ -499,7 +458,6 @@ class MusicPlayer {
   void basicRect(float x, float y, float w, float h) {
     rect(x, y, w, h);
   }
-
   void xShape(float x, float y, float w, float h) {
     line(x, y, x+w, y+h);
     line(x+w, y, x, y+h);
@@ -557,11 +515,8 @@ class MusicPlayer {
 
   // LOOP BUTTON - Small square with triangle peeking out of corner
   void drawLoopButton(float x, float y, float w, float h) {
-
     basicRect(x, y, w, h);
-
     basicTriangle(x + w * 17/20, y + h * 17/20, w * 1/4, h * 1/4, 1);
-
     if (loopState == 1) {
       fitText("1", x, y, w, h, CENTER);
     } else if (loopState == 2) {
@@ -636,7 +591,6 @@ class MusicPlayer {
       fill(getButtonColor(i));
       rect(boxX, boxY, boxW, boxH);
       fill(255);
-
       drawSymbol(i, x, y, iconW, iconH);
     }
   }//end drawButtons
@@ -666,11 +620,8 @@ class MusicPlayer {
   float smallerDivDimension(float divDimension) {
     return divDimension * 1/2;
   }//end smallerDivDimension
-
-
   //End button symbols
 
-  //
   void divs() {
     divs[0] = appWidth*1/4 ;
     divs[1] = appHeight*1/4 ;
@@ -769,7 +720,22 @@ class MusicPlayer {
       }
     }
   }//End DIVs
-  //
+
+  String inspectMetaData() {
+    AudioMetaData meta = songsMetaData[currentIndex];
+    return
+      "Length (in milliseconds): " + meta.length() + "\n"+
+      "Author: " + meta.author() +"\n"+
+      "Album: " + meta.album() +"\n"+
+      "Date: " + meta.date() +"\n"+
+      "Comment: " + meta.comment() +"\n"+
+      "Lyrics: " + meta.lyrics() +"\n"+
+      "Track: " + meta.track()+"\n"+
+      "Genre: " + meta.genre() +"\n"+
+      "Publisher: " + meta.publisher() +"\n"+
+      "Encoded: " + meta.encoded() ;
+  }//End inspect meta data
+
   void drawImage() {
     //Aspect ratio Images
     int imageNum = 16;
@@ -818,24 +784,13 @@ class MusicPlayer {
     fitText(inspectMetaData(), divs[60], divs[61], divs[62], divs[63], LEFT);
     fitText(miniPlaylistText, divs[64], divs[65], divs[66], divs[67], LEFT);
   }//End draww song title
+
+
   //
   void seeQuitMusicButton() {
     for ( int j=4; j<9; j+=4 ) {
-      if (j==4) {
-        fill(red);
-      } else {
-        fill(grey);
-      }
+      fill(255);
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-      fill(255);
-      if (j==4) {
-        xShape(divs[j], divs[j+1], divs[j+2], divs[j+3]);
-      }
-      if (j==8) {
-        fill(0);
-        fitText("Music", divs[j], divs[j+1], divs[j+2], divs[j+3], LEFT);
-      }
-      fill(255);
     }
   }//End See Quit & Music Button
   //
@@ -847,9 +802,7 @@ class MusicPlayer {
     }
     drawImage();//images
     drawText();//song title + meta data
-    //
   }//End See Music GUI
-
   //
   void rectDIV( float x, float y, float w, float h) {
     rect(x, y, w, h);
