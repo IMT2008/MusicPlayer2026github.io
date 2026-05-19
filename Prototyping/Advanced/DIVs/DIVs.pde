@@ -16,7 +16,6 @@ MusicPlayer musicPlayer;
 //
 // Global Variables
 int appWidth, appHeight;
-
 //
 //void settings() {}//End Settings
 //Note: CANVAS based on DISPLAY, see Intermedate

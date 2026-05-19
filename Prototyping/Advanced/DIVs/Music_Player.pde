@@ -768,9 +768,9 @@ class MusicPlayer {
     textFont(font, fontSize);
 
     int iWhile = 0;
-    while ( textWidth(words) > w) {
+    while (textWidth(words) > w) {
       iWhile++;
-      if ( iWhile>10000 ) {
+      if ( iWhile > 10000 ) {
         ERRORCheck("Infninte WHILE Loop");
         exit();
       }
