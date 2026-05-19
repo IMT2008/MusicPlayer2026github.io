@@ -16,6 +16,7 @@ class MusicPlayer {
   String[] songName;
   int playState = 0;
   int loopState = 0;
+  
   int rewindClickCount = 0;
   int rewindLastClick = 0;
   int[] boxes = new int[10];
@@ -255,7 +256,7 @@ class MusicPlayer {
       if (muteOn) return red;
     }
     if (i == 6) {
-      if (loopState == 1) return green;
+      if (loopState == 1) return yellow;
       if (loopState == 2) return red;
     }
     if (i == 7) {
@@ -289,7 +290,8 @@ class MusicPlayer {
       rewindLastClick = now;
       if (rewindClickCount == 1) {
         songs[currentIndex].rewind();
-      } else if (rewindClickCount == 2) {
+      } 
+        if (rewindClickCount == 2) {
         currentIndex--;
         if (currentIndex < 0) {
           currentIndex = songs.length - 1;
@@ -804,7 +806,7 @@ class MusicPlayer {
       }
       if (j==8) {
         fill(0);
-        fitText("Music", divs[j], divs[j+1], divs[j+2], divs[j+3], LEFT);
+        fitText("MUSIC", divs[j], divs[j+1], divs[j+2], divs[j+3], CENTER);
       }
       fill(255);
     }
