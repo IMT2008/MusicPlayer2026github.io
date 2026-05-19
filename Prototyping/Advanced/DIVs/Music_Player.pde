@@ -29,7 +29,7 @@ class MusicPlayer {
   int doubleClickDelay = 300; // milliseconds
 
   String miniPlaylistText = "Mini Playlist:\n" ;
-  int[] miniQueue = new int[5];
+  int[] miniQueue = new int[3];
   int queueSize = 0;
   int savedSongIndex = 0;
 
@@ -153,7 +153,6 @@ class MusicPlayer {
   //
   void playCurrentSong() {
     stopAllSongs();
-
     if (playState == 0) {
       songs[currentIndex].play();
     } else if (playState == 1) {
@@ -370,7 +369,7 @@ class MusicPlayer {
       queueClickCount++;
       queueLastClick = now;
       if (queueClickCount == 1) {
-        if (queueSize < 5) {
+        if (queueSize < 3) {
           boolean alreadyAdded = false;
           for (int j = 0; j < queueSize; j++) {
             if (miniQueue[j] == currentIndex) {
@@ -464,11 +463,9 @@ class MusicPlayer {
     float dx = w * dir;
     triangle(x, y, x+dx, y+h/2, x, y+h);
   }
-
   void basicRect(float x, float y, float w, float h) {
     rect(x, y, w, h);
   }
-
   void xShape(float x, float y, float w, float h) {
     line(x, y, x+w, y+h);
     line(x+w, y, x, y+h);
