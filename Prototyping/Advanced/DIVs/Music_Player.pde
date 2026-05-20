@@ -181,9 +181,7 @@ class MusicPlayer {
     miniPlaylistText = "Mini Playlist:\n";
     for (int i = 0; i < queueSize; i++) {
       if (miniQueue[i] != -1) {
-        miniPlaylistText +=
-          (i + 1) + ". " +
-          songName[miniQueue[i]] + "\n";
+        miniPlaylistText += (i + 1) + ". " + songName[miniQueue[i]] + "\n";
       }
     }
   }//end updateMiniplayText
