@@ -112,6 +112,12 @@ class MusicPlayer {
     }
   }//end Queue
 
+  void setupBoxes() {
+    for (int i = 0; i < boxes.length; i++) {
+      boxes[i] = boxIndex(i);
+    }
+  }//end setupboxes
+
   //Functions or Behaivours
 
   void loadFiles() {
@@ -192,9 +198,7 @@ class MusicPlayer {
   }//end updateMiniplayText
 
   void clearMiniQueue() {
-    for (int i = 0; i < miniQueue.length; i++) {
-      miniQueue[i] = -1;
-    }
+    Queue();
     queueSize = 0;
     miniPlayOn = false;
     updateMiniPlaylistText();
@@ -272,12 +276,6 @@ class MusicPlayer {
     return blue;
   }
   //
-  //
-  void setupBoxes() {
-    for (int i = 0; i < boxes.length; i++) {
-      boxes[i] = boxIndex(i);
-    }
-  }//end setupboxes
 
   void buttonPressed(int i) {
     if (i == 0) { // skip back
@@ -455,9 +453,7 @@ class MusicPlayer {
     playState = 0;
     muteOn = false;
     miniPlayOn = false;
-    for (int i = 0; i < miniQueue.length; i++) {
-      miniQueue[i] = -1;
-    }
+    Queue();
     updateMiniPlaylistText();
   }// end Reset
   //
@@ -475,14 +471,13 @@ class MusicPlayer {
     line(x+w, y, x, y+h);
   }
 
-  //BUTTON SYMBOLS
+  //PLAY BUTTON
   void drawPlayButton(float x, float y, float w, float h) {
     basicTriangle(x, y, w, h, 1);
   }//End drawPlayButton
 
   // PAUSE BUTTON - Two rectangles
   void drawPauseButton(float x, float y, float w, float h) {
-
     float barW = w * 1/4;
     float gap = w * 3/4;
 
@@ -527,10 +522,11 @@ class MusicPlayer {
 
   // LOOP BUTTON - Small square with triangle peeking out of corner
   void drawLoopButton(float x, float y, float w, float h) {
+    float a = w * 1/4;
+    float b = a/2;
 
     basicRect(x, y, w, h);
-
-    basicTriangle(x + w * 17/20, y + h * 17/20, w * 1/4, h * 1/4, 1);
+    basicTriangle(x+w-b, y+h-b, a, a, 1);
 
     if (loopState == 1) {
       fitText("1", x, y, w, h, CENTER);
@@ -542,9 +538,10 @@ class MusicPlayer {
   // SHUFFLE BUTTON - X with triangles at the ends
   void drawShuffleButton(float x, float y, float w, float h) {
     float a = w * 1/4;
+    float b = a/2;
     xShape(x, y, w, h);
-    basicTriangle(x+w-a/2, y-a/2, a, a, 1);
-    basicTriangle(x+w-a/2, y+h-a/2, a, a, 1);
+    basicTriangle(x+w-b, y-b, a, a, 1);
+    basicTriangle(x+w-b, y+h-b, a, a, 1);
   }//end shuffle
 
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
