@@ -16,7 +16,7 @@ class MusicPlayer {
   String[] songName;
   int playState = 0;
   int loopState = 0;
-  
+
   int rewindClickCount = 0;
   int rewindLastClick = 0;
   int[] boxes = new int[10];
@@ -50,9 +50,7 @@ class MusicPlayer {
     minim = new Minim(app);
     divs();
     loadFiles();
-    for (int i = 0; i < miniQueue.length; i++) {
-      miniQueue[i] =-1;
-    }
+    Queue();
     loadSettings();
     playCurrentSong();
     setupBoxes();
@@ -107,6 +105,13 @@ class MusicPlayer {
     return 20 + (i * 4);
   }//end boxIndex
   //
+
+  void Queue() {
+    for (int i = 0; i < miniQueue.length; i++) {
+      miniQueue[i] =-1;
+    }
+  }//end Queue
+
   //Functions or Behaivours
 
   void loadFiles() {
@@ -287,8 +292,8 @@ class MusicPlayer {
       rewindLastClick = now;
       if (rewindClickCount == 1) {
         songs[currentIndex].rewind();
-      } 
-        if (rewindClickCount == 2) {
+      }
+      if (rewindClickCount == 2) {
         currentIndex--;
         if (currentIndex < 0) {
           currentIndex = songs.length - 1;
@@ -456,9 +461,10 @@ class MusicPlayer {
     updateMiniPlaylistText();
   }// end Reset
   //
+
   //------BUTTON SYMBOLS------//
-  void basicTriangle(float x, float y, float w, float h, int dir) {
-    float dx = w * dir;
+  void basicTriangle(float x, float y, float w, float h, int direction) {
+    float dx = w * direction;
     triangle(x, y, x+dx, y+h/2, x, y+h);
   }
   void basicRect(float x, float y, float w, float h) {
@@ -545,8 +551,8 @@ class MusicPlayer {
   void drawAddToQueueButton(float x, float y, float w, float h) {
 
     // queue lines
-    line(x, y + h * 0.25, x + w * 0.5, y + h * 0.25);
-    line(x, y + h * 0.45, x + w * 0.5, y + h * 0.45);
+    line(x, y + h * 1/4, x + w * 1/2, y + h * 1/4);
+    line(x, y + h * 0.45, x + w * 1/2, y + h * 0.45);
 
     line(x, y + h * 0.65, x + w, y + h * 0.65);
     line(x, y + h * 0.85, x + w, y + h * 0.85);
@@ -564,7 +570,7 @@ class MusicPlayer {
   }
 
   void drawRandomSongButton(float x, float y, float w, float h) {
-    float s = w * 0.20;
+    float s = w * 1/4;
     circle(x+w*0.2, y+h*0.2, s);
     circle(x+w*0.8, y+h*0.2, s);
     circle(x+w*0.5, y+h*0.5, s);
@@ -576,9 +582,9 @@ class MusicPlayer {
     for (int i = 0; i < boxes.length; i ++) {
       int index = boxes[i];
       fill(255);
+
       float boxX = divs[index];
       float boxY = divs[index + 1];
-
       float boxW = divs[index + 2];
       float boxH = divs[index + 3];
 
