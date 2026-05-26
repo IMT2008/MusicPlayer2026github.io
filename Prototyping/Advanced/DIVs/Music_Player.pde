@@ -66,7 +66,12 @@ class MusicPlayer {
   //
   void mousePressed() {
     int num=4;
-    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) exit();
+    if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) {
+      soundEffects[0].rewind();
+      soundEffects[0].play();
+      delay(1000);
+      exit();
+    }
     num=8;
     if ( mouseX>divs[num] && mouseX<divs[num]+divs[num+2] && mouseY>divs[num+1] && mouseY<divs[num+1]+divs[num+3] ) musicGUI = varSwitch(musicGUI);
 
@@ -160,8 +165,11 @@ class MusicPlayer {
       println("Loaded: " + songs.length + " songs");
       println("Loaded: " + songName.length + " song names");
     }//End Load Images
-    
-    
+
+    for (int i = 0; i < effectsFiles.length; i++) {
+      soundEffects[i] = minim.loadFile(effectsDirectory + effectsFiles[i].getName());
+    }
+    println("Loaded: " + soundEffects.length + " sound Effects ");
   }
   void stopAllSongs() {
     for (int i = 0; i < songs.length; i++) {
