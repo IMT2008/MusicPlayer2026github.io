@@ -227,7 +227,10 @@ class MusicPlayer {
 
   void nextSongButton() {
     playNextMiniQueueSong();
-    applyShuffleState();
+    if (shuffleOn && !miniPlayOn){
+      applyShuffleState();
+      playCurrentSong();
+    }
   }//End Next Song Button
 
   void applyMuteState() {
