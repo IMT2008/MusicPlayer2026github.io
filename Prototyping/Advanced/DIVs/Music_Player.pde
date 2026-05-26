@@ -11,6 +11,7 @@ class MusicPlayer {
 
   PImage[] images;
   AudioPlayer[] songs;
+  AudioPlayer[] soundEffects;
   AudioMetaData[] songsMetaData;
   int currentIndex = 0;
   String[] songName;
@@ -124,17 +125,22 @@ class MusicPlayer {
     String upArrow = "../";
     String musicFolder = "Music/";
     String imageFolder = "Images/";
+    String soundEffectsFolder = "Sound Effects/";
     String dependencies = "Dependencies/";
     String musicDirectory = upArrow + upArrow + upArrow + dependencies + musicFolder;
     String imageDirectory = upArrow + upArrow + upArrow + dependencies + imageFolder;
+    String effectsDirectory = upArrow + upArrow + upArrow + dependencies + soundEffectsFolder;
 
     File imagefolder = new File(sketchPath(imageDirectory));
     File musicfolder = new File(sketchPath(musicDirectory));
+    File soundEffectsfolder = new File(sketchPath(effectsDirectory));
     File[] imageFiles = imagefolder.listFiles();
     File[] musicFiles = musicfolder.listFiles();
+    File[] effectsFiles = soundEffectsfolder.listFiles();
 
     images = new PImage[imageFiles.length];
     songs = new AudioPlayer[musicFiles.length];
+    soundEffects = new AudioPlayer[effectsFiles.length];
     songsMetaData = new AudioMetaData[musicFiles.length];
     songName = new String[musicFiles.length];
 
@@ -154,6 +160,8 @@ class MusicPlayer {
       println("Loaded: " + songs.length + " songs");
       println("Loaded: " + songName.length + " song names");
     }//End Load Images
+    
+    
   }
   void stopAllSongs() {
     for (int i = 0; i < songs.length; i++) {
@@ -227,7 +235,7 @@ class MusicPlayer {
 
   void nextSongButton() {
     playNextMiniQueueSong();
-    if (shuffleOn && !miniPlayOn){
+    if (shuffleOn && !miniPlayOn) {
       applyShuffleState();
       playCurrentSong();
     }
