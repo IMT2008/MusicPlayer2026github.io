@@ -565,11 +565,9 @@ class MusicPlayer {
 
   // ADD TO QUEUE BUTTON - Four lines with plus sign in corner
   void drawAddToQueueButton(float x, float y, float w, float h) {
-
     // queue lines
     line(x, y + h * 1/4, x + w * 1/2, y + h * 1/4);
     line(x, y + h * 0.45, x + w * 1/2, y + h * 0.45);
-
     line(x, y + h * 0.65, x + w, y + h * 0.65);
     line(x, y + h * 0.85, x + w, y + h * 0.85);
 
@@ -626,9 +624,9 @@ class MusicPlayer {
     if (i == 1) drawRewindButton(x, y, w, h);
     if (i == 2) {
       if (playState == 0) {
-        drawPlayButton(x, y, w, h);
-      } else if (playState == 1) {
         drawPauseButton(x, y, w, h);
+      } else if (playState == 1) {
+        drawPlayButton(x, y, w, h);
       } else if (playState == 2) {
         drawStopButton(x, y, w, h);
       }
@@ -756,9 +754,7 @@ class MusicPlayer {
       "Comment: " + meta.comment() +"\n"+
       "Lyrics: " + meta.lyrics() +"\n"+
       "Track: " + meta.track()+"\n"+
-      "Genre: " + meta.genre() +"\n"+
-      "Publisher: " + meta.publisher() +"\n"+
-      "Encoded: " + meta.encoded() ;
+      "Genre: " + meta.genre();
   }//End inspect meta data
   //
   void drawImage() {
@@ -775,6 +771,10 @@ class MusicPlayer {
       float centerX = divs[imageNum] + (divs[imageNum + 2] - imgWidth)/2;
       float centerY = divs[imageNum+1] + (divs[imageNum + 3] - imgHeight)/2;
 
+      tint(255, 105);
+      image(images[currentIndex], divs[0], divs[1], divs[2], divs[3]);
+
+      noTint();
       image(images[currentIndex], centerX, centerY, imgWidth, imgHeight);
     }
   }//End draw Image
@@ -814,18 +814,19 @@ class MusicPlayer {
       if (j==4) {
         fill(red);
       } else {
-        fill(255);
+        fill(blue);
       }
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       fill(255);
       if (j==4) {
+        strokeWeight(3);
         xShape(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       }
       if (j==8) {
-        fill(0);
         fitText("MUSIC", divs[j], divs[j+1], divs[j+2], divs[j+3], CENTER);
       }
       fill(255);
+      strokeWeight(2);
     }
   }//End See Quit & Music Button
   //
