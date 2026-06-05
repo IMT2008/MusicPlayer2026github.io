@@ -751,10 +751,10 @@ class MusicPlayer {
       "Author: " + meta.author() +"\n"+
       "Album: " + meta.album() +"\n"+
       "Date: " + meta.date() +"\n"+
-      "Comment: " + meta.comment() +"\n"+
       "Lyrics: " + meta.lyrics() +"\n"+
       "Track: " + meta.track()+"\n"+
-      "Genre: " + meta.genre();
+      "Genre: " + meta.genre() + "\n" +
+      "Next Song: " + (songName[(currentIndex + 1) % songs.length]);
   }//End inspect meta data
   //
   void drawImage() {
@@ -771,8 +771,8 @@ class MusicPlayer {
       float centerX = divs[imageNum] + (divs[imageNum + 2] - imgWidth)/2;
       float centerY = divs[imageNum+1] + (divs[imageNum + 3] - imgHeight)/2;
 
-      tint(255, 105);
-      image(images[currentIndex], divs[0], divs[1], divs[2], divs[3]);
+      tint(green, 100);
+      //image(images[currentIndex], divs[0], divs[1], divs[2], divs[3]);
 
       noTint();
       image(images[currentIndex], centerX, centerY, imgWidth, imgHeight);
@@ -814,7 +814,7 @@ class MusicPlayer {
       if (j==4) {
         fill(red);
       } else {
-        fill(blue);
+        fill(255);
       }
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
       fill(255);
@@ -834,6 +834,7 @@ class MusicPlayer {
     int j=0;
     rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     for ( j=12; j<divs.length; j+=4 ) {
+      fill(blue);
       rectDIV(divs[j], divs[j+1], divs[j+2], divs[j+3]);
     }
     drawImage();//images
